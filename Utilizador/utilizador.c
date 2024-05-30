@@ -2,41 +2,28 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 
 #define MAX_TIPOS_PROPRIEDADES 50
 #define MAX_TAM_TIPO 50
-#define MAX_CLIENTES 100
+#define MAX_UTILIZADORES 100
 
+// Structs e variaveis
 struct TipoPropriedade {
     char tipo[MAX_TAM_TIPO];
     double preco;
 };
 
-struct Agente {
-    char nome[100];
-    int NIF;
-    char contactoTelefonico[15];
-    char dataNascimento[11]; // Formato: YYYY-MM-DD
-};
-
-struct Cliente {
-    char nome[100];
-    int NIF;
-    char contactoTelefonico[15];
-};
-
+Utilizador utilizadores[MAX_UTILIZADORES];
 
 struct TipoPropriedade tiposPropriedades[MAX_TIPOS_PROPRIEDADES];
 int numTiposPropriedades = 0;
 
-struct Agente agentes[MAX_AGENTES];
 int numAgentes = 0;
-
-struct Cliente clientes[MAX_CLIENTES];
-int numClientes = 0;
+int numUtilizadores = 0;
 
 
-
+/*
 void lerTiposPropriedadesDoFicheiro() {
     FILE *file = fopen("Propriedades.txt", "r");
     if (file != NULL) {
@@ -101,193 +88,265 @@ void listarTiposPropriedades() {
     }
 }
 
-void lerAgentesDoFicheiro() {
-    FILE *file = fopen("Agentes.txt", "r");
-    if (file != NULL) {
-        while (fscanf(file, "%s %d %s %s", agentes[numAgentes].nome, &agentes[numAgentes].NIF,
-               agentes[numAgentes].contactoTelefonico, agentes[numAgentes].dataNascimento) == 4) {
-            numAgentes++;
-        }
-        fclose(file);
-    }
-}
+*/
 
-void escreverAgentesNoFicheiro() {
-    FILE *file = fopen("Agentes.txt", "w");
-    if (file != NULL) {
-        for (int i = 0; i < numAgentes; i++) {
-            fprintf(file, "%s %d %s %s\n", agentes[i].nome, agentes[i].NIF,
-                    agentes[i].contactoTelefonico, agentes[i].dataNascimento);
-        }
-        fclose(file);
-    }
-}
 
-void criarAgente(const char *nome, int NIF, const char *contacto, const char *dataNascimento) {
-    if (numAgentes < MAX_AGENTES) {
-        strcpy(agentes[numAgentes].nome, nome);
-        agentes[numAgentes].NIF = NIF;
-        strcpy(agentes[numAgentes].contactoTelefonico, contacto);
-        strcpy(agentes[numAgentes].dataNascimento, dataNascimento);
-        numAgentes++;
-        escreverAgentesNoFicheiro();
-    } else {
-        printf("Limite máximo de agentes atingido.\n");
-    }
-}
+// REGISTRO
 
-void editarAgente(int identificador, const char *nome, const char *contacto) {
-    for (int i = 0; i < numAgentes; i++) {
-        if (i + 1 == identificador) {
-            strcpy(agentes[i].nome, nome);
-            strcpy(agentes[i].contactoTelefonico, contacto);
-            escreverAgentesNoFicheiro();
+bool efetuarLogin(char *username, char *password) {
+    for (int i = 0; i < numUtilizadores; i++) {
+        if (strcmp(utilizadores[i].username, username) == 0 && strcmp(utilizadores[i].password, password) == 0) {
+            printf("Login bem-sucedido.\n");
             return;
         }
     }
-    printf("Agente não encontrado.\n");
+    printf("Login inválido.\n");
 }
 
-void removerAgente(int identificador) {
-    for (int i = 0; i < numAgentes; i++) {
-        if (i + 1 == identificador) {
-            for (int j = i; j < numAgentes - 1; j++) {
-                strcpy(agentes[j].nome, agentes[j + 1].nome);
-                agentes[j].NIF = agentes[j + 1].NIF;
-                strcpy(agentes[j].contactoTelefonico, agentes[j + 1].contactoTelefonico);
-                strcpy(agentes[j].dataNascimento, agentes[j + 1].dataNascimento);
+bool verificarUsername(char *username) {
+    for (int i = 0; i < numUtilizadores; i++) {
+        if (strcmp(utilizadores[i].username, username) == 0) {
+            return true;
+        }
+    }
+    return false;
+}
+
+TipoUtilizador tipoRegisto(char *username) {
+    for (int i = 0; i < numUtilizadores; i++) {
+        if (strcmp(utilizadores[i].username, username) == 0) {
+            return utilizadores[i].tipo;
+        }
+    }
+}
+
+void ListarConta(char* username) {
+    for (int i = 0; i < numUtilizadores; i++) {
+        if (strcmp(utilizadores[i].username, username) == 0) {
+            printf("--------- %d -------", utilizadores[i].nome);
+            printf("\nUsername: ", utilizadores[i].username);
+            printf("\nContacto: ", utilizadores[i].contactoTelefonico);
+            printf("\nMorada: ", utilizadores[i].morada);
+            printf("\nNIF: ", utilizadores[i].NIF);
+            printf("\nData de Nascimento: ", utilizadores[i].dataNascimento);
+            printf("\nDisponibilidade: ", utilizadores[i].disponivel);
+            printf("\nPassword: ", utilizadores[i].password);
+            return;
+        }
+    }
+    printf("Utilizador não encontrado.\n");
+}
+
+
+// CRUD FICHEIRO
+
+void lerFicheiroUtilizadores() {
+    FILE *file = fopen("Utilizadores.txt", "r");
+    if (file != NULL) {
+        while (fscanf(file, "%s %d %s %s %s %d %s %s %d", 
+                      utilizadores[numUtilizadores].nome, &utilizadores[numUtilizadores].NIF,
+                      utilizadores[numUtilizadores].morada, utilizadores[numUtilizadores].contactoTelefonico,
+                      utilizadores[numUtilizadores].dataNascimento, &utilizadores[numUtilizadores].disponivel,
+                      utilizadores[numUtilizadores].username, utilizadores[numUtilizadores].password,
+                      (int *)&utilizadores[numUtilizadores].tipo) != EOF) {
+            (numUtilizadores)++;
+            if (utilizadores[numUtilizadores - 1].tipo == AGENTE) {
+                (numAgentes)++;
             }
-            numAgentes--;
-            escreverAgentesNoFicheiro();
-            return;
-        }
-    }
-    printf("Agente não encontrado.\n");
-}
-
-int compararPorNome(const void *a, const void *b) {
-    const struct Agente *agenteA = (const struct Agente *)a;
-    const struct Agente *agenteB = (const struct Agente *)b;
-    return strcmp(agenteA->nome, agenteB->nome);
-}
-
-int compararPorIdade(const void *a, const void *b) {
-    const struct Agente *agenteA = (const struct Agente *)a;
-    const struct Agente *agenteB = (const struct Agente *)b;
-    int anoA = atoi(strtok(agenteA->dataNascimento, "-"));
-    int anoB = atoi(strtok(agenteB->dataNascimento, "-"));
-    return anoA - anoB;
-}
-
-void listarAgentesAlfabeticamente() {
-    qsort(agentes, numAgentes, sizeof(struct Agente), compararPorNome);
-    printf("Agentes (ordenados alfabeticamente):\n");
-    for (int i = 0; i < numAgentes; i++) {
-        printf("%d. Nome: %s, NIF: %d, Contacto: %s, Data de Nascimento: %s\n", i + 1, agentes[i].nome,
-               agentes[i].NIF, agentes[i].contactoTelefonico, agentes[i].dataNascimento);
-    }
-}
-
-void listarAgentesPorIdade() {
-    qsort(agentes, numAgentes, sizeof(struct Agente), compararPorIdade);
-    printf("Agentes (ordenados por idade):\n");
-    for (int i = 0; i < numAgentes; i++) {
-        printf("%d. Nome: %s, NIF: %d, Contacto: %s, Data de Nascimento: %s\n", i + 1, agentes[i].nome,
-               agentes[i].NIF, agentes[i].contactoTelefonico, agentes[i].dataNascimento);
-    }
-}
-
-void gerarRelatorioAgentes(const char *nomeFicheiro) {
-    FILE *file = fopen(nomeFicheiro, "w");
-    if (file != NULL) {
-        fprintf(file, "Relatório de Agentes:\n");
-        for (int i = 0; i < numAgentes; i++) {
-            fprintf(file, "Nome: %s, NIF: %d, Contacto: %s, Data de Nascimento: %s\n", agentes[i].nome,
-                    agentes[i].NIF, agentes[i].contactoTelefonico, agentes[i].dataNascimento);
-        }
-        fclose(file);
-        printf("Relatório de agentes gerado com sucesso.\n");
-    } else {
-        printf("Erro ao abrir o ficheiro para escrita.\n");
-    }
-}
-
-
-void lerClientesDoFicheiro() {
-    FILE *file = fopen("Clientes.txt", "r");
-    if (file != NULL) {
-        while (fscanf(file, "%s %d %s", clientes[numClientes].nome, &clientes[numClientes].NIF,
-                      clientes[numClientes].contactoTelefonico) == 3) {
-            numClientes++;
         }
         fclose(file);
     }
 }
 
-void escreverClientesNoFicheiro() {
-    FILE *file = fopen("Clientes.txt", "w");
+void gravarFicheiroUtilizadores() {
+    FILE *file = fopen("utilizadores.txt", "w");
     if (file != NULL) {
-        for (int i = 0; i < numClientes; i++) {
-            fprintf(file, "%s %d %s\n", clientes[i].nome, clientes[i].NIF, clientes[i].contactoTelefonico);
+        for (int i = 0; i < numUtilizadores; i++) {
+            fprintf(file, "%s %d %s %s %s %d %s %s %d\n", 
+                    utilizadores[i].nome, utilizadores[i].NIF,
+                    utilizadores[i].morada, utilizadores[i].contactoTelefonico,
+                    utilizadores[i].dataNascimento, utilizadores[i].disponivel,
+                    utilizadores[i].username, utilizadores[i].password,
+                    utilizadores[i].tipo);
         }
         fclose(file);
     }
 }
 
-void criarCliente(const char *nome, int NIF, const char *contacto) {
-    if (numClientes < MAX_CLIENTES) {
-        strcpy(clientes[numClientes].nome, nome);
-        clientes[numClientes].NIF = NIF;
-        strcpy(clientes[numClientes].contactoTelefonico, contacto);
-        numClientes++;
-        escreverClientesNoFicheiro();
-    } else {
-        printf("Limite máximo de clientes atingido.\n");
-    }
-}
 
-void atualizarCliente(int NIF, const char *novoNome, const char *novoContacto) {
-    for (int i = 0; i < numClientes; i++) {
-        if (clientes[i].NIF == NIF) {
-            strcpy(clientes[i].nome, novoNome);
-            strcpy(clientes[i].contactoTelefonico, novoContacto);
-            escreverClientesNoFicheiro();
-            return;
-        }
-    }
-    printf("Cliente não encontrado.\n");
-}
+// CRUD STRUCTS
 
-void removerCliente(int NIF) {
-    for (int i = 0; i < numClientes; i++) {
-        if (clientes[i].NIF == NIF) {
-            for (int j = i; j < numClientes - 1; j++) {
-                strcpy(clientes[j].nome, clientes[j + 1].nome);
-                clientes[j].NIF = clientes[j + 1].NIF;
-                strcpy(clientes[j].contactoTelefonico, clientes[j + 1].contactoTelefonico);
+void CriarUtilizador(Utilizador novoUtilizador) {
+    if (numUtilizadores < MAX_UTILIZADORES) {
+        utilizadores[numUtilizadores++] = novoUtilizador;
+        // Caso seja um agente, irá adicionar +1 aos agentes
+        if (novoUtilizador.tipo == AGENTE) {
+            if (numAgentes <= MAX_AGENTES) {
+                numAgentes++;
+            } else {
+                printf("Erro: Limite de agentes atingido.\n");
             }
-            numClientes--;
-            escreverClientesNoFicheiro();
-            return;
         }
-    }
-    printf("Cliente não encontrado.\n");
-}
-
-void listarClientesAlfabeticamente() {
-    qsort(clientes, numClientes, sizeof(struct Cliente), compararPorNome);
-    printf("Clientes (ordenados alfabeticamente):\n");
-    for (int i = 0; i < numClientes; i++) {
-        printf("Nome: %s, NIF: %d, Contacto: %s\n", clientes[i].nome, clientes[i].NIF, clientes[i].contactoTelefonico);
+        printf("Utilizador criado com sucesso.\n");
+    } else {
+        printf("Erro: Limite de utilizadores atingido.\n");
     }
 }
 
-void apresentarInformacoesCliente(int NIF) {
-    for (int i = 0; i < numClientes; i++) {
-        if (clientes[i].NIF == NIF) {
-            printf("Nome: %s, NIF: %d, Contacto: %s\n", clientes[i].nome, clientes[i].NIF, clientes[i].contactoTelefonico);
+void EditarUtilizador(char* username, Utilizador utilizadorEditado) {
+    for (int i = 0; i < numUtilizadores; i++) {
+        if (strcmp(utilizadores[i].username, username) == 0) {
+            utilizadores[i] = utilizadorEditado;
+            printf("Utilizador editado com sucesso.\n");
             return;
         }
     }
-    printf("Cliente não encontrado.\n");
+    printf("Erro: Utilizador não encontrado.\n");
+}
+
+void RemoverUtilizador(char* username) {
+    for (int i = 0; i < numUtilizadores; i++) {
+        if (strcmp(utilizadores[i].username, username) == 0) {
+            // Remover nos agentes caso se verifique
+            if (utilizadores[i].tipo == AGENTE) {
+                numAgentes--;
+            }
+            for (int j = i; j < numUtilizadores - 1; j++) {
+                utilizadores[j] = utilizadores[j + 1];
+            }
+            numUtilizadores--;
+            printf("Utilizador removido com sucesso.\n");
+            return;
+        }
+    }
+    printf("Erro: Utilizador não encontrado.\n");
+}
+
+void ListarUtilizador(char* username, TipoUtilizador *tipoUtilizador, int *tipoNum) {
+    TipoUtilizador tipoPretendido;
+    switch (*tipoNum)
+    {
+    case 1:
+        tipoPretendido = CLIENTE;
+        break;
+    case 2:
+        tipoPretendido = AGENTE;
+        break;
+    case 3:
+        tipoPretendido = ADMINISTRADOR;
+        break;
+    }
+    
+    for (int i = 0; i < numUtilizadores; i++) {
+        // Verifica se o utilizador tem o tipo pretendido
+        // Caso tenha um dos 3 tipos, ou caso se peça todos, e caso tenha o mesmo username, irá listar essa conta
+        if ((utilizadores[i].tipo == tipoPretendido || tipoNum == 0) && strcmp(utilizadores[i].username, username) == 0) {
+            printf("--------- %s -------", utilizadores[i].nome);
+            printf("\nUsername: %s", utilizadores[i].username);
+            printf("\nContacto: %s", utilizadores[i].contactoTelefonico);
+            printf("\nMorada: %s", utilizadores[i].morada);
+            if(*tipoUtilizador == ADMINISTRADOR){
+                printf("\nNIF: %s", utilizadores[i].NIF);
+                printf("\nData de Nascimento: %s", utilizadores[i].dataNascimento);
+                printf("\nDisponibilidade: %d", utilizadores[i].disponivel);
+                printf("\nPassword: %s", utilizadores[i].password);
+            }
+            printf("\n");
+            return;
+        }
+    }
+    printf("Utilizador não encontrado ou tipo de utilizador não corresponde ao tipo pretendido.\n");
+}
+
+
+// ORDENAÇÕES
+
+void trocar(Utilizador *a, Utilizador *b) {
+    Utilizador temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+void ordenarPorNome(char *tipoOrdenar) {
+    // Variaveis
+    bool trocado;
+    Utilizador utilizadorOrdenado[MAX_UTILIZADORES];
+    int numOrdenados = 0;
+    
+    // Separar os agentes e os clientes
+    for (int i = 0; i < numUtilizadores; i++) {
+        if ((strcmp(tipoOrdenar, "ADMINISTRADOR") == 0 && utilizadores[i].tipo == ADMINISTRADOR) ||
+            (strcmp(tipoOrdenar, "AGENTE") == 0 && utilizadores[i].tipo == AGENTE) ||
+            (strcmp(tipoOrdenar, "CLIENTE") == 0 && utilizadores[i].tipo == CLIENTE) ||
+            (strcmp(tipoOrdenar, "AMBOS") == 0)) {
+            utilizadorOrdenado[numOrdenados] = utilizadores[i];
+            numOrdenados++;
+        }
+    }
+
+    // Aplicar o Bubble Sort
+    for (int i = 0; i < numOrdenados - 1; i++) {
+        trocado = false;
+        for (int j = 0; j < numOrdenados - i - 1; j++) {
+            if (strcmp(utilizadorOrdenado[j].nome, utilizadorOrdenado[j + 1].nome) > 0) {
+                trocar(&utilizadorOrdenado[j], &utilizadorOrdenado[j + 1]);
+                trocado = true;
+            }
+        }
+        if (!trocado)
+            break;
+    }
+
+    // Imprimir os utilizadores ordenados
+}
+
+void ordenarPorIdade(char *tipoOrdenar) {
+    // Variaveis
+    bool trocado;
+    Utilizador utilizadorOrdenado[MAX_UTILIZADORES];
+    int numOrdenados = 0;
+    
+    // Separar os agentes e os clientes
+    for (int i = 0; i < numUtilizadores; i++) {
+        if ((strcmp(tipoOrdenar, "ADMINISTRADOR") == 0 && utilizadores[i].tipo == ADMINISTRADOR) ||
+            (strcmp(tipoOrdenar, "AGENTE") == 0 && utilizadores[i].tipo == AGENTE) ||
+            (strcmp(tipoOrdenar, "CLIENTE") == 0 && utilizadores[i].tipo == CLIENTE) ||
+            (strcmp(tipoOrdenar, "AMBOS") == 0)) {
+            utilizadorOrdenado[numOrdenados] = utilizadores[i];
+            numOrdenados++;
+        }
+    }
+
+    // Aplicar o Bubble Sort
+    for (int i = 0; i < numOrdenados - 1; i++) {
+        trocado = false;
+        for (int j = 0; j < numOrdenados - i - 1; j++) {
+            int idadeA = calcularIdade(utilizadores[j].dataNascimento);
+            int idadeB = calcularIdade(utilizadores[j + 1].dataNascimento);
+            if (idadeA > idadeB) {
+                trocar(&utilizadorOrdenado[j], &utilizadorOrdenado[j + 1]);
+                trocado = true;
+            }
+        }
+        if (!trocado)
+            break;
+    }
+
+    // Imprimir os agentes ordenados
+}
+
+int calcularIdade(const char *dataNascimento) {
+    int anoNascimento, mesNascimento, diaNascimento;
+    sscanf(dataNascimento, "%d-%d-%d", &anoNascimento, &mesNascimento, &diaNascimento);
+
+    // Supondo que a data atual é 2024-05-30
+    int anoAtual = 2024;
+    int mesAtual = 6;
+    int diaAtual = 2;
+
+    int idade = anoAtual - anoNascimento;
+    if (mesNascimento > mesAtual || (mesNascimento == mesAtual && diaNascimento > diaAtual)) {
+        idade--;
+    }
+    return idade;
 }
