@@ -3,6 +3,7 @@
 #include <stdbool.h>
 #include <string.h>
 #include "Utilizador/utilizador.h"
+#include "Propriedades/propriedades.h"
 
 // Variaveis Globais
 char usernameRegistado[20] = "";    // Guarda o username da conta registada no sistema
@@ -212,8 +213,10 @@ void GerirPropriedades(){
         printf("-----------------\n");
         printf("Gerir Propriedades\n");
         printf("-----------------\n\n");
-        printf("1. \n");
-        printf("2. \n");
+        printf("1. Criar Propriedade\n");
+        printf("2. Listar Propriedades\n");
+        printf("3. Editar Propriedades\n");
+        printf("4. Remover Propriedade\n");
         printf("\n-----------------\n");
         printf("0. Sair\n");
         printf("-----------------\n\n");
@@ -223,8 +226,16 @@ void GerirPropriedades(){
         // Lista das opções
         switch (escolha) {
             case 1:
+                criarPropriedade(TipoPropriedade tipo, const char* morada, double preco, int id_proprietario);
                 break;
             case 2:
+                listarPropriedades();
+                break;
+            case 3:
+                editarPropriedade();
+                break;
+            case 4:
+                removerPropriedade();
                 break;
             case 0:
                 printf("Encerrando o programa...\n");
