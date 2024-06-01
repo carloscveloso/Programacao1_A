@@ -2,6 +2,7 @@
     "files.associations": {
         "*.embeddedhtml": "html",
         "string.h": "c",
-        "login.h": "c"
+        "login.h": "c",
+        "utilizador.h": "c"
     }
 }

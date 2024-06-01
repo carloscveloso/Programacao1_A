@@ -29,7 +29,9 @@ typedef struct {
     bool disponivel;
     char username[20]; // Identificador
     char password[20];
-    enum TipoUtilizador tipo;
+    TipoUtilizador tipo;
+    struct Utilizador *prev;
+    struct Utilizador *next;
 } Utilizador;
 
 

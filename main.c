@@ -2,11 +2,11 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
-#include <utilizador.h>
+#include "Utilizador/utilizador.h"
 
 // Variaveis Globais
 char usernameRegistado[20] = "";    // Guarda o username da conta registada no sistema
-TipoUtilizador tipoRegistado;       // Guarda o tipo de utilizador registado no sistema
+TipoUtilizador *tipoRegistado;       // Guarda o tipo de utilizador registado no sistema
 
 int main() {
     //Reaver dados no ficheiro
