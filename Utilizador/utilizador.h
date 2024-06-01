@@ -11,14 +11,7 @@ typedef enum {
     AGENTE,
     CLIENTE
 } TipoUtilizador;
-/*
-// Estrutura para armazenar informação sobre uma propriedade
-struct Propriedade {
-    char tipo[50]; 
-    char endereco[100]; 
-    double preco; 
-} Propriedade;
-*/
+
 // Estrutura para armazenar informação sobre um utilizador
 typedef struct {
     char nome[100];
@@ -30,10 +23,10 @@ typedef struct {
     char username[20]; // Identificador
     char password[20];
     TipoUtilizador tipo;
-    struct Utilizador *prev;
-    struct Utilizador *next;
 } Utilizador;
 
+// ADD ADMIN
+void adicionarAdministrador();
 
 // REGISTAR
 bool efetuarLogin(char *username, char *password);
@@ -47,13 +40,13 @@ void gravarFicheiroUtilizadores();
 
 // CRUD STRUCTS
 void CriarUtilizador(Utilizador novoUtilizador);
-void EditarUtilizador(char* username, Utilizador utilizadorEditado);
+void EditarUtilizador(Utilizador utilizadorEditado);
 void RemoverUtilizador(char* username);
-void ListarUtilizador(char* username, TipoUtilizador *tipoUtilizador, int *tipoNum);
-
+void ListarUtilizador(TipoUtilizador tipoUtilizador, int *tipoNum);
+Utilizador ReturnUtilizador(char username);
 
 // ORDENAÇÕES
-void ordenarPorNome(char *tipoOrdenar);
-void ordenarPorIdade(char *tipoOrdenar);
+void ordenarPorNome(TipoUtilizador tipoUtilizador, int *tipoOrdenar);
+void ordenarPorIdade(TipoUtilizador tipoUtilizador, int *tipoOrdenar);
 
 #endif 

@@ -4,169 +4,26 @@
 #include <string.h>
 #include <stdbool.h>
 
-#define MAX_TIPOS_PROPRIEDADES 50
-#define MAX_TAM_TIPO 50
 #define MAX_UTILIZADORES 100
 
-// Structs e variaveis
-struct TipoPropriedade {
-    char tipo[MAX_TAM_TIPO];
-    double preco;
-};
-
 Utilizador utilizadores[MAX_UTILIZADORES];
-
-struct TipoPropriedade tiposPropriedades[MAX_TIPOS_PROPRIEDADES];
-int numTiposPropriedades = 0;
 
 int numAgentes = 0;
 int numUtilizadores = 0;
 
-typedef struct Node{
-    struct Node *prev;
-    struct Node *next;
-    int data;
-} Node;
+// ADD ADMIN - Adicionar o admin predefinido caso não exista um
 
-Node *head = NULL;
-Node *tail = NULL;
-
-Node *createNode(int data){
-    Node *newNode = (Node*)malloc(sizeof(Node));
-    newNode->data = data;
-    newNode->prev = NULL;
-    newNode->next = NULL;
-    return newNode;
-}
-
-void appendNode(Node** head, Node** tail, int data) {
-    Node* newNode = createNode(data);
-    if (*tail == NULL) {
-        *head = newNode;
-        *tail = newNode;
+void adicionarAdministrador() {
+    if (!verificarUsername("admin") && numUtilizadores < MAX_UTILIZADORES) {
+        strcpy(utilizadores[numUtilizadores].username, "admin");
+        strcpy(utilizadores[numUtilizadores].password, "admin");
+        utilizadores[numUtilizadores].tipo = ADMINISTRADOR;
+        numUtilizadores++;
     } else {
-        (*tail)->next = newNode;
-        newNode->prev = *tail;
-        *tail = newNode;
+        printf("Limite máximo de utilizadores atingido.\n");
     }
 }
 
-void prependNode(Node** head, Node** tail, int data) {
-    Node* newNode = createNode(data);
-    if (*head == NULL) {
-        *head = newNode;
-        *tail = newNode;
-    } else {
-        (*head)->prev = newNode;
-        newNode->next = *head;
-        *head = newNode;
-    }
-}
-
-
-void deleteNode(Node** head, Node** tail, Node* nodeToDelete) {
-    if (nodeToDelete == NULL) return;
-
-    if (nodeToDelete == *head) {
-        *head = nodeToDelete->next;
-    }
-    if (nodeToDelete == *tail) {
-        *tail = nodeToDelete->prev;
-    }
-    if (nodeToDelete->prev != NULL) {
-        nodeToDelete->prev->next = nodeToDelete->next;
-    }
-    if (nodeToDelete->next != NULL) {
-        nodeToDelete->next->prev = nodeToDelete->prev;
-    }
-
-    free(nodeToDelete);
-}
-
-void printListFromHead(Node* head) {
-    Node* current = head;
-    while (current != NULL) {
-        printf("%d ", current->data);
-        current = current->next;
-    }
-    printf("\n");
-}
-
-void printListFromTail(Node* tail) {
-    Node* current = tail;
-    while (current != NULL) {
-        printf("%d ", current->data);
-        current = current->prev;
-    }
-    printf("\n");
-}
-
-/*
-void lerTiposPropriedadesDoFicheiro() {
-    FILE *file = fopen("Propriedades.txt", "r");
-    if (file != NULL) {
-        while (fscanf(file, "%s %lf", tiposPropriedades[numTiposPropriedades].tipo, &tiposPropriedades[numTiposPropriedades].preco) == 2) {
-            numTiposPropriedades++;
-        }
-        fclose(file);
-    }
-}
-
-void escreverTiposPropriedadesNoFicheiro() {
-    FILE *file = fopen("Propriedades.txt", "w");
-    if (file != NULL) {
-        for (int i = 0; i < numTiposPropriedades; i++) {
-            fprintf(file, "%s %.2lf\n", tiposPropriedades[i].tipo, tiposPropriedades[i].preco);
-        }
-        fclose(file);
-    }
-}
-
-void criarTipoPropriedade(const char *tipo, double preco) {
-    if (numTiposPropriedades < MAX_TIPOS_PROPRIEDADES) {
-        strcpy(tiposPropriedades[numTiposPropriedades].tipo, tipo);
-        tiposPropriedades[numTiposPropriedades].preco = preco;
-        numTiposPropriedades++;
-        escreverTiposPropriedadesNoFicheiro();
-    } else {
-        printf("Limite máximo de tipos de propriedades atingido.\n");
-    }
-}
-
-void editarTipoPropriedade(const char *tipo, double novoPreco) {
-    for (int i = 0; i < numTiposPropriedades; i++) {
-        if (strcmp(tiposPropriedades[i].tipo, tipo) == 0) {
-            tiposPropriedades[i].preco = novoPreco;
-            escreverTiposPropriedadesNoFicheiro();
-            return;
-        }
-    }
-    printf("Tipo de propriedade não encontrado.\n");
-}
-
-void removerTipoPropriedade(const char *tipo) {
-    for (int i = 0; i < numTiposPropriedades; i++) {
-        if (strcmp(tiposPropriedades[i].tipo, tipo) == 0) {
-            for (int j = i; j < numTiposPropriedades - 1; j++) {
-                strcpy(tiposPropriedades[j].tipo, tiposPropriedades[j + 1].tipo);
-                tiposPropriedades[j].preco = tiposPropriedades[j + 1].preco;
-            }
-            numTiposPropriedades--;
-            escreverTiposPropriedadesNoFicheiro();
-            return;
-        }
-    }
-    printf("Tipo de propriedade não encontrado.\n");
-}
-
-void listarTiposPropriedades() {
-    printf("Tipos de Propriedades:\n");
-    for (int i = 0; i < numTiposPropriedades; i++) {
-        printf("%s - %.2lf\n", tiposPropriedades[i].tipo, tiposPropriedades[i].preco);
-    }
-}
-
-*/
 
 // REGISTRO
 
@@ -265,16 +122,18 @@ void CriarUtilizador(Utilizador novoUtilizador) {
             }
         }
         printf("Utilizador criado com sucesso.\n");
+        gravarFicheiroUtilizadores();
     } else {
         printf("Erro: Limite de utilizadores atingido.\n");
     }
 }
 
-void EditarUtilizador(char* username, Utilizador utilizadorEditado) {
+void EditarUtilizador(Utilizador utilizadorEditado) {
     for (int i = 0; i < numUtilizadores; i++) {
-        if (strcmp(utilizadores[i].username, username) == 0) {
+        if (strcmp(utilizadores[i].username, utilizadorEditado.username) == 0) {
             utilizadores[i] = utilizadorEditado;
             printf("Utilizador editado com sucesso.\n");
+            gravarFicheiroUtilizadores();
             return;
         }
     }
@@ -288,19 +147,23 @@ void RemoverUtilizador(char* username) {
             if (utilizadores[i].tipo == AGENTE) {
                 numAgentes--;
             }
+            if (strcmp(utilizadores[i].username, "admin") == 0) {
+                printf("Erro: Não é possivel remover o administrador principal");
+            } 
             for (int j = i; j < numUtilizadores - 1; j++) {
                 utilizadores[j] = utilizadores[j + 1];
             }
             numUtilizadores--;
             printf("Utilizador removido com sucesso.\n");
+            gravarFicheiroUtilizadores();
             return;
         }
     }
     printf("Erro: Utilizador não encontrado.\n");
 }
 
-void ListarUtilizador(char* username, TipoUtilizador *tipoUtilizador, int *tipoNum) {
-    TipoUtilizador tipoPretendido;
+void ListarUtilizador(TipoUtilizador tipoUtilizador, int *tipoNum) {
+    TipoUtilizador tipoPretendido = CLIENTE;
     switch (*tipoNum)
     {
     case 1:
@@ -316,13 +179,13 @@ void ListarUtilizador(char* username, TipoUtilizador *tipoUtilizador, int *tipoN
     
     for (int i = 0; i < numUtilizadores; i++) {
         // Verifica se o utilizador tem o tipo pretendido
-        // Caso tenha um dos 3 tipos, ou caso se peça todos, e caso tenha o mesmo username, irá listar essa conta
-        if ((utilizadores[i].tipo == tipoPretendido || tipoNum == 0) && strcmp(utilizadores[i].username, username) == 0) {
+        // Caso tenha um dos 3 tipos, ou caso se peça todos irá listar essa conta
+        if (utilizadores[i].tipo == tipoPretendido || tipoNum == 0) {
             printf("--------- %s -------", utilizadores[i].nome);
             printf("\nUsername: %s", utilizadores[i].username);
             printf("\nContacto: %s", utilizadores[i].contactoTelefonico);
             printf("\nMorada: %s", utilizadores[i].morada);
-            if(*tipoUtilizador == ADMINISTRADOR){
+            if(tipoUtilizador == ADMINISTRADOR){
                 printf("\nNIF: %s", utilizadores[i].NIF);
                 printf("\nData de Nascimento: %s", utilizadores[i].dataNascimento);
                 printf("\nDisponibilidade: %d", utilizadores[i].disponivel);
@@ -335,6 +198,14 @@ void ListarUtilizador(char* username, TipoUtilizador *tipoUtilizador, int *tipoN
     printf("Utilizador não encontrado ou tipo de utilizador não corresponde ao tipo pretendido.\n");
 }
 
+Utilizador ReturnUtilizador(char username) {
+    for (int i = 0; i < numUtilizadores; i++) {
+        if (utilizadores[i].username == username) {
+            return utilizadores[i];
+        }
+    }
+    return utilizadores[0];
+}
 
 // ORDENAÇÕES
 
@@ -344,7 +215,7 @@ void trocar(Utilizador *a, Utilizador *b) {
     *b = temp;
 }
 
-void ordenarPorNome(char *tipoOrdenar) {
+void ordenarPorNome(TipoUtilizador tipoUtilizador, int *tipoOrdenar) {
     // Variaveis
     bool trocado;
     Utilizador utilizadorOrdenado[MAX_UTILIZADORES];
@@ -352,10 +223,10 @@ void ordenarPorNome(char *tipoOrdenar) {
     
     // Separar os agentes e os clientes
     for (int i = 0; i < numUtilizadores; i++) {
-        if ((strcmp(tipoOrdenar, "ADMINISTRADOR") == 0 && utilizadores[i].tipo == ADMINISTRADOR) ||
-            (strcmp(tipoOrdenar, "AGENTE") == 0 && utilizadores[i].tipo == AGENTE) ||
-            (strcmp(tipoOrdenar, "CLIENTE") == 0 && utilizadores[i].tipo == CLIENTE) ||
-            (strcmp(tipoOrdenar, "AMBOS") == 0)) {
+        if ((tipoOrdenar == 3 && utilizadores[i].tipo == ADMINISTRADOR) ||
+            (tipoOrdenar == 2 && utilizadores[i].tipo == AGENTE) ||
+            (tipoOrdenar == 1 && utilizadores[i].tipo == CLIENTE) ||
+            (tipoOrdenar == 0)) {
             utilizadorOrdenado[numOrdenados] = utilizadores[i];
             numOrdenados++;
         }
@@ -375,9 +246,10 @@ void ordenarPorNome(char *tipoOrdenar) {
     }
 
     // Imprimir os utilizadores ordenados
+    ListarOrdenacao(tipoUtilizador, utilizadorOrdenado, numOrdenados);
 }
 
-void ordenarPorIdade(char *tipoOrdenar) {
+void ordenarPorIdade(TipoUtilizador tipoUtilizador, int *tipoOrdenar) {
     // Variaveis
     bool trocado;
     Utilizador utilizadorOrdenado[MAX_UTILIZADORES];
@@ -385,10 +257,10 @@ void ordenarPorIdade(char *tipoOrdenar) {
     
     // Separar os agentes e os clientes
     for (int i = 0; i < numUtilizadores; i++) {
-        if ((strcmp(tipoOrdenar, "ADMINISTRADOR") == 0 && utilizadores[i].tipo == ADMINISTRADOR) ||
-            (strcmp(tipoOrdenar, "AGENTE") == 0 && utilizadores[i].tipo == AGENTE) ||
-            (strcmp(tipoOrdenar, "CLIENTE") == 0 && utilizadores[i].tipo == CLIENTE) ||
-            (strcmp(tipoOrdenar, "AMBOS") == 0)) {
+        if ((tipoOrdenar == 3 && utilizadores[i].tipo == ADMINISTRADOR) ||
+            (tipoOrdenar == 2 && utilizadores[i].tipo == AGENTE) ||
+            (tipoOrdenar == 1 && utilizadores[i].tipo == CLIENTE) ||
+            (tipoOrdenar == 0)) {
             utilizadorOrdenado[numOrdenados] = utilizadores[i];
             numOrdenados++;
         }
@@ -410,6 +282,7 @@ void ordenarPorIdade(char *tipoOrdenar) {
     }
 
     // Imprimir os agentes ordenados
+    ListarOrdenacao(tipoUtilizador, utilizadorOrdenado, numOrdenados);
 }
 
 int calcularIdade(const char *dataNascimento) {
@@ -426,4 +299,23 @@ int calcularIdade(const char *dataNascimento) {
         idade--;
     }
     return idade;
+}
+
+void ListarOrdenacao(TipoUtilizador tipoUtilizador, Utilizador *utilizadorOrdenado, int numOrdenados) {
+    
+    for (int i = 0; i < numOrdenados; i++) {
+        printf("--------- %s -------", utilizadorOrdenado[i].nome);
+        printf("\nUsername: %s", utilizadorOrdenado[i].username);
+        printf("\nContacto: %s", utilizadorOrdenado[i].contactoTelefonico);
+        printf("\nMorada: %s", utilizadorOrdenado[i].morada);
+        if(tipoUtilizador == ADMINISTRADOR){
+            printf("\nNIF: %s", utilizadorOrdenado[i].NIF);
+            printf("\nData de Nascimento: %s", utilizadorOrdenado[i].dataNascimento);
+            printf("\nDisponibilidade: %d", utilizadorOrdenado[i].disponivel);
+            printf("\nPassword: %s", utilizadorOrdenado[i].password);
+        }
+        printf("\n");
+        return;
+    }
+    printf("Utilizador não encontrado ou tipo de utilizador não corresponde ao tipo pretendido.\n");
 }
