@@ -31,7 +31,7 @@ void adicionarAdministrador();
 // REGISTAR
 bool efetuarLogin(char *username, char *password);
 bool verificarUsername(char *username);
-TipoUtilizador tipoRegisto(char *username);
+TipoUtilizador* tipoRegisto(char *username);
 void ListarConta(char* username);
 bool verificarTipo(TipoUtilizador pretendido, char *username);
 
@@ -43,12 +43,12 @@ void gravarFicheiroUtilizadores();
 void CriarUtilizador(Utilizador novoUtilizador);
 void EditarUtilizador(Utilizador utilizadorEditado);
 void RemoverUtilizador(char* username);
-void ListarUtilizador(TipoUtilizador tipoUtilizador, int *tipoNum);
-Utilizador ReturnUtilizador(char username);
-char AgentesIndisponiveis();
+void ListarUtilizador(TipoUtilizador tipoUtilizador, int tipoNum);
+Utilizador* ReturnUtilizador(char* username);
+char** AgentesIndisponiveis();
 
 // ORDENAÇÕES
-void ordenarPorNome(TipoUtilizador tipoUtilizador, int *tipoOrdenar);
-void ordenarPorIdade(TipoUtilizador tipoUtilizador, int *tipoOrdenar);
+void ordenarPorNome(TipoUtilizador tipoUtilizador, int tipoOrdenar);
+void ordenarPorIdade(TipoUtilizador tipoUtilizador, int tipoOrdenar);
 
 #endif 

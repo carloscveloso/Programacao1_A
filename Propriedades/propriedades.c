@@ -86,7 +86,7 @@ void RemoverPropriedade(int propriedadeRemovida) {
     printf("Propriedade inexistente.\n");
 }
 
-bool VerificarIDPropriedade(int ID, char *proprietariosIndisponiveis) {
+bool VerificarIDPropriedade(int ID, char proprietariosIndisponiveis[20][15]) {
     for (int i = 0; i < num_propriedades; i++) {
         if (propriedades[i].id == ID) {
             for(int j = 0; j < 15; j++){
@@ -138,7 +138,7 @@ void OrdenarBubleSortPreco(Propriedade temp[], int n) {
     }
 }
 
-void ListarPropriedadePorPreco(int numPropriedadeEscolhida, char *proprietariosIndisponiveis) {
+void ListarPropriedadePorPreco(int numPropriedadeEscolhida, char proprietariosIndisponiveis[20][15]) {
     Propriedade temp[MAX_PROPRIEDADES];
     int temp_count = 0;
 
@@ -168,7 +168,7 @@ void ListarPropriedadePorPreco(int numPropriedadeEscolhida, char *proprietariosI
     }
 }
 
-void ListarPropriedade(int numPropriedadeEscolhida, char *proprietariosIndisponiveis) {
+void ListarPropriedade(int numPropriedadeEscolhida, char proprietariosIndisponiveis[20][15]) {
     for (int i = 0; i < num_propriedades; i++) {
         if ((numPropriedadeEscolhida == 3 && propriedades[i].tipo == CASA) ||
             (numPropriedadeEscolhida == 2 && propriedades[i].tipo == APARTAMENTO) ||

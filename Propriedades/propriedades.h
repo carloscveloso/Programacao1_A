@@ -26,15 +26,15 @@ void gravarFicheiroPropriedades();
 void CriarPropriedade(Propriedade novaPropriedade);
 void EditarPropriedade(Propriedade propriedadeEditada);
 void RemoverPropriedade(int propriedadeRemovida);
-void ListarPropriedade(int numPropriedadeEscolhida, char *proprietariosIndisponiveis);
+void ListarPropriedade(int numPropriedadeEscolhida, char proprietariosIndisponiveis[20][15]);
 void ListarPropriedadeDeProprietario(char *username);
-bool VerificarIDPropriedade(int ID, char *proprietariosIndisponiveis);
+bool VerificarIDPropriedade(int ID, char proprietariosIndisponiveis[20][15]);
 bool VerificarIDPropriedadeDeProprietario(int ID, char *username);
 Propriedade ReturnPropriedade(int ID);
 
 // ORDENAÇÕES
 
-void ListarPropriedadePorPreco(int numPropriedadeEscolhida, char *proprietariosIndisponiveis);
+void ListarPropriedadePorPreco(int numPropriedadeEscolhida, char proprietariosIndisponiveis[20][15]);
 
 
 #endif

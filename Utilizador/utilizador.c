@@ -46,12 +46,13 @@ bool verificarUsername(char *username) {
     return false;
 }
 
-TipoUtilizador tipoRegisto(char *username) {
+TipoUtilizador* tipoRegisto(char *username) {
     for (int i = 0; i < numUtilizadores; i++) {
         if (strcmp(utilizadores[i].username, username) == 0) {
             return utilizadores[i].tipo;
         }
     }
+    return NULL;
 }
 
 void ListarConta(char* username) {
@@ -173,9 +174,9 @@ void RemoverUtilizador(char* username) {
     printf("Erro: Utilizador não encontrado.\n");
 }
 
-void ListarUtilizador(TipoUtilizador tipoUtilizador, int *tipoNum) {
+void ListarUtilizador(TipoUtilizador tipoUtilizador, int tipoNum) {
     TipoUtilizador tipoPretendido = CLIENTE;
-    switch (*tipoNum)
+    switch (tipoNum)
     {
     case 1:
         tipoPretendido = CLIENTE;
@@ -209,25 +210,27 @@ void ListarUtilizador(TipoUtilizador tipoUtilizador, int *tipoNum) {
     printf("Utilizador não encontrado ou tipo de utilizador não corresponde ao tipo pretendido.\n");
 }
 
-Utilizador ReturnUtilizador(char username) {
+Utilizador* ReturnUtilizador(char* username) {
     for (int i = 0; i < numUtilizadores; i++) {
-        if (utilizadores[i].username == username) {
-            return utilizadores[i];
+        if (strcmp(utilizadores[i].username, username) == 0) {
+            return &utilizadores[i];
         }
     }
-    return utilizadores[0];
+    return NULL;
 }
 
-char AgentesIndisponiveis(){
-    char username[20][15];
+char** AgentesIndisponiveis(){
+    char** usernames = (char**)malloc(numUtilizadores * sizeof(char*));
     int j = 0;
     for (int i = 0; i < numUtilizadores; i++) {
         if (utilizadores[i].disponivel == 0 && utilizadores[i].tipo == AGENTE) {
-            strcpy(username[j], utilizadores[i].username);
+            usernames[j] = (char*)malloc(15 * sizeof(char));
+            strcpy(usernames[j], utilizadores[i].username);
             j++;
         }
     }
-    return username;
+    usernames = (char**)realloc(usernames, j * sizeof(char*));
+    return usernames;
 }
 
 
@@ -239,7 +242,7 @@ void trocar(Utilizador *a, Utilizador *b) {
     *b = temp;
 }
 
-void ordenarPorNome(TipoUtilizador tipoUtilizador, int *tipoOrdenar) {
+void ordenarPorNome(TipoUtilizador tipoUtilizador, int tipoOrdenar) {
     // Variaveis
     bool trocado;
     Utilizador utilizadorOrdenado[MAX_UTILIZADORES];
@@ -273,7 +276,7 @@ void ordenarPorNome(TipoUtilizador tipoUtilizador, int *tipoOrdenar) {
     ListarOrdenacao(tipoUtilizador, utilizadorOrdenado, numOrdenados);
 }
 
-void ordenarPorIdade(TipoUtilizador tipoUtilizador, int *tipoOrdenar) {
+void ordenarPorIdade(TipoUtilizador tipoUtilizador, int tipoOrdenar) {
     // Variaveis
     bool trocado;
     Utilizador utilizadorOrdenado[MAX_UTILIZADORES];
