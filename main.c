@@ -8,6 +8,7 @@
 // Variaveis Globais
 char usernameRegistado[20] = "";    // Guarda o username da conta registada no sistema
 TipoUtilizador *tipoRegistado;       // Guarda o tipo de utilizador registado no sistema
+char proprietarioIndisponivel[20][15];
 
 // Funções auxiliares
 
@@ -171,6 +172,7 @@ void MenuPrincipal(){
         printf("-----------------\n\n");
         if(Permissao(CLIENTE)){printf("1. Visualizar Propriedades\n");} else {printf("1. Gerir Propriedades\n");}
         if(Permissao(CLIENTE)){printf("2. Visualizar a Sua Conta\n");} else {printf("2. Gerir Contas\n");}
+        if(Permissao(CLIENTE)){printf("1. Gerir Agendamentos\n");} else {printf("3. Gerir Agendamentos\n");}
         printf("\n-----------------\n");
         printf("0. Sair\n");
         printf("-----------------\n\n");
@@ -180,18 +182,35 @@ void MenuPrincipal(){
         // Lista das opções
         switch (escolha) {
             case 1:
-                GerirPropriedades();
+                // Propriedades
+                // Não irá guardar para posteriormente ser possivel listar todas as propriedades, mesmo as de agentes indisponiveis
+                if(!Permissao(ADMINISTRADOR)){
+                    strcpy(proprietarioIndisponivel, AgentesIndisponiveis());
+                }
+                
+                // O Cliente irá diretamente ver as propriedades
+                if(Permissao(CLIENTE)){
+                    ListarTipoPropriedades();
+                    MenuClienteProrpiedades();
+                } else {
+                    GerirPropriedades();
+                }
+                
                 break;
             case 2:
+                // Contas
                 if(Permissao(CLIENTE)){
                     ListarConta(usernameRegistado);
                     MenuEditarRemoverContas(true);
                     break;
+                } else {
+                    GerirContas();
                 }
-                if(Permissao(AGENTE)){
-                    ListarContas();
-                }
-                GerirContas();
+                
+                break;
+            case 3:
+                // Agendamentos
+                GerirAgendamentos();
                 break;
             case 0:
                 printf("Encerrando o programa...\n");
@@ -203,7 +222,9 @@ void MenuPrincipal(){
     } while (true);
 }
 
-// #TODO - Gerir Propriedades
+// Propriedades
+
+// #TOTEST - Gerir Propriedades (AGENTE | ADMINISTRADOR)
 void GerirPropriedades(){
     int escolha = 0;
 
@@ -215,8 +236,6 @@ void GerirPropriedades(){
         printf("-----------------\n\n");
         printf("1. Criar Propriedade\n");
         printf("2. Listar Propriedades\n");
-        printf("3. Editar Propriedades\n");
-        printf("4. Remover Propriedade\n");
         printf("\n-----------------\n");
         printf("0. Sair\n");
         printf("-----------------\n\n");
@@ -226,16 +245,16 @@ void GerirPropriedades(){
         // Lista das opções
         switch (escolha) {
             case 1:
-                criarPropriedade(TipoPropriedade tipo, const char* morada, double preco, int id_proprietario);
+                MenuAdicionarPropriedade();
                 break;
             case 2:
-                listarPropriedades();
-                break;
-            case 3:
-                editarPropriedade();
-                break;
-            case 4:
-                removerPropriedade();
+                if(Permissao(AGENTE)){
+                    ListarPropriedadeDeProprietario(usernameRegistado);
+                } else {
+                    ListarTipoPropriedades();
+                }
+                
+                MenuRemoverPropriedade();
                 break;
             case 0:
                 printf("Encerrando o programa...\n");
@@ -246,6 +265,382 @@ void GerirPropriedades(){
         }
     } while (true);
 }
+
+// #TOTEST - Menu para Adicionar uma Propriedade (AGENTE | ADMINISTRADOR)
+void MenuAdicionarPropriedade(){
+    system("cls");
+    // Variaveis
+    Propriedade novaPropriedade;
+    char username[20];
+    bool success = false;
+
+    strcpy(novaPropriedade.username_proprietario, usernameRegistado);
+
+    // Menu
+    printf("-----------------\n");
+    printf("Adicionar Propriedade\n");
+    printf("-----------------\n");
+
+    printf("Morada: ");
+    fgets(novaPropriedade.morada, 150, stdin);
+
+    printf("Preço: ");
+    scanf("%d", &novaPropriedade.preco);
+
+    // Tipo de Propriedade
+    int tipo = 0;
+    printf("\n1 (CASA)");
+    printf("\n2 (APARTAMENTO)");
+    printf("\n3 (ESCRITÓRIO)");
+    
+    do{
+        printf("\nTipo de Propriedade: ");
+        scanf("%d", &tipo);
+
+        switch (tipo){
+        case 1:
+            novaPropriedade.tipo = CASA;
+            break;
+        case 2:
+            novaPropriedade.tipo = APARTAMENTO;
+            break;
+        case 3:
+            novaPropriedade.tipo = ESCRITORIO;
+            break;
+        default:
+            printf("Tipo de Propriedade inválido. Por favor, escolha uma opção válida.\n");
+            break;
+        }
+    }while(tipo == 1 || tipo == 2 || tipo == 3);
+    
+    if(Permissao(AGENTE)){
+        strcpy(novaPropriedade.username_proprietario, usernameRegistado);
+    } else {
+        ListarUtilizador(tipoRegistado, 2);
+
+        do {
+            printf("\nIndique o proprietário da propriedade: ");
+            fgets(username, 20, stdin);
+
+            if(verificarTipo(AGENTE, username)){success=true;}
+        } while (!success);
+    }
+    
+    CriarPropriedade(novaPropriedade);
+}
+
+// #TOTEST - Menu para escolher que tipo de Propriedade Listar (TODOS)
+void ListarTipoPropriedades(){
+    int escolha = 0;
+
+    // #TOTEST - É preciso fazer as opções das propriedades
+    do {
+        printf("-----------------\n");
+        printf("Tipo de Listagem\n");
+        printf("-----------------\n\n");
+        printf("1. Casa\n");
+        printf("2. Apartamento\n");
+        printf("3. Escritório\n");
+        printf("4. Todos\n");
+        printf("\n-----------------\n");
+        printf("0. Sair\n");
+        printf("-----------------\n\n");
+        printf("Escolha uma opção: ");
+        scanf("%d", &escolha);
+
+        // Lista das opções
+        switch (escolha) {
+            case 1:
+                EscolherOrdenacaoPropriedades(1);
+                break;
+            case 2:
+                EscolherOrdenacaoPropriedades(2);
+                break;
+            case 3:
+                EscolherOrdenacaoPropriedades(3);
+                break;
+            case 4:
+                EscolherOrdenacaoPropriedades(0);
+                break;
+            case 0:
+                printf("Encerrando o programa...\n");
+                return;
+                break;
+            default:
+                printf("Opção inválida. Por favor, escolha uma opção válida.\n");
+        }
+    } while (true);
+}
+
+// #TOTEST - Menu para escolher que tipo de Ordenação (TODOS)
+void EscolherOrdenacaoPropriedades(int numTipoPropriedadeEscolhida){
+    int escolha = 0;
+
+    do {
+        printf("-----------------\n");
+        printf("Tipo de Listagem\n");
+        printf("-----------------\n\n");
+        printf("1. Nenhuma Ordem\n");
+        printf("2. Preço\n");
+        printf("\n-----------------\n");
+        printf("0. Sair\n");
+        printf("-----------------\n\n");
+        printf("Escolha uma opção: ");
+        scanf("%d", &escolha);
+
+        // Lista das opções
+        switch (escolha) {
+            case 1:
+                ListarPropriedade(numTipoPropriedadeEscolhida, proprietarioIndisponivel);
+                break;
+            case 2:
+                ListarPropriedadePorPreco(numTipoPropriedadeEscolhida, proprietarioIndisponivel);
+                break;
+            case 0:
+                printf("Encerrando o programa...\n");
+                return;
+                break;
+            default:
+                printf("Opção inválida. Por favor, escolha uma opção válida.\n");
+        }
+    } while (true);
+}
+
+// #TOTEST - Menu para agendar uma visita (CLIENTE)
+void MenuClienteProrpiedades(){
+    int escolha = 0;
+    int idPropriedadeEscolhida;
+
+    // Menu Gerir Propriedades
+    do {
+        printf("-----------------\n");
+        printf("Deseja Agendar Uma Visita a Uma Propriedade?\n");
+        printf("-----------------\n\n");
+        printf("1. Sim\n");
+        printf("\n-----------------\n");
+        printf("0. Sair\n");
+        printf("-----------------\n\n");
+        printf("Escolha uma opção: ");
+        scanf("%d", &escolha);
+
+        // Lista das opções
+        switch (escolha) {
+            case 1:
+                do
+                {
+                    printf("-----------------\n\n");
+                    printf("Insira o ID : ");
+                    scanf("%d", idPropriedadeEscolhida);
+                } while (VerificarIDPropriedade(idPropriedadeEscolhida, proprietarioIndisponivel));
+                
+                // #TODO - Adicionar Agendamento
+
+                break;
+            case 0:
+                printf("Encerrando o programa...\n");
+                return;
+                break;
+            default:
+                printf("Opção inválida. Por favor, escolha uma opção válida.\n");
+        }
+    } while (true);
+}
+
+// #TOTEST - Menu para Editar ou Remover Propriedades (AGENTE | ADMINISTRADOR)
+void MenuEditarRemoverPropriedades(){
+    int escolha = 0;
+
+    // Menu Gerir Propriedades
+    do {
+        printf("-----------------\n");
+        printf("Gerir Propriedades\n");
+        printf("-----------------\n\n");
+        printf("1. Editar Propriedade\n");
+        printf("2. Remover Propriedade\n");
+        printf("\n-----------------\n");
+        printf("0. Sair\n");
+        printf("-----------------\n\n");
+        printf("Escolha uma opção: ");
+        scanf("%d", &escolha);
+
+        // Lista das opções
+        switch (escolha) {
+            case 1:
+                MenuEditarPropriedade();
+                break;
+            case 2:
+                MenuRemoverPropriedade();
+                break;
+            case 0:
+                printf("Encerrando o programa...\n");
+                return;
+                break;
+            default:
+                printf("Opção inválida. Por favor, escolha uma opção válida.\n");
+        }
+    } while (true);
+}
+
+// #TOTEST - Menu para Editar Propriedade
+void MenuEditarPropriedade(){
+    int escolha = 0;
+    int idPropriedadeEscolhida;
+    bool sucesso = false;
+    do
+    {
+        printf("-----------------\n\n");
+        printf("Insira o ID : ");
+        scanf("%d", idPropriedadeEscolhida);
+
+        if(Permissao(AGENTE)){
+            if(VerificarIDPropriedadeDeProprietario(idPropriedadeEscolhida, usernameRegistado)){sucesso = true;}
+        } else {
+            if(VerificarIDPropriedade(idPropriedadeEscolhida, proprietarioIndisponivel)){sucesso = true;}
+        }
+    } while (!sucesso);
+    
+    Propriedade PropriedadeAEditar = ReturnPropriedade(idPropriedadeEscolhida);
+    
+    do {
+        printf("-----------------\n");
+        printf("Editar Propriedade: %d\n", PropriedadeAEditar.id);
+        printf("-----------------\n\n");
+        printf("1. Morada\n");
+        printf("2. Preço\n");
+        printf("3. Tipo\n");
+        printf("\n-----------------\n");
+        printf("0. Sair\n");
+        printf("-----------------\n\n");
+        printf("Escolha uma opção: ");
+        scanf("%d", &escolha);
+
+        // Lista das opções
+        switch (escolha) {
+            case 1:
+                // Morada
+                printf("\nMorada: ");
+                fgets(PropriedadeAEditar.morada, 150, stdin);
+                break;
+            case 2:
+                // Preço
+                printf("\nPreço: ");
+                scanf("%d", &PropriedadeAEditar.preco);
+                break;
+            case 3:
+                // Tipo de Propriedade
+                int tipo = 0;
+                printf("\n1 (CASA)");
+                printf("\n2 (APARTAMENTO)");
+                printf("\n3 (ESCRITÓRIO)");
+                
+                do{
+                    printf("\nTipo de Propriedade: ");
+                    scanf("%d", &tipo);
+
+                    switch (tipo){
+                    case 1:
+                        PropriedadeAEditar.tipo = CASA;
+                        break;
+                    case 2:
+                        PropriedadeAEditar.tipo = APARTAMENTO;
+                        break;
+                    case 3:
+                        PropriedadeAEditar.tipo = ESCRITORIO;
+                        break;
+                    default:
+                        printf("Tipo de Propriedade inválido. Por favor, escolha uma opção válida.\n");
+                        break;
+                    }
+                }while(tipo == 1 || tipo == 2 || tipo == 3);
+
+                break;
+            case 0:
+                printf("Encerrando o programa...\n");
+                EditarPropriedade(PropriedadeAEditar);
+                return;
+                break;
+            default:
+                printf("Opção inválida. Por favor, escolha uma opção válida.\n");
+        }
+    } while (true);
+}
+
+// #TOTEST - Menu para Remover Propriedade
+void MenuRemoverPropriedade(){
+    int escolha = 0;
+    int idPropriedadeEscolhida;
+    bool sucesso = false;
+    do
+    {
+        printf("-----------------\n\n");
+        printf("Insira o ID : ");
+        scanf("%d", idPropriedadeEscolhida);
+
+        if(Permissao(AGENTE)){
+            if(VerificarIDPropriedadeDeProprietario(idPropriedadeEscolhida, usernameRegistado)){sucesso = true;}
+        } else {
+            if(VerificarIDPropriedade(idPropriedadeEscolhida, proprietarioIndisponivel)){sucesso = true;}
+        }
+    } while (!sucesso);
+
+    printf("-----------------\n");
+    printf("Tem a Certeza que deseja Remover esta Propriedade?\n");
+    printf("Esta decisão é irreversivel");
+    printf("-----------------\n\n");
+    
+    do{
+        printf("0 (Não) | 1 (Sim) : ");
+        scanf("%d", &escolha);
+
+        switch (escolha)
+        {
+        case 0:
+            return;
+            break;
+        case 1:
+            RemoverPropriedade(idPropriedadeEscolhida);
+            break;
+        default:
+            break;
+        }
+    }while(true);
+}
+
+// Agendamentos
+
+// #TODO - Gerir Agendamentos
+void GerirAgendamentos(){
+    int escolha = 0;
+
+    // Menu Gerir Agendamentos
+    do {
+        system("cls");
+        printf("-----------------\n");
+        printf("Gerir Agendamentos\n");
+        printf("-----------------\n\n");
+        printf("1. Listar Agendamentos\n");
+        printf("\n-----------------\n");
+        printf("0. Sair\n");
+        printf("-----------------\n\n");
+        printf("Escolha uma opção: ");
+        scanf("%d", &escolha);
+
+        // Lista das opções
+        switch (escolha) {
+            case 1:
+                ListarAgendamentos();
+                break;
+            case 0:
+                printf("Encerrando o programa...\n");
+                return;
+                break;
+            default:
+                printf("Opção inválida. Por favor, escolha uma opção válida.\n");
+        }
+    } while (true);
+}
+
+// Contas
 
 // #TOTEST - Menu para escolher entre Listar ou Criar uma conta (ADMINISTRADOR)
 void GerirContas(){
@@ -269,7 +664,7 @@ void GerirContas(){
         switch (escolha) {
             case 1:
                 system("cls");
-                ListarContas();
+                MenuListarContas();
                 break;
             case 2:
                 MenuAdicionarConta();
@@ -285,7 +680,7 @@ void GerirContas(){
 }
 
 // #TOTEST - Menu para escolher qual o tipo de conta a Listar (GESTOR | ADMINISTRADOR)
-void ListarContas(){
+void MenuListarContas(){
     int escolha = 0;
 
     // Menu Listar Contas
@@ -313,28 +708,28 @@ void ListarContas(){
                 MenuEditarRemoverContas(true);
                 break;
             case 2:
-                EscolherOrdenação(1);
+                EscolherOrdenacao(1);
                 break;
             case 3:
                 if(!Permissao(ADMINISTRADOR)){
                     printf("Opção inválida. Por favor, escolha uma opção válida.\n");
                     break;
                 }
-                EscolherOrdenação(2);
+                EscolherOrdenacao(2);
                 break;
             case 4:
                 if(!Permissao(ADMINISTRADOR)){
                     printf("Opção inválida. Por favor, escolha uma opção válida.\n");
                     break;
                 }
-                EscolherOrdenação(3);
+                EscolherOrdenacao(3);
                 break;
             case 5:
                 if(!Permissao(ADMINISTRADOR)){
                     printf("Opção inválida. Por favor, escolha uma opção válida.\n");
                     break;
                 }
-                EscolherOrdenação(0);
+                EscolherOrdenacao(0);
                 break;
             case 0:
                 printf("Encerrando o programa...\n");
@@ -347,7 +742,7 @@ void ListarContas(){
 }
 
 // #TOTEST - Menu para escolher qual o tipo de ordenação na listagem (GESTOR | ADMINISTRADOR)
-void EscolherOrdenação(int tipoUtilizadorEscolhido){
+void EscolherOrdenacao(int tipoUtilizadorEscolhido){
     int escolha = 0;
 
     // #TOTEST - É preciso fazer as opções das propriedades
@@ -443,8 +838,7 @@ void MenuEditarConta(bool propriaConta){
     } while(sucesso == false);
     
     Utilizador utilizadorAEditar = ReturnUtilizador(usernameEscolhido);
-    // 
-    // #TODO - É preciso fazer as opções das propriedades
+    
     do {
         printf("-----------------\n");
         printf("Editar Conta: %s\n", utilizadorAEditar.username);
@@ -539,6 +933,7 @@ void MenuEditarConta(bool propriaConta){
                 break;
             case 0:
                 printf("Encerrando o programa...\n");
+                EditarUtilizador(utilizadorAEditar);
                 return;
                 break;
             default:
@@ -565,20 +960,20 @@ void MenuRemoverConta(bool propriaConta){
         
         do{
             printf("0 (Não) | 1 (Sim) : ");
-        scanf("%d", &escolha);
+            scanf("%d", &escolha);
 
-        switch (escolha)
-        {
-        case 0:
-            return;
-            break;
-        case 1:
-            RemoverUtilizador(usernameRegistado);
-            exit(0);
-            break;
-        default:
-            break;
-        }
+            switch (escolha)
+            {
+            case 0:
+                return;
+                break;
+            case 1:
+                RemoverUtilizador(usernameRegistado);
+                exit(0);
+                break;
+            default:
+                break;
+            }
         }while(true);
     } else {
         do {
@@ -614,7 +1009,7 @@ void MenuAdicionarConta(){
 
     // Menu
     printf("-----------------\n");
-    printf("Registrar\n");
+    printf("Adicionar Utilizador\n");
     printf("-----------------\n");
 
     // Username
@@ -663,7 +1058,7 @@ void MenuAdicionarConta(){
     printf("\nMorada: ");
     fgets(novoUtilizador.morada, 100, stdin);
 
-    // Tipo de utilizador
+    // Tipo de Utilizador
     int tipo = 0;
     printf("\n1 (CLIENTE)");
     printf("\n2 (AGENTE)");

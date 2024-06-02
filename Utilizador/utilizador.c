@@ -71,22 +71,33 @@ void ListarConta(char* username) {
     printf("Utilizador não encontrado.\n");
 }
 
+bool verificarTipo(TipoUtilizador pretendido, char *username) {
+    for (int i = 0; i < numUtilizadores; i++) {
+        if (strcmp(utilizadores[i].username, username) == 0 && utilizadores[i].tipo == pretendido) {
+            return true;
+        }
+    }
+    return false;
+}
 
 // CRUD FICHEIRO
 
 void lerFicheiroUtilizadores() {
-    FILE *file = fopen("Utilizadores.txt", "r");
+    FILE *file = fopen("utilizadores.txt", "r");
     if (file != NULL) {
-        while (fscanf(file, "%s %d %s %s %s %d %s %s %d", 
+        while (!feof(file)) {
+            if(fscanf(file, "%s %d %s %s %s %d %s %s %d", 
                       utilizadores[numUtilizadores].nome, &utilizadores[numUtilizadores].NIF,
                       utilizadores[numUtilizadores].morada, utilizadores[numUtilizadores].contactoTelefonico,
                       utilizadores[numUtilizadores].dataNascimento, &utilizadores[numUtilizadores].disponivel,
                       utilizadores[numUtilizadores].username, utilizadores[numUtilizadores].password,
-                      (int *)&utilizadores[numUtilizadores].tipo) != EOF) {
-            (numUtilizadores)++;
-            if (utilizadores[numUtilizadores - 1].tipo == AGENTE) {
-                (numAgentes)++;
+                      (int *)&utilizadores[numUtilizadores].tipo)){
+                (numUtilizadores)++;
+                if (utilizadores[numUtilizadores - 1].tipo == AGENTE) {
+                    (numAgentes)++;
+                }
             }
+            
         }
         fclose(file);
     }
@@ -206,6 +217,19 @@ Utilizador ReturnUtilizador(char username) {
     }
     return utilizadores[0];
 }
+
+char AgentesIndisponiveis(){
+    char username[20][15];
+    int j = 0;
+    for (int i = 0; i < numUtilizadores; i++) {
+        if (utilizadores[i].disponivel == 0 && utilizadores[i].tipo == AGENTE) {
+            strcpy(username[j], utilizadores[i].username);
+            j++;
+        }
+    }
+    return username;
+}
+
 
 // ORDENAÇÕES
 

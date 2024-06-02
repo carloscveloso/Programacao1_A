@@ -33,6 +33,7 @@ bool efetuarLogin(char *username, char *password);
 bool verificarUsername(char *username);
 TipoUtilizador tipoRegisto(char *username);
 void ListarConta(char* username);
+bool verificarTipo(TipoUtilizador pretendido, char *username);
 
 // CRUD FICHEIRO
 void lerFicheiroUtilizadores();
@@ -44,6 +45,7 @@ void EditarUtilizador(Utilizador utilizadorEditado);
 void RemoverUtilizador(char* username);
 void ListarUtilizador(TipoUtilizador tipoUtilizador, int *tipoNum);
 Utilizador ReturnUtilizador(char username);
+char AgentesIndisponiveis();
 
 // ORDENAÇÕES
 void ordenarPorNome(TipoUtilizador tipoUtilizador, int *tipoOrdenar);

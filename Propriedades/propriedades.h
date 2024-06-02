@@ -7,23 +7,34 @@ typedef enum {
     ESCRITORIO
 } TipoPropriedade;
 
-typedef struct Propriedade {
+typedef struct {
     TipoPropriedade tipo;
     char morada[150];
     double preco;
-    int id_proprietario; 
+    char username_proprietario[20]; // username de um agente
     int id;
-    struct Propriedade* prev;
-    struct Propriedade* next;
+    
 } Propriedade;
 
-void inicializarPropriedades();
-void criarPropriedade(TipoPropriedade tipo, const char* morada, double preco, int id_proprietario);
-void listarPropriedades();
-void editarPropriedade(int id, TipoPropriedade novo_tipo, const char* nova_morada, double novo_preco);
-void removerPropriedade(int id);
+// CRUD FICHEIRO
 
-void salvarPropriedades(const char* filename);
-void carregarPropriedades(const char* filename);
+void lerFicheiroPropriedades();
+void gravarFicheiroPropriedades();
+
+// CRUD STRUCTS
+
+void CriarPropriedade(Propriedade novaPropriedade);
+void EditarPropriedade(Propriedade propriedadeEditada);
+void RemoverPropriedade(int propriedadeRemovida);
+void ListarPropriedade(int numPropriedadeEscolhida, char *proprietariosIndisponiveis);
+void ListarPropriedadeDeProprietario(char *username);
+bool VerificarIDPropriedade(int ID, char *proprietariosIndisponiveis);
+bool VerificarIDPropriedadeDeProprietario(int ID, char *username);
+Propriedade ReturnPropriedade(int ID);
+
+// ORDENAÇÕES
+
+void ListarPropriedadePorPreco(int numPropriedadeEscolhida, char *proprietariosIndisponiveis);
+
 
 #endif

@@ -1,113 +1,218 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 #include "propriedades.h"
 
-static Propriedade* propriedades_head = NULL;
-static int num_propriedades = 0;
+#define MAX_PROPRIEDADES 100
 
-void inicializarPropriedades() {
-    propriedades_head = NULL;
-    num_propriedades = 0;
+// Variaveis Globais
+
+int num_propriedades = 0;
+int ultimo_id = 0;
+Propriedade propriedades[MAX_PROPRIEDADES];
+
+
+// CRUD FICHEIRO
+
+void lerFicheiroPropriedades() {
+    FILE *file = fopen("propriedades.txt", "r");
+    if (file != NULL) {
+        while (!feof(file)) {
+            if (fscanf(file, "%d %s %d %d %s", 
+                        &propriedades[num_propriedades].id,
+                        propriedades[num_propriedades].morada,
+                        &propriedades[num_propriedades].preco,
+                        &propriedades[num_propriedades].tipo,
+                        propriedades[num_propriedades].username_proprietario)) {
+                (num_propriedades)++;
+                ultimo_id = propriedades[num_propriedades].id;
+            }
+        }
+        fclose(file);
+    }
 }
 
-void criarPropriedade(TipoPropriedade tipo, const char* morada, double preco, int id_proprietario) {
-    Propriedade* nova_propriedade = (Propriedade*)malloc(sizeof(Propriedade));
-    if (!nova_propriedade) {
-        printf("Erro de alocação de memória.\n");
+void gravarFicheiroPropriedades() {
+    FILE *file = fopen("propriedades.txt", "w");
+    if (file != NULL) {
+        for (int i = 0; i < num_propriedades; i++) {
+            fprintf(file, "%d %s %d %d %s\n", 
+                    propriedades[i].id, propriedades[i].morada,
+                    propriedades[i].preco, propriedades[i].tipo,
+                    propriedades[i].username_proprietario);
+        }
+        fclose(file);
+    }
+}
+
+
+// CRUD STRUCTS
+
+void CriarPropriedade(Propriedade propriedade) {
+    propriedade.id = ultimo_id + 1;
+    if (num_propriedades < MAX_PROPRIEDADES) {
+        propriedades[num_propriedades] = propriedade;
+        num_propriedades++;
+        printf("Propriedade criada com sucesso.\n");
+        gravarFicheiroPropriedades();
         return;
-    }
-
-    nova_propriedade->tipo = tipo;
-    strncpy(nova_propriedade->morada, morada, sizeof(nova_propriedade->morada) - 1);
-    nova_propriedade->morada[sizeof(nova_propriedade->morada) - 1] = '\0';
-    nova_propriedade->preco = preco;
-    nova_propriedade->id_proprietario = id_proprietario;
-    nova_propriedade->id = ++num_propriedades;
-
-    nova_propriedade->prev = NULL;
-    nova_propriedade->next = propriedades_head;
-    if (propriedades_head) {
-        propriedades_head->prev = nova_propriedade;
-    }
-    propriedades_head = nova_propriedade;
-}
-
-void listarPropriedades() {
-    Propriedade* atual = propriedades_head;
-    while (atual != NULL) {
-        printf("Propriedade ID: %d\nTipo: %d\nMorada: %s\nPreço: %.2f\nID Proprietário: %d\n\n",
-               atual->id, atual->tipo, atual->morada, atual->preco, atual->id_proprietario);
-        atual = atual->next;
-    }
-}
-
-void editarPropriedade(int id, TipoPropriedade novo_tipo, const char* nova_morada, double novo_preco) {
-    Propriedade* propriedade = propriedades_head;
-    while (propriedade != NULL && propriedade->id != id) {
-        propriedade = propriedade->next;
-    }
-    if (propriedade == NULL) {
-        printf("Propriedade não encontrada.\n");
-        return;
-    }
-
-    propriedade->tipo = novo_tipo;
-    strncpy(propriedade->morada, nova_morada, sizeof(propriedade->morada) - 1);
-    propriedade->morada[sizeof(propriedade->morada) - 1] = '\0';
-    propriedade->preco = novo_preco;
-}
-
-void removerPropriedade(int id) {
-    Propriedade* propriedade = propriedades_head;
-    while (propriedade != NULL && propriedade->id != id) {
-        propriedade = propriedade->next;
-    }
-    if (propriedade == NULL) {
-        printf("Propriedade não encontrada.\n");
-        return;
-    }
-
-    if (propriedade->prev != NULL) {
-        propriedade->prev->next = propriedade->next;
     } else {
-        propriedades_head = propriedade->next;
+        printf("Erro: Limite de propriedades atingido.\n");
     }
-    if (propriedade->next != NULL) {
-        propriedade->next->prev = propriedade->prev;
-    }
-    free(propriedade);
-    num_propriedades--;
 }
 
-void salvarPropriedades(const char* filename) {
-    FILE* file = fopen(filename, "wb");
-    if (!file) {
-        printf("Erro ao abrir arquivo para escrita.\n");
-        return;
+void EditarPropriedade(Propriedade propriedadeEditada) {
+    for (int i = 0; i < num_propriedades; i++) {
+        if (propriedades[i].id == propriedadeEditada.id) {
+            propriedades[i] = propriedadeEditada;
+            printf("Propriedade editada com sucesso.\n");
+            gravarFicheiroPropriedades();
+            return;
+        }
     }
-
-    Propriedade* atual = propriedades_head;
-    while (atual != NULL) {
-        fwrite(atual, sizeof(Propriedade), 1, file);
-        atual = atual->next;
-    }
-
-    fclose(file);
+    printf("Propriedade inexistente.\n");
 }
 
-void carregarPropriedades(const char* filename) {
-    FILE* file = fopen(filename, "rb");
-    if (!file) {
-        printf("Erro ao abrir arquivo para leitura.\n");
-        return;
+void RemoverPropriedade(int propriedadeRemovida) {
+    for (int i = 0; i < num_propriedades; i++) {
+        if (propriedades[i].id == propriedadeRemovida) {
+            num_propriedades--;
+            printf("Propriedade removida com sucesso.\n");
+            gravarFicheiroPropriedades();
+            return;
+        }
+    }
+    printf("Propriedade inexistente.\n");
+}
+
+bool VerificarIDPropriedade(int ID, char *proprietariosIndisponiveis) {
+    for (int i = 0; i < num_propriedades; i++) {
+        if (propriedades[i].id == ID) {
+            for(int j = 0; j < 15; j++){
+                if(strcmp(proprietariosIndisponiveis[j], propriedades[i].username_proprietario) == 0){
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
+}
+
+bool VerificarIDPropriedadeDeProprietario(int ID, char *username) {
+    for (int i = 0; i < num_propriedades; i++) {
+        if (propriedades[i].id == ID) {
+            if(strcmp(username, propriedades[i].username_proprietario) == 0){
+                return false;
+            } else {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+Propriedade ReturnPropriedade(int ID){
+    for (int i = 0; i < num_propriedades; i++) {
+        if (propriedades[i].id == ID) {
+            return propriedades[i];
+        }
+    }
+    return propriedades[0];
+}
+
+
+// ORDENAÇÕES
+
+void OrdenarBubleSortPreco(Propriedade temp[], int n) {
+    for (int i = 0; i < n - 1; i++) {
+        for (int j = 0; j < n - i - 1; j++) {
+            if (temp[j].preco > temp[j + 1].preco) {
+                Propriedade t = temp[j];
+                temp[j] = temp[j + 1];
+                temp[j + 1] = t;
+            }
+        }
+    }
+}
+
+void ListarPropriedadePorPreco(int numPropriedadeEscolhida, char *proprietariosIndisponiveis) {
+    Propriedade temp[MAX_PROPRIEDADES];
+    int temp_count = 0;
+
+    for (int i = 0; i < num_propriedades; i++) {
+        if ((numPropriedadeEscolhida == 3 && propriedades[i].tipo == CASA) ||
+            (numPropriedadeEscolhida == 2 && propriedades[i].tipo == APARTAMENTO) ||
+            (numPropriedadeEscolhida == 1 && propriedades[i].tipo == ESCRITORIO) ||
+            (numPropriedadeEscolhida == 0)) {
+                for(int j = 0; j < 15; j++){
+                    if(strcmp(proprietariosIndisponiveis[j], propriedades[i].username_proprietario) == 0){
+                        temp[temp_count++] = propriedades[i];
+                    }
+            }
+        }
     }
 
-    inicializarPropriedades();
-    Propriedade temp;
-    while (fread(&temp, sizeof(Propriedade), 1, file)) {
-        criarPropriedade(temp.tipo, temp.morada, temp.preco, temp.id_proprietario);
-    }
+    // Ordenar por Preço
+    BubbleSortPropriedadesPorPreco(temp, temp_count);
 
-    fclose(file);
+    // Listar
+    for (int i = 0; i < temp_count; i++) {
+        printf("------------\n");
+        printf("ID: %d\n", temp[i].id);
+        printf("Morada: %s\n", temp[i].morada);
+        printf("Proprietário: %s\n", temp[i].username_proprietario);
+        printf("Preço: %d\n", temp[i].preco);
+    }
+}
+
+void ListarPropriedade(int numPropriedadeEscolhida, char *proprietariosIndisponiveis) {
+    for (int i = 0; i < num_propriedades; i++) {
+        if ((numPropriedadeEscolhida == 3 && propriedades[i].tipo == CASA) ||
+            (numPropriedadeEscolhida == 2 && propriedades[i].tipo == APARTAMENTO) ||
+            (numPropriedadeEscolhida == 1 && propriedades[i].tipo == ESCRITORIO) ||
+            (numPropriedadeEscolhida == 0)) {
+                for(int j = 0; j < 15; j++){
+                    if(strcmp(proprietariosIndisponiveis[j], propriedades[i].username_proprietario) == 0){
+                        printf("------------\n");
+                        printf("Morada: %s\n", propriedades[i].morada);
+                        printf("Tipo: ");
+                        PrintTipo(propriedades[i].tipo);
+                        printf("\nPreço: %d\n", propriedades[i].preco);
+                    }
+                }
+        }
+    }
+}
+
+void ListarPropriedadeDeProprietario(char *username) {
+    for (int i = 0; i < num_propriedades; i++) {
+        if (strcmp(propriedades[i].username_proprietario, username) == 0) {
+            printf("------------\n");
+            printf("ID: %d\n", propriedades[i].id);
+            printf("Morada: %s\n", propriedades[i].morada);
+            printf("Tipo: ");
+            PrintTipo(propriedades[i].tipo);
+            printf("\nPreço: %d\n", propriedades[i].preco);
+        }
+    }
+}
+
+void PrintTipo(int tipo) {
+    switch (tipo) {
+        case CASA:
+            printf("Casa\n");
+            break;
+        case APARTAMENTO:
+            printf("Apartamento\n");
+            break;
+        case ESCRITORIO:
+            printf("Escritorio\n");
+            break;
+        default:
+            printf("Tipo desconhecido\n");
+            break;
+    }
 }
