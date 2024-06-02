@@ -39,11 +39,7 @@ include CMakeFiles/rules.ninja
 #############################################
 # Logical path to working directory; prefix for absolute paths.
 
-<<<<<<< HEAD
 cmake_ninja_workdir = C$:/Users/Utilizador/Desktop/PROG1/Trabalho$ 1$ V2/cmake-build-debug/
-=======
-cmake_ninja_workdir = C$:/Users/sofia/Documents/_escola/_este_ano/1_2_2_P1/pratico_23_24/Programacao1_A/cmake-build-debug/
->>>>>>> 30b745905237cb6c371992da3b58ad9b25de51bb
 # =============================================================================
 # Object build statements for EXECUTABLE target Programacao1_A
 
@@ -53,45 +49,30 @@ cmake_ninja_workdir = C$:/Users/sofia/Documents/_escola/_este_ano/1_2_2_P1/prati
 
 build cmake_object_order_depends_target_Programacao1_A: phony || CMakeFiles/Programacao1_A.dir
 
-<<<<<<< HEAD
 build CMakeFiles/Programacao1_A.dir/Agendamentos/agendamentos.c.obj: C_COMPILER__Programacao1_A_unscanned_Debug C$:/Users/Utilizador/Desktop/PROG1/Trabalho$ 1$ V2/Agendamentos/agendamentos.c || cmake_object_order_depends_target_Programacao1_A
-=======
-build CMakeFiles/Programacao1_A.dir/Agendamentos/agendamentos.c.obj: C_COMPILER__Programacao1_A_unscanned_Debug C$:/Users/sofia/Documents/_escola/_este_ano/1_2_2_P1/pratico_23_24/Programacao1_A/Agendamentos/agendamentos.c || cmake_object_order_depends_target_Programacao1_A
->>>>>>> 30b745905237cb6c371992da3b58ad9b25de51bb
   DEP_FILE = CMakeFiles\Programacao1_A.dir\Agendamentos\agendamentos.c.obj.d
   FLAGS = -g -std=gnu11 -fdiagnostics-color=always
   OBJECT_DIR = CMakeFiles\Programacao1_A.dir
   OBJECT_FILE_DIR = CMakeFiles\Programacao1_A.dir\Agendamentos
 
-<<<<<<< HEAD
 build CMakeFiles/Programacao1_A.dir/Propriedades/propriedades.c.obj: C_COMPILER__Programacao1_A_unscanned_Debug C$:/Users/Utilizador/Desktop/PROG1/Trabalho$ 1$ V2/Propriedades/propriedades.c || cmake_object_order_depends_target_Programacao1_A
-=======
-build CMakeFiles/Programacao1_A.dir/Propriedades/propriedades.c.obj: C_COMPILER__Programacao1_A_unscanned_Debug C$:/Users/sofia/Documents/_escola/_este_ano/1_2_2_P1/pratico_23_24/Programacao1_A/Propriedades/propriedades.c || cmake_object_order_depends_target_Programacao1_A
->>>>>>> 30b745905237cb6c371992da3b58ad9b25de51bb
   DEP_FILE = CMakeFiles\Programacao1_A.dir\Propriedades\propriedades.c.obj.d
   FLAGS = -g -std=gnu11 -fdiagnostics-color=always
   OBJECT_DIR = CMakeFiles\Programacao1_A.dir
   OBJECT_FILE_DIR = CMakeFiles\Programacao1_A.dir\Propriedades
 
-<<<<<<< HEAD
 build CMakeFiles/Programacao1_A.dir/Utilizador/utilizador.c.obj: C_COMPILER__Programacao1_A_unscanned_Debug C$:/Users/Utilizador/Desktop/PROG1/Trabalho$ 1$ V2/Utilizador/utilizador.c || cmake_object_order_depends_target_Programacao1_A
-=======
-build CMakeFiles/Programacao1_A.dir/Utilizador/utilizador.c.obj: C_COMPILER__Programacao1_A_unscanned_Debug C$:/Users/sofia/Documents/_escola/_este_ano/1_2_2_P1/pratico_23_24/Programacao1_A/Utilizador/utilizador.c || cmake_object_order_depends_target_Programacao1_A
->>>>>>> 30b745905237cb6c371992da3b58ad9b25de51bb
   DEP_FILE = CMakeFiles\Programacao1_A.dir\Utilizador\utilizador.c.obj.d
   FLAGS = -g -std=gnu11 -fdiagnostics-color=always
   OBJECT_DIR = CMakeFiles\Programacao1_A.dir
   OBJECT_FILE_DIR = CMakeFiles\Programacao1_A.dir\Utilizador
 
-<<<<<<< HEAD
 build CMakeFiles/Programacao1_A.dir/main.c.obj: C_COMPILER__Programacao1_A_unscanned_Debug C$:/Users/Utilizador/Desktop/PROG1/Trabalho$ 1$ V2/main.c || cmake_object_order_depends_target_Programacao1_A
   DEP_FILE = CMakeFiles\Programacao1_A.dir\main.c.obj.d
   FLAGS = -g -std=gnu11 -fdiagnostics-color=always
   OBJECT_DIR = CMakeFiles\Programacao1_A.dir
   OBJECT_FILE_DIR = CMakeFiles\Programacao1_A.dir
 
-=======
->>>>>>> 30b745905237cb6c371992da3b58ad9b25de51bb
 
 # =============================================================================
 # Link build statements for EXECUTABLE target Programacao1_A
@@ -100,11 +81,7 @@ build CMakeFiles/Programacao1_A.dir/main.c.obj: C_COMPILER__Programacao1_A_unsca
 #############################################
 # Link the executable Programacao1_A.exe
 
-<<<<<<< HEAD
 build Programacao1_A.exe: C_EXECUTABLE_LINKER__Programacao1_A_Debug CMakeFiles/Programacao1_A.dir/Agendamentos/agendamentos.c.obj CMakeFiles/Programacao1_A.dir/Propriedades/propriedades.c.obj CMakeFiles/Programacao1_A.dir/Utilizador/utilizador.c.obj CMakeFiles/Programacao1_A.dir/main.c.obj
-=======
-build Programacao1_A.exe: C_EXECUTABLE_LINKER__Programacao1_A_Debug CMakeFiles/Programacao1_A.dir/Agendamentos/agendamentos.c.obj CMakeFiles/Programacao1_A.dir/Propriedades/propriedades.c.obj CMakeFiles/Programacao1_A.dir/Utilizador/utilizador.c.obj
->>>>>>> 30b745905237cb6c371992da3b58ad9b25de51bb
   FLAGS = -g
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\Programacao1_A.dir
@@ -119,11 +96,7 @@ build Programacao1_A.exe: C_EXECUTABLE_LINKER__Programacao1_A_Debug CMakeFiles/P
 # Utility command for edit_cache
 
 build CMakeFiles/edit_cache.util: CUSTOM_COMMAND
-<<<<<<< HEAD
   COMMAND = C:\Windows\system32\cmd.exe /C "cd /D "C:\Users\Utilizador\Desktop\PROG1\Trabalho 1 V2\cmake-build-debug" && "C:\Program Files\JetBrains\CLion 2024.1.2\bin\cmake\win\x64\bin\cmake.exe" -E echo "No interactive CMake dialog available.""
-=======
-  COMMAND = C:\WINDOWS\system32\cmd.exe /C "cd /D C:\Users\sofia\Documents\_escola\_este_ano\1_2_2_P1\pratico_23_24\Programacao1_A\cmake-build-debug && "C:\Program Files\JetBrains\CLion 2023.3.2\bin\cmake\win\x64\bin\cmake.exe" -E echo "No interactive CMake dialog available.""
->>>>>>> 30b745905237cb6c371992da3b58ad9b25de51bb
   DESC = No interactive CMake dialog available...
   restat = 1
 
@@ -134,11 +107,7 @@ build edit_cache: phony CMakeFiles/edit_cache.util
 # Utility command for rebuild_cache
 
 build CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
-<<<<<<< HEAD
   COMMAND = C:\Windows\system32\cmd.exe /C "cd /D "C:\Users\Utilizador\Desktop\PROG1\Trabalho 1 V2\cmake-build-debug" && "C:\Program Files\JetBrains\CLion 2024.1.2\bin\cmake\win\x64\bin\cmake.exe" --regenerate-during-build -S"C:\Users\Utilizador\Desktop\PROG1\Trabalho 1 V2" -B"C:\Users\Utilizador\Desktop\PROG1\Trabalho 1 V2\cmake-build-debug""
-=======
-  COMMAND = C:\WINDOWS\system32\cmd.exe /C "cd /D C:\Users\sofia\Documents\_escola\_este_ano\1_2_2_P1\pratico_23_24\Programacao1_A\cmake-build-debug && "C:\Program Files\JetBrains\CLion 2023.3.2\bin\cmake\win\x64\bin\cmake.exe" --regenerate-during-build -SC:\Users\sofia\Documents\_escola\_este_ano\1_2_2_P1\pratico_23_24\Programacao1_A -BC:\Users\sofia\Documents\_escola\_este_ano\1_2_2_P1\pratico_23_24\Programacao1_A\cmake-build-debug"
->>>>>>> 30b745905237cb6c371992da3b58ad9b25de51bb
   DESC = Running CMake to regenerate build system...
   pool = console
   restat = 1
@@ -156,11 +125,7 @@ build Programacao1_A: phony Programacao1_A.exe
 # =============================================================================
 
 #############################################
-<<<<<<< HEAD
 # Folder: C:/Users/Utilizador/Desktop/PROG1/Trabalho 1 V2/cmake-build-debug
-=======
-# Folder: C:/Users/sofia/Documents/_escola/_este_ano/1_2_2_P1/pratico_23_24/Programacao1_A/cmake-build-debug
->>>>>>> 30b745905237cb6c371992da3b58ad9b25de51bb
 
 build all: phony Programacao1_A.exe
 
@@ -171,22 +136,14 @@ build all: phony Programacao1_A.exe
 #############################################
 # Re-run CMake if any of its inputs changed.
 
-<<<<<<< HEAD
 build build.ninja: RERUN_CMAKE | C$:/Program$ Files/JetBrains/CLion$ 2024.1.2/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeCInformation.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.1.2/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeCommonLanguageInclude.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.1.2/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeGenericSystem.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.1.2/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeInitializeConfigs.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.1.2/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeLanguageInformation.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.1.2/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeRCInformation.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.1.2/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeSystemSpecificInformation.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.1.2/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeSystemSpecificInitialize.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.1.2/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/CMakeCommonCompilerMacros.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.1.2/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/GNU-C.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.1.2/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/GNU.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.1.2/bin/cmake/win/x64/share/cmake-3.28/Modules/Platform/Windows-GNU-C-ABI.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.1.2/bin/cmake/win/x64/share/cmake-3.28/Modules/Platform/Windows-GNU-C.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.1.2/bin/cmake/win/x64/share/cmake-3.28/Modules/Platform/Windows-GNU.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.1.2/bin/cmake/win/x64/share/cmake-3.28/Modules/Platform/Windows-Initialize.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.1.2/bin/cmake/win/x64/share/cmake-3.28/Modules/Platform/Windows-windres.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.1.2/bin/cmake/win/x64/share/cmake-3.28/Modules/Platform/Windows.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.1.2/bin/cmake/win/x64/share/cmake-3.28/Modules/Platform/WindowsPaths.cmake C$:/Users/Utilizador/Desktop/PROG1/Trabalho$ 1$ V2/CMakeLists.txt CMakeCache.txt CMakeFiles/3.28.1/CMakeCCompiler.cmake CMakeFiles/3.28.1/CMakeRCCompiler.cmake CMakeFiles/3.28.1/CMakeSystem.cmake
-=======
-build build.ninja: RERUN_CMAKE | C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeCInformation.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeCommonLanguageInclude.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeGenericSystem.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeInitializeConfigs.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeLanguageInformation.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeRCInformation.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeSystemSpecificInformation.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeSystemSpecificInitialize.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/CMakeCommonCompilerMacros.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/GNU-C.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/GNU.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.28/Modules/Platform/Windows-GNU-C-ABI.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.28/Modules/Platform/Windows-GNU-C.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.28/Modules/Platform/Windows-GNU.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.28/Modules/Platform/Windows-Initialize.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.28/Modules/Platform/Windows-windres.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.28/Modules/Platform/Windows.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.28/Modules/Platform/WindowsPaths.cmake C$:/Users/sofia/Documents/_escola/_este_ano/1_2_2_P1/pratico_23_24/Programacao1_A/CMakeLists.txt CMakeCache.txt CMakeFiles/3.28.1/CMakeCCompiler.cmake CMakeFiles/3.28.1/CMakeRCCompiler.cmake CMakeFiles/3.28.1/CMakeSystem.cmake
->>>>>>> 30b745905237cb6c371992da3b58ad9b25de51bb
   pool = console
 
 
 #############################################
 # A missing CMake input file is not an error.
 
-<<<<<<< HEAD
 build C$:/Program$ Files/JetBrains/CLion$ 2024.1.2/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeCInformation.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.1.2/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeCommonLanguageInclude.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.1.2/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeGenericSystem.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.1.2/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeInitializeConfigs.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.1.2/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeLanguageInformation.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.1.2/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeRCInformation.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.1.2/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeSystemSpecificInformation.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.1.2/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeSystemSpecificInitialize.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.1.2/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/CMakeCommonCompilerMacros.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.1.2/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/GNU-C.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.1.2/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/GNU.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.1.2/bin/cmake/win/x64/share/cmake-3.28/Modules/Platform/Windows-GNU-C-ABI.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.1.2/bin/cmake/win/x64/share/cmake-3.28/Modules/Platform/Windows-GNU-C.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.1.2/bin/cmake/win/x64/share/cmake-3.28/Modules/Platform/Windows-GNU.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.1.2/bin/cmake/win/x64/share/cmake-3.28/Modules/Platform/Windows-Initialize.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.1.2/bin/cmake/win/x64/share/cmake-3.28/Modules/Platform/Windows-windres.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.1.2/bin/cmake/win/x64/share/cmake-3.28/Modules/Platform/Windows.cmake C$:/Program$ Files/JetBrains/CLion$ 2024.1.2/bin/cmake/win/x64/share/cmake-3.28/Modules/Platform/WindowsPaths.cmake C$:/Users/Utilizador/Desktop/PROG1/Trabalho$ 1$ V2/CMakeLists.txt CMakeCache.txt CMakeFiles/3.28.1/CMakeCCompiler.cmake CMakeFiles/3.28.1/CMakeRCCompiler.cmake CMakeFiles/3.28.1/CMakeSystem.cmake: phony
-=======
-build C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeCInformation.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeCommonLanguageInclude.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeGenericSystem.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeInitializeConfigs.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeLanguageInformation.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeRCInformation.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeSystemSpecificInformation.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.28/Modules/CMakeSystemSpecificInitialize.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/CMakeCommonCompilerMacros.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/GNU-C.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.28/Modules/Compiler/GNU.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.28/Modules/Platform/Windows-GNU-C-ABI.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.28/Modules/Platform/Windows-GNU-C.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.28/Modules/Platform/Windows-GNU.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.28/Modules/Platform/Windows-Initialize.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.28/Modules/Platform/Windows-windres.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.28/Modules/Platform/Windows.cmake C$:/Program$ Files/JetBrains/CLion$ 2023.3.2/bin/cmake/win/x64/share/cmake-3.28/Modules/Platform/WindowsPaths.cmake C$:/Users/sofia/Documents/_escola/_este_ano/1_2_2_P1/pratico_23_24/Programacao1_A/CMakeLists.txt CMakeCache.txt CMakeFiles/3.28.1/CMakeCCompiler.cmake CMakeFiles/3.28.1/CMakeRCCompiler.cmake CMakeFiles/3.28.1/CMakeSystem.cmake: phony
->>>>>>> 30b745905237cb6c371992da3b58ad9b25de51bb
 
 
 #############################################

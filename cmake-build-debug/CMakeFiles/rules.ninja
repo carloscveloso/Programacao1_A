@@ -25,11 +25,7 @@ rule C_COMPILER__Programacao1_A_unscanned_Debug
 # Rule for linking C executable.
 
 rule C_EXECUTABLE_LINKER__Programacao1_A_Debug
-<<<<<<< HEAD
   command = C:\Windows\system32\cmd.exe /C "$PRE_LINK && C:\PROGRA~1\JETBRA~1\CLION2~1.2\bin\mingw\bin\gcc.exe $FLAGS $LINK_FLAGS $in -o $TARGET_FILE -Wl,--out-implib,$TARGET_IMPLIB -Wl,--major-image-version,0,--minor-image-version,0 $LINK_PATH $LINK_LIBRARIES && $POST_BUILD"
-=======
-  command = C:\WINDOWS\system32\cmd.exe /C "$PRE_LINK && C:\PROGRA~1\JETBRA~1\CLION2~1.2\bin\mingw\bin\gcc.exe $FLAGS $LINK_FLAGS $in -o $TARGET_FILE -Wl,--out-implib,$TARGET_IMPLIB -Wl,--major-image-version,0,--minor-image-version,0 $LINK_PATH $LINK_LIBRARIES && $POST_BUILD"
->>>>>>> 30b745905237cb6c371992da3b58ad9b25de51bb
   description = Linking C executable $TARGET_FILE
   restat = $RESTAT
 
@@ -46,11 +42,7 @@ rule CUSTOM_COMMAND
 # Rule for re-running cmake.
 
 rule RERUN_CMAKE
-<<<<<<< HEAD
   command = "C:\Program Files\JetBrains\CLion 2024.1.2\bin\cmake\win\x64\bin\cmake.exe" --regenerate-during-build -S"C:\Users\Utilizador\Desktop\PROG1\Trabalho 1 V2" -B"C:\Users\Utilizador\Desktop\PROG1\Trabalho 1 V2\cmake-build-debug"
-=======
-  command = "C:\Program Files\JetBrains\CLion 2023.3.2\bin\cmake\win\x64\bin\cmake.exe" --regenerate-during-build -SC:\Users\sofia\Documents\_escola\_este_ano\1_2_2_P1\pratico_23_24\Programacao1_A -BC:\Users\sofia\Documents\_escola\_este_ano\1_2_2_P1\pratico_23_24\Programacao1_A\cmake-build-debug
->>>>>>> 30b745905237cb6c371992da3b58ad9b25de51bb
   description = Re-running CMake...
   generator = 1
 
@@ -59,11 +51,7 @@ rule RERUN_CMAKE
 # Rule for cleaning all built files.
 
 rule CLEAN
-<<<<<<< HEAD
   command = "C:\Program Files\JetBrains\CLion 2024.1.2\bin\ninja\win\x64\ninja.exe" $FILE_ARG -t clean $TARGETS
-=======
-  command = C:\PROGRA~1\JETBRA~1\CLION2~1.2\bin\ninja\win\x64\ninja.exe $FILE_ARG -t clean $TARGETS
->>>>>>> 30b745905237cb6c371992da3b58ad9b25de51bb
   description = Cleaning all built files...
 
 
@@ -71,10 +59,6 @@ rule CLEAN
 # Rule for printing all primary targets available.
 
 rule HELP
-<<<<<<< HEAD
   command = "C:\Program Files\JetBrains\CLion 2024.1.2\bin\ninja\win\x64\ninja.exe" -t targets
-=======
-  command = C:\PROGRA~1\JETBRA~1\CLION2~1.2\bin\ninja\win\x64\ninja.exe -t targets
->>>>>>> 30b745905237cb6c371992da3b58ad9b25de51bb
   description = All primary targets available:
 
