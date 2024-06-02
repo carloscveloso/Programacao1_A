@@ -1,3 +1,4 @@
+/*
 #include "agendamentos.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -306,3 +307,4 @@ void calcular_tempo_espera_estimado() {
         printf("Não há clientes na fila de espera.\n");
     }
 }
+*/

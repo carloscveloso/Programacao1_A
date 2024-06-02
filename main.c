@@ -4,6 +4,7 @@
 #include <string.h>
 #include "Utilizador/utilizador.h"
 #include "Propriedades/propriedades.h"
+#include "Agendamentos/agendamentos.h"
 
 // Variaveis Globais
 char usernameRegistado[20] = "";    // Guarda o username da conta registada no sistema

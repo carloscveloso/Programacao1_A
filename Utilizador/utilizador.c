@@ -31,10 +31,11 @@ bool efetuarLogin(char *username, char *password) {
     for (int i = 0; i < numUtilizadores; i++) {
         if (strcmp(utilizadores[i].username, username) == 0 && strcmp(utilizadores[i].password, password) == 0) {
             printf("Login bem-sucedido.\n");
-            return;
+            return true;
         }
     }
     printf("Login inválido.\n");
+    return false;
 }
 
 bool verificarUsername(char *username) {
@@ -49,7 +50,7 @@ bool verificarUsername(char *username) {
 TipoUtilizador* tipoRegisto(char *username) {
     for (int i = 0; i < numUtilizadores; i++) {
         if (strcmp(utilizadores[i].username, username) == 0) {
-            return utilizadores[i].tipo;
+            return &utilizadores[i].tipo;
         }
     }
     return NULL;
@@ -242,6 +243,25 @@ void trocar(Utilizador *a, Utilizador *b) {
     *b = temp;
 }
 
+void ListarOrdenacao(TipoUtilizador tipoUtilizador, Utilizador *utilizadorOrdenado, int numOrdenados) {
+    
+    for (int i = 0; i < numOrdenados; i++) {
+        printf("--------- %s -------", utilizadorOrdenado[i].nome);
+        printf("\nUsername: %s", utilizadorOrdenado[i].username);
+        printf("\nContacto: %s", utilizadorOrdenado[i].contactoTelefonico);
+        printf("\nMorada: %s", utilizadorOrdenado[i].morada);
+        if(tipoUtilizador == ADMINISTRADOR){
+            printf("\nNIF: %s", utilizadorOrdenado[i].NIF);
+            printf("\nData de Nascimento: %s", utilizadorOrdenado[i].dataNascimento);
+            printf("\nDisponibilidade: %d", utilizadorOrdenado[i].disponivel);
+            printf("\nPassword: %s", utilizadorOrdenado[i].password);
+        }
+        printf("\n");
+        return;
+    }
+    printf("Utilizador não encontrado ou tipo de utilizador não corresponde ao tipo pretendido.\n");
+}
+
 void ordenarPorNome(TipoUtilizador tipoUtilizador, int tipoOrdenar) {
     // Variaveis
     bool trocado;
@@ -274,6 +294,22 @@ void ordenarPorNome(TipoUtilizador tipoUtilizador, int tipoOrdenar) {
 
     // Imprimir os utilizadores ordenados
     ListarOrdenacao(tipoUtilizador, utilizadorOrdenado, numOrdenados);
+}
+
+int calcularIdade(const char *dataNascimento) {
+    int anoNascimento, mesNascimento, diaNascimento;
+    sscanf(dataNascimento, "%d-%d-%d", &anoNascimento, &mesNascimento, &diaNascimento);
+
+    // Supondo que a data atual é 2024-05-30
+    int anoAtual = 2024;
+    int mesAtual = 6;
+    int diaAtual = 2;
+
+    int idade = anoAtual - anoNascimento;
+    if (mesNascimento > mesAtual || (mesNascimento == mesAtual && diaNascimento > diaAtual)) {
+        idade--;
+    }
+    return idade;
 }
 
 void ordenarPorIdade(TipoUtilizador tipoUtilizador, int tipoOrdenar) {
@@ -312,37 +348,4 @@ void ordenarPorIdade(TipoUtilizador tipoUtilizador, int tipoOrdenar) {
     ListarOrdenacao(tipoUtilizador, utilizadorOrdenado, numOrdenados);
 }
 
-int calcularIdade(const char *dataNascimento) {
-    int anoNascimento, mesNascimento, diaNascimento;
-    sscanf(dataNascimento, "%d-%d-%d", &anoNascimento, &mesNascimento, &diaNascimento);
 
-    // Supondo que a data atual é 2024-05-30
-    int anoAtual = 2024;
-    int mesAtual = 6;
-    int diaAtual = 2;
-
-    int idade = anoAtual - anoNascimento;
-    if (mesNascimento > mesAtual || (mesNascimento == mesAtual && diaNascimento > diaAtual)) {
-        idade--;
-    }
-    return idade;
-}
-
-void ListarOrdenacao(TipoUtilizador tipoUtilizador, Utilizador *utilizadorOrdenado, int numOrdenados) {
-    
-    for (int i = 0; i < numOrdenados; i++) {
-        printf("--------- %s -------", utilizadorOrdenado[i].nome);
-        printf("\nUsername: %s", utilizadorOrdenado[i].username);
-        printf("\nContacto: %s", utilizadorOrdenado[i].contactoTelefonico);
-        printf("\nMorada: %s", utilizadorOrdenado[i].morada);
-        if(tipoUtilizador == ADMINISTRADOR){
-            printf("\nNIF: %s", utilizadorOrdenado[i].NIF);
-            printf("\nData de Nascimento: %s", utilizadorOrdenado[i].dataNascimento);
-            printf("\nDisponibilidade: %d", utilizadorOrdenado[i].disponivel);
-            printf("\nPassword: %s", utilizadorOrdenado[i].password);
-        }
-        printf("\n");
-        return;
-    }
-    printf("Utilizador não encontrado ou tipo de utilizador não corresponde ao tipo pretendido.\n");
-}

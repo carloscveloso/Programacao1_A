@@ -13,6 +13,25 @@ int ultimo_id = 0;
 Propriedade propriedades[MAX_PROPRIEDADES];
 
 
+
+void PrintTipo(int tipo) {
+    switch (tipo) {
+        case CASA:
+            printf("Casa\n");
+            break;
+        case APARTAMENTO:
+            printf("Apartamento\n");
+            break;
+        case ESCRITORIO:
+            printf("Escritorio\n");
+            break;
+        default:
+            printf("Tipo desconhecido\n");
+            break;
+    }
+}
+
+
 // CRUD FICHEIRO
 
 void lerFicheiroPropriedades() {
@@ -156,7 +175,7 @@ void ListarPropriedadePorPreco(int numPropriedadeEscolhida, char proprietariosIn
     }
 
     // Ordenar por Preço
-    BubbleSortPropriedadesPorPreco(temp, temp_count);
+    OrdenarBubleSortPreco(temp, temp_count);
 
     // Listar
     for (int i = 0; i < temp_count; i++) {
@@ -197,22 +216,5 @@ void ListarPropriedadeDeProprietario(char *username) {
             PrintTipo(propriedades[i].tipo);
             printf("\nPreço: %d\n", propriedades[i].preco);
         }
-    }
-}
-
-void PrintTipo(int tipo) {
-    switch (tipo) {
-        case CASA:
-            printf("Casa\n");
-            break;
-        case APARTAMENTO:
-            printf("Apartamento\n");
-            break;
-        case ESCRITORIO:
-            printf("Escritorio\n");
-            break;
-        default:
-            printf("Tipo desconhecido\n");
-            break;
     }
 }
