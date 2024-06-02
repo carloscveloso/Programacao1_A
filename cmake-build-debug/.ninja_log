@@ -1,4 +1,5 @@
 # ninja log v6
+<<<<<<< HEAD
 3	414	7390556879375438	CMakeFiles/Programacao1_A.dir/Agendamentos/agendamentos.c.obj	a115e5382ed6ece1
 35	438	7390556879693983	CMakeFiles/Programacao1_A.dir/Utilizador/utilizador.c.obj	3210ef7cb4dcc008
 20	439	7390556879536256	CMakeFiles/Programacao1_A.dir/Propriedades/propriedades.c.obj	f377f6ad0f553e4f
@@ -7,3 +8,8 @@
 14	184	7390559130485297	CMakeFiles/Programacao1_A.dir/Agendamentos/agendamentos.c.obj	a115e5382ed6ece1
 31	476	7390559130652353	CMakeFiles/Programacao1_A.dir/main.c.obj	971368c60117a16c
 478	761	7390559135129831	Programacao1_A.exe	6bb187558cc7ef60
+=======
+2	508	7390547107288374	build.ninja	d61ba49d7d561aa1
+2	193	7390547108060714	CMakeFiles/Programacao1_A.dir/Agendamentos/agendamentos.c.obj	318f3dff664e05f7
+11	195	7390547108146487	CMakeFiles/Programacao1_A.dir/Propriedades/propriedades.c.obj	268943caaaf49257
+>>>>>>> 30b745905237cb6c371992da3b58ad9b25de51bb

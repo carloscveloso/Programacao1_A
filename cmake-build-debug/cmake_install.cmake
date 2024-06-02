@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 # Install script for directory: C:/Users/Utilizador/Desktop/PROG1/Trabalho 1 V2
+=======
+# Install script for directory: C:/Users/sofia/Documents/_escola/_este_ano/1_2_2_P1/pratico_23_24/Programacao1_A
+>>>>>>> 30b745905237cb6c371992da3b58ad9b25de51bb
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -34,7 +38,11 @@ endif()
 
 # Set default install directory permissions.
 if(NOT DEFINED CMAKE_OBJDUMP)
+<<<<<<< HEAD
   set(CMAKE_OBJDUMP "C:/Program Files/JetBrains/CLion 2024.1.2/bin/mingw/bin/objdump.exe")
+=======
+  set(CMAKE_OBJDUMP "C:/Program Files/JetBrains/CLion 2023.3.2/bin/mingw/bin/objdump.exe")
+>>>>>>> 30b745905237cb6c371992da3b58ad9b25de51bb
 endif()
 
 if(CMAKE_INSTALL_COMPONENT)
@@ -45,5 +53,9 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
+<<<<<<< HEAD
 file(WRITE "C:/Users/Utilizador/Desktop/PROG1/Trabalho 1 V2/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
+=======
+file(WRITE "C:/Users/sofia/Documents/_escola/_este_ano/1_2_2_P1/pratico_23_24/Programacao1_A/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
+>>>>>>> 30b745905237cb6c371992da3b58ad9b25de51bb
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
