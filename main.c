@@ -135,7 +135,7 @@ void MenuEditarPropriedade(){
             case 1:
                 // Morada
                 printf("\nMorada: ");
-                fgets(PropriedadeAEditar.morada, 150, stdin);
+                scanf(PropriedadeAEditar.morada);
                 break;
             case 2:
                 // Preço
@@ -238,7 +238,7 @@ void MenuAdicionarPropriedade(){
     printf("-----------------\n");
 
     printf("Morada: ");
-    fgets(novaPropriedade.morada, 150, stdin);
+    scanf(novaPropriedade.morada);
 
     printf("Preço: ");
     scanf("%d", &novaPropriedade.preco);
@@ -276,7 +276,7 @@ void MenuAdicionarPropriedade(){
 
         do {
             printf("\nIndique o proprietário da propriedade: ");
-            fgets(username, 20, stdin);
+            scanf("%s", username);
 
             if(verificarTipo(AGENTE, username)){success=true;}
         } while (!success);
@@ -451,7 +451,7 @@ void MenuEditarConta(bool propriaConta){
     do{
         printf("-----------------\n");
         printf("Qual utilizador pretende editar: ");
-        fgets(usernameEscolhido, 20, stdin);
+        scanf("%s", usernameEscolhido);
 
         if(verificarUsername(usernameEscolhido)){sucesso=true;}
     } while(sucesso == false);
@@ -481,7 +481,7 @@ void MenuEditarConta(bool propriaConta){
             case 1:
                 // Nome
                 printf("\nNome: ");
-                fgets(utilizadorAEditar->nome, 100, stdin);
+                scanf("%s", utilizadorAEditar->nome);
                 break;
             case 2:
                 // NIF
@@ -491,12 +491,12 @@ void MenuEditarConta(bool propriaConta){
             case 3:
                 // Morada
                 printf("\nMorada: ");
-                fgets(utilizadorAEditar->morada, 100, stdin);
+                scanf("%s", utilizadorAEditar->morada);
                 break;
             case 4:
                 // Telefone
                 printf("\nNumero de Telefone: ");
-                fgets(utilizadorAEditar->contactoTelefonico, 15, stdin);
+                scanf("%s", utilizadorAEditar->contactoTelefonico);
                 break;
             case 5:
                 // Data de Nascimento
@@ -526,7 +526,7 @@ void MenuEditarConta(bool propriaConta){
                 // Password
                 do {
                     printf("\nPassword: ");
-                    fgets(utilizadorAEditar->password, 20, stdin);
+                    scanf("%s", utilizadorAEditar->password);
                 } while (strlen(utilizadorAEditar->password) < 6);
 
                 break;
@@ -538,7 +538,7 @@ void MenuEditarConta(bool propriaConta){
                 // Username
                 do {
                     printf("\nUsername: ");
-                    fgets(utilizadorAEditar->username, 20, stdin);
+                    scanf("%s", utilizadorAEditar->username);
                 } while (verificarUsername(utilizadorAEditar->username));
 
                 break;
@@ -598,7 +598,7 @@ void MenuRemoverConta(bool propriaConta){
         do {
             printf("-----------------\n");
             printf("Qual utilizador pretende editar: ");
-            fgets(usernameEscolhido, 20, stdin);
+            scanf("%s", usernameEscolhido);
 
             if(verificarUsername(usernameEscolhido)){
                 utilizadorARemover = ReturnUtilizador(usernameEscolhido);
@@ -716,22 +716,22 @@ void MenuAdicionarConta(){
     // Username
     do {
         printf("\nUsername: ");
-        fgets(novoUtilizador.username, 20, stdin);
+        scanf("%s", novoUtilizador.username);
     } while (verificarUsername(novoUtilizador.username));
 
     // Password
     do {
         printf("\nPassword: ");
-        fgets(novoUtilizador.password, 20, stdin);
+        scanf("%s", novoUtilizador.password);
     } while (strlen(novoUtilizador.password) < 6);
 
     // Nome
     printf("\nNome: ");
-    fgets(novoUtilizador.nome, 100, stdin);
+    scanf("%s", novoUtilizador.nome);
 
     // Número de Telefone
     printf("\nNúmero de Telefone: ");
-    fgets(novoUtilizador.contactoTelefonico, 15, stdin);
+    scanf("%s", novoUtilizador.contactoTelefonico);
 
     // Data de Nascimento
     do{
@@ -757,7 +757,7 @@ void MenuAdicionarConta(){
 
     // Morada
     printf("\nMorada: ");
-    fgets(novoUtilizador.morada, 100, stdin);
+    scanf("%s", novoUtilizador.morada);
 
     // Tipo de Utilizador
     int tipo = 0;
@@ -997,9 +997,9 @@ int main() {
                 printf("-----------------\n");
 
                 printf("\nUsuário: ");
-                fgets(usuario, 20, stdin);
+                scanf("%s", usuario);
                 printf("\nSenha: ");
-                fgets(password, 20, stdin);
+                scanf("%s", password);
 
                 // Validações
                 if (efetuarLogin(usuario, password)) {
@@ -1033,22 +1033,22 @@ int main() {
                 // Username
                 do {
                     printf("\nUsername: ");
-                    fgets(novoUtilizador.username, 20, stdin);
+                    scanf("%s", novoUtilizador.username);
                 } while (verificarUsername(novoUtilizador.username));
 
                 // Password
                 do {
                     printf("\nPassword: ");
-                    fgets(novoUtilizador.password, 20, stdin);
+                    scanf("%s", novoUtilizador.password);
                 } while (strlen(novoUtilizador.password) < 6);
 
                 // Nome
                 printf("\nNome: ");
-                fgets(novoUtilizador.nome, 100, stdin);
+                scanf("%s", novoUtilizador.nome);
 
                 // Número de Telefone
                 printf("\nNúmero de Telefone: ");
-                fgets(novoUtilizador.contactoTelefonico, 15, stdin);
+                scanf("%s", novoUtilizador.contactoTelefonico);
 
                 // Data de Nascimento
                 do{
@@ -1074,7 +1074,7 @@ int main() {
 
                 // Morada
                 printf("\nMorada: ");
-                fgets(novoUtilizador.morada, 100, stdin);
+                scanf("%s", novoUtilizador.morada);
 
                 // Tipo de utilizador
                 novoUtilizador.tipo = CLIENTE;
