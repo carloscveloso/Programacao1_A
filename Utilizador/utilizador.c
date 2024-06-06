@@ -106,7 +106,7 @@ void lerFicheiroUtilizadores() {
 }
 
 void gravarFicheiroUtilizadores() {
-    FILE *file = fopen("utilizadores.txt", "w");
+    FILE *file = fopen("../utilizadores.txt", "a+");
     if (file != NULL) {
         for (int i = 0; i < numUtilizadores; i++) {
             fprintf(file, "%s %d %s %s %s %d %s %s %d\n", 

@@ -135,7 +135,7 @@ void MenuEditarPropriedade(){
             case 1:
                 // Morada
                 printf("\nMorada: ");
-                scanf(PropriedadeAEditar.morada);
+                scanf(" %S", PropriedadeAEditar.morada);
                 break;
             case 2:
                 // Preço
@@ -224,7 +224,7 @@ void MenuRemoverPropriedade(){
 
 // #TOTEST - Menu para Adicionar uma Propriedade (AGENTE | ADMINISTRADOR)
 void MenuAdicionarPropriedade(){
-    system("cls");
+    
     // Variaveis
     Propriedade novaPropriedade;
     char username[20];
@@ -238,13 +238,14 @@ void MenuAdicionarPropriedade(){
     printf("-----------------\n");
 
     printf("Morada: ");
-    scanf(novaPropriedade.morada);
+    scanf(" %s", novaPropriedade.morada);
 
     printf("Preço: ");
     scanf("%d", &novaPropriedade.preco);
 
     // Tipo de Propriedade
     int tipo = 0;
+    bool sucesso = false;
     printf("\n1 (CASA)");
     printf("\n2 (APARTAMENTO)");
     printf("\n3 (ESCRITÓRIO)");
@@ -256,18 +257,21 @@ void MenuAdicionarPropriedade(){
         switch (tipo){
         case 1:
             novaPropriedade.tipo = CASA;
+            sucesso = true;
             break;
         case 2:
             novaPropriedade.tipo = APARTAMENTO;
+            sucesso = true;
             break;
         case 3:
             novaPropriedade.tipo = ESCRITORIO;
+            sucesso = true;
             break;
         default:
             printf("Tipo de Propriedade inválido. Por favor, escolha uma opção válida.\n");
             break;
         }
-    }while(tipo == 1 || tipo == 2 || tipo == 3);
+    }while(!sucesso);
     
     if(Permissao(AGENTE)){
         strcpy(novaPropriedade.username_proprietario, usernameRegistado);
@@ -276,7 +280,7 @@ void MenuAdicionarPropriedade(){
 
         do {
             printf("\nIndique o proprietário da propriedade: ");
-            scanf("%s", username);
+            scanf(" %s", username);
 
             if(verificarTipo(AGENTE, username)){success=true;}
         } while (!success);
@@ -369,7 +373,7 @@ void GerirPropriedades(){
 
     // Menu Gerir Propriedades
     do {
-        system("cls");
+        
         printf("-----------------\n");
         printf("Gerir Propriedades\n");
         printf("-----------------\n\n");
@@ -414,7 +418,7 @@ void GerirAgendamentos(){
 
     // Menu Gerir Agendamentos
     do {
-        system("cls");
+        
         printf("-----------------\n");
         printf("Gerir Agendamentos\n");
         printf("-----------------\n\n");
@@ -451,7 +455,7 @@ void MenuEditarConta(bool propriaConta){
     do{
         printf("-----------------\n");
         printf("Qual utilizador pretende editar: ");
-        scanf("%s", usernameEscolhido);
+        scanf(" %s", usernameEscolhido);
 
         if(verificarUsername(usernameEscolhido)){sucesso=true;}
     } while(sucesso == false);
@@ -481,7 +485,7 @@ void MenuEditarConta(bool propriaConta){
             case 1:
                 // Nome
                 printf("\nNome: ");
-                scanf("%s", utilizadorAEditar->nome);
+                scanf(" %s", utilizadorAEditar->nome);
                 break;
             case 2:
                 // NIF
@@ -491,12 +495,12 @@ void MenuEditarConta(bool propriaConta){
             case 3:
                 // Morada
                 printf("\nMorada: ");
-                scanf("%s", utilizadorAEditar->morada);
+                scanf(" %s", utilizadorAEditar->morada);
                 break;
             case 4:
                 // Telefone
                 printf("\nNumero de Telefone: ");
-                scanf("%s", utilizadorAEditar->contactoTelefonico);
+                scanf(" %s", utilizadorAEditar->contactoTelefonico);
                 break;
             case 5:
                 // Data de Nascimento
@@ -526,7 +530,7 @@ void MenuEditarConta(bool propriaConta){
                 // Password
                 do {
                     printf("\nPassword: ");
-                    scanf("%s", utilizadorAEditar->password);
+                    scanf(" %s", utilizadorAEditar->password);
                 } while (strlen(utilizadorAEditar->password) < 6);
 
                 break;
@@ -538,7 +542,7 @@ void MenuEditarConta(bool propriaConta){
                 // Username
                 do {
                     printf("\nUsername: ");
-                    scanf("%s", utilizadorAEditar->username);
+                    scanf(" %s", utilizadorAEditar->username);
                 } while (verificarUsername(utilizadorAEditar->username));
 
                 break;
@@ -598,7 +602,7 @@ void MenuRemoverConta(bool propriaConta){
         do {
             printf("-----------------\n");
             printf("Qual utilizador pretende editar: ");
-            scanf("%s", usernameEscolhido);
+            scanf(" %s", usernameEscolhido);
 
             if(verificarUsername(usernameEscolhido)){
                 utilizadorARemover = ReturnUtilizador(usernameEscolhido);
@@ -629,8 +633,8 @@ void MenuEditarRemoverContas(bool propriaConta){
         printf("-----------------\n");
         printf("Gerir Conta\n");
         printf("-----------------\n\n");
-        printf("1. Remover Conta");
-        if(propriaConta == true || Permissao(ADMINISTRADOR)){printf("2. Editar Conta");}
+        printf("1. Remover Conta\n");
+        if(propriaConta == true || Permissao(ADMINISTRADOR)){printf("2. Editar Conta\n");}
         printf("\n-----------------\n");
         printf("0. Sair\n");
         printf("-----------------\n\n");
@@ -703,7 +707,7 @@ void EscolherOrdenacao(int tipoUtilizadorEscolhido){
 
 // #TOTEST - Menu para Adicionar uma conta (ADMINISTRADOR)
 void MenuAdicionarConta(){
-    system("cls");
+    
     // Variaveis
     Utilizador novoUtilizador;
     bool dataValida = false;
@@ -716,22 +720,22 @@ void MenuAdicionarConta(){
     // Username
     do {
         printf("\nUsername: ");
-        scanf("%s", novoUtilizador.username);
+        scanf(" %s", novoUtilizador.username);
     } while (verificarUsername(novoUtilizador.username));
 
     // Password
     do {
         printf("\nPassword: ");
-        scanf("%s", novoUtilizador.password);
+        scanf(" %s", novoUtilizador.password);
     } while (strlen(novoUtilizador.password) < 6);
 
     // Nome
     printf("\nNome: ");
-    scanf("%s", novoUtilizador.nome);
+    scanf(" %s", novoUtilizador.nome);
 
     // Número de Telefone
     printf("\nNúmero de Telefone: ");
-    scanf("%s", novoUtilizador.contactoTelefonico);
+    scanf(" %s", novoUtilizador.contactoTelefonico);
 
     // Data de Nascimento
     do{
@@ -757,10 +761,11 @@ void MenuAdicionarConta(){
 
     // Morada
     printf("\nMorada: ");
-    scanf("%s", novoUtilizador.morada);
+    scanf(" %s", novoUtilizador.morada);
 
     // Tipo de Utilizador
     int tipo = 0;
+    bool sucesso = false;
     printf("\n1 (CLIENTE)");
     printf("\n2 (AGENTE)");
     printf("\n3 (ADMINISTRADOR)");
@@ -772,18 +777,21 @@ void MenuAdicionarConta(){
         switch (tipo){
         case 1:
             novoUtilizador.tipo = CLIENTE;
+            sucesso = true;
             break;
         case 2:
             novoUtilizador.tipo = AGENTE;
+            sucesso = true;
             break;
         case 3:
             novoUtilizador.tipo = ADMINISTRADOR;
+            sucesso = true;
             break;
         default:
             printf("Tipo de utilizador inválido. Por favor, escolha uma opção válida.\n");
             break;
         }
-    }while(tipo == 1 || tipo == 2 || tipo == 3);
+    }while(!sucesso);
 
     // Disponibilidade
     novoUtilizador.disponivel = true;
@@ -861,7 +869,7 @@ void GerirContas(){
 
     // Menu Gerir Contas
     do {
-        system("cls");
+        
         printf("-----------------\n");
         printf("Gerir Contas\n");
         printf("-----------------\n\n");
@@ -876,7 +884,7 @@ void GerirContas(){
         // Lista das opções
         switch (escolha) {
             case 1:
-                system("cls");
+                
                 MenuListarContas();
                 break;
             case 2:
@@ -899,13 +907,13 @@ void MenuPrincipal(){
 
     // Menu Principal
     do {
-        system("cls");
+        
         printf("-----------------\n");
         printf("Menu Principal\n");
         printf("-----------------\n\n");
         if(Permissao(CLIENTE)){printf("1. Visualizar Propriedades\n");} else {printf("1. Gerir Propriedades\n");}
         if(Permissao(CLIENTE)){printf("2. Visualizar a Sua Conta\n");} else {printf("2. Gerir Contas\n");}
-        if(Permissao(CLIENTE)){printf("1. Gerir Agendamentos\n");} else {printf("3. Gerir Agendamentos\n");}
+        if(Permissao(CLIENTE)){printf("3. Gerir Agendamentos\n");} else {printf("3. Gerir Agendamentos\n");}
         printf("\n-----------------\n");
         printf("0. Sair\n");
         printf("-----------------\n\n");
@@ -970,7 +978,7 @@ int main() {
 
     // #TOTEST Menu de Registro
     do {
-        system("cls");
+        
         printf("-----------------\n");
         printf("Bem-vindo!\n");
         printf("-----------------\n\n");
@@ -997,9 +1005,9 @@ int main() {
                 printf("-----------------\n");
 
                 printf("\nUsuário: ");
-                scanf("%s", usuario);
+                scanf(" %s", usuario);
                 printf("\nSenha: ");
-                scanf("%s", password);
+                scanf(" %s", password);
 
                 // Validações
                 if (efetuarLogin(usuario, password)) {
@@ -1010,8 +1018,9 @@ int main() {
                     tipoRegistado = tipoRegisto(usuario);
                     loginSucesso = true;
 
-                    system("cls");
+                    
                     // Se o login for bem-sucedido, sair do menu de login e ir para o menu principal
+                    MenuPrincipal();
                     break;
                 } else {
                     printf("Credenciais inválidas. Tente novamente.\n");
@@ -1020,7 +1029,7 @@ int main() {
             }
             case 2: {
                 // #TOTEST Registrar
-                system("cls");
+                
                 // Variaveis
                 Utilizador novoUtilizador;
                 bool dataValida = false;
@@ -1033,22 +1042,22 @@ int main() {
                 // Username
                 do {
                     printf("\nUsername: ");
-                    scanf("%s", novoUtilizador.username);
+                    scanf(" %s", novoUtilizador.username);
                 } while (verificarUsername(novoUtilizador.username));
 
                 // Password
                 do {
                     printf("\nPassword: ");
-                    scanf("%s", novoUtilizador.password);
+                    scanf(" %s", novoUtilizador.password);
                 } while (strlen(novoUtilizador.password) < 6);
 
                 // Nome
                 printf("\nNome: ");
-                scanf("%s", novoUtilizador.nome);
+                scanf(" %s", novoUtilizador.nome);
 
                 // Número de Telefone
                 printf("\nNúmero de Telefone: ");
-                scanf("%s", novoUtilizador.contactoTelefonico);
+                scanf(" %s", novoUtilizador.contactoTelefonico);
 
                 // Data de Nascimento
                 do{
@@ -1074,7 +1083,7 @@ int main() {
 
                 // Morada
                 printf("\nMorada: ");
-                scanf("%s", novoUtilizador.morada);
+                scanf(" %s", &novoUtilizador.morada);
 
                 // Tipo de utilizador
                 novoUtilizador.tipo = CLIENTE;
@@ -1094,9 +1103,7 @@ int main() {
             default:
                 printf("Opção inválida. Por favor, escolha uma opção válida.\n");
         }
-    } while (loginSucesso == true); // Repetir o menu até que o usuário faça login
-
-    MenuPrincipal();
+    } while (!loginSucesso); // Repetir o menu até que o usuário faça login
 
     return 0;
 }
