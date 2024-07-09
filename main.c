@@ -58,7 +58,7 @@ void EscolherOrdenacaoPropriedades(int numTipoPropriedadeEscolhida){
 }
 
 // #TOTEST - Menu para agendar uma visita (CLIENTE)
-void MenuClienteProrpiedades(){
+void MenuClientePropriedades(){
     int escolha = 0;
     int idPropriedadeEscolhida;
 
@@ -84,7 +84,9 @@ void MenuClienteProrpiedades(){
                     scanf("%d", idPropriedadeEscolhida);
                 } while (VerificarIDPropriedade(idPropriedadeEscolhida, proprietarioIndisponivel));
                 
-                // #TODO - Adicionar Agendamento
+                // DOING - Adicionar Agendamento
+                agendar_visita(usernameRegistado, idPropriedadeEscolhida)
+                // int id_cliente, int id_agente, time_t data_hora, const char* tipo_propriedade, float preco
 
                 break;
             case 0:
@@ -412,7 +414,7 @@ void GerirPropriedades(){
 
 // Agendamentos
 
-// #TODO - Gerir Agendamentos
+// TODO - Gerir Agendamentos
 void GerirAgendamentos(){
     int escolha = 0;
 
@@ -935,7 +937,7 @@ void MenuPrincipal(){
                 // O Cliente irá diretamente ver as propriedades
                 if(Permissao(CLIENTE)){
                     ListarTipoPropriedades();
-                    MenuClienteProrpiedades();
+                    MenuClientePropriedades();
                 } else {
                     GerirPropriedades();
                 }

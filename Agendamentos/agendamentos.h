@@ -1,4 +1,3 @@
-/*
 #ifndef AGENDAMENTO_H
 #define AGENDAMENTO_H
 
@@ -76,4 +75,3 @@ void apresentar_proximo_cliente();
 void calcular_tempo_espera_estimado();
 
 #endif
-*/

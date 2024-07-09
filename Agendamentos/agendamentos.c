@@ -1,4 +1,3 @@
-/*
 #include "agendamentos.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -59,7 +58,7 @@ void agendar_visita(int id_cliente, int id_agente, time_t data_hora, const char*
 
 void listar_visitas_por_dia(time_t dia) {
     printf("Listando visitas para o dia %s:\n", ctime(&dia));
-    
+
     // Percorre o array de visitas
     for (int i = 0; i < numero_visitas; i++) {
         // Verifica se a visita ocorreu no dia especificado
@@ -72,7 +71,7 @@ void listar_visitas_por_dia(time_t dia) {
 
 void listar_visitas_por_agente(int id_agente, time_t dia) {
     printf("Listando visitas para o agente %d no dia %s:\n", id_agente, ctime(&dia));
-    
+
     // Percorre o array de visitas
     for (int i = 0; i < numero_visitas; i++) {
         // Verifica se a visita ocorreu no dia especificado e foi atendida pelo agente especificado
@@ -85,7 +84,7 @@ void listar_visitas_por_agente(int id_agente, time_t dia) {
 
 void listar_visitas_por_tipo_propriedade(const char* tipo_propriedade, time_t dia) {
     printf("Listando visitas para o tipo de propriedade %s no dia %s:\n", tipo_propriedade, ctime(&dia));
-    
+
     // Percorre o array de visitas
     for (int i = 0; i < numero_visitas; i++) {
         // Verifica se a visita ocorreu no dia especificado e é do tipo de propriedade especificado
@@ -98,7 +97,7 @@ void listar_visitas_por_tipo_propriedade(const char* tipo_propriedade, time_t di
 
 void historico_visitas_propriedade(const char* tipo_propriedade) {
     printf("Obtendo histórico de visitas para a propriedade do tipo %s:\n", tipo_propriedade);
-    
+
     // Percorre o array de visitas
     for (int i = 0; i < numero_visitas; i++) {
         // Verifica se a visita é do tipo de propriedade especificado
@@ -111,7 +110,7 @@ void historico_visitas_propriedade(const char* tipo_propriedade) {
 
 void realizar_visita(int id_agente, time_t data_hora) {
     printf("Realizando visita para o agente %d na data %s:\n", id_agente, ctime(&data_hora));
-    
+
     // Percorre o array de visitas
     for (int i = 0; i < numero_visitas; i++) {
         // Verifica se a visita corresponde ao agente e data e hora especificados
@@ -122,14 +121,14 @@ void realizar_visita(int id_agente, time_t data_hora) {
             return;
         }
     }
-    
+
     // Se nenhum agendamento corresponder, exibimos uma mensagem de erro
     printf("Erro: Não foi possível encontrar a visita agendada para o agente %d na data %s.\n", id_agente, ctime(&data_hora));
 }
 
 void listar_visitas_nao_compareceu(time_t dia) {
     printf("Listando visitas não comparecidas para o dia %s:\n", ctime(&dia));
-    
+
     // Percorre o array de visitas
     for (int i = 0; i < numero_visitas; i++) {
         // Verifica se a visita ocorreu no dia especificado e o estado é "Não Compareceu"
@@ -142,12 +141,12 @@ void listar_visitas_nao_compareceu(time_t dia) {
 
 void faturamento_por_tipo_propriedade(time_t dia) {
     printf("Calculando faturamento por tipo de propriedade para o dia %s:\n", ctime(&dia));
-    
+
     // Array para armazenar o faturamento por tipo de propriedade
     float faturamento_apartamento = 0.0f;
     float faturamento_casa = 0.0f;
     float faturamento_terreno = 0.0f;
-    
+
     // Percorre o array de visitas
     for (int i = 0; i < numero_visitas; i++) {
         // Verifica se a visita ocorreu no dia especificado
@@ -162,7 +161,7 @@ void faturamento_por_tipo_propriedade(time_t dia) {
             }
         }
     }
-    
+
     // Imprime o faturamento por tipo de propriedade
     printf("Faturamento para Apartamento: %.2f\n", faturamento_apartamento);
     printf("Faturamento para Casa: %.2f\n", faturamento_casa);
@@ -171,10 +170,10 @@ void faturamento_por_tipo_propriedade(time_t dia) {
 
 void visitas_realizadas_por_agente(int id_agente, time_t mes) {
     printf("Calculando visitas realizadas pelo agente %d no mês %s:\n", id_agente, ctime(&mes));
-    
+
     // Contador de visitas realizadas pelo agente
     int visitas_realizadas = 0;
-    
+
     // Percorre o array de visitas
     for (int i = 0; i < numero_visitas; i++) {
         // Verifica se a visita foi realizada pelo agente especificado e ocorreu no mês especificado
@@ -184,7 +183,7 @@ void visitas_realizadas_por_agente(int id_agente, time_t mes) {
             visitas_realizadas++;
         }
     }
-    
+
     // Imprime o número de visitas realizadas pelo agente
     printf("Número de visitas realizadas: %d\n", visitas_realizadas);
 }
@@ -307,4 +306,3 @@ void calcular_tempo_espera_estimado() {
         printf("Não há clientes na fila de espera.\n");
     }
 }
-*/
