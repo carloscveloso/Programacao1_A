@@ -30,7 +30,7 @@ void libertar_agendamentos() {
     capacidade_visitas = 0;
 }
 
-void agendar_visita(int id_cliente, int id_agente, time_t data_hora, const char* tipo_propriedade, float preco) {
+void agendar_visita(char username_cliente[50], char username_agente[50], int mes, int dia, int data_hora, int id_propriedade, TipoPropriedade tipo_propriedade) {
     // Verifica se há espaço suficiente no array dinâmico, se não, dobra o tamanho do array
     if (numero_visitas >= capacidade_visitas) {
         capacidade_visitas *= 2;
@@ -42,79 +42,80 @@ void agendar_visita(int id_cliente, int id_agente, time_t data_hora, const char*
     }
 
     // Preenche os dados da nova visita
-    visitas[numero_visitas].id_cliente = id_cliente;
-    visitas[numero_visitas].id_agente = id_agente;
+    strcpy(visitas[numero_visitas].username_cliente, username_cliente);
+    strcpy(visitas[numero_visitas].username_agente, username_agente);
+    visitas[numero_visitas].mes = mes;
+    visitas[numero_visitas].dia = dia;
     visitas[numero_visitas].data_hora = data_hora;
     visitas[numero_visitas].estado = ESTADO_AGENDADA;
-    strncpy(visitas[numero_visitas].relatorio, "", sizeof(visitas[numero_visitas].relatorio));
-    visitas[numero_visitas].preco = preco;
-    strncpy(visitas[numero_visitas].tipo_propriedade, tipo_propriedade, sizeof(visitas[numero_visitas].tipo_propriedade));
+    visitas[numero_visitas].id_propriedade = id_propriedade;
+    visitas[numero_visitas].tipo_Propriedade = tipo_propriedade;
 
     // Incrementa o contador de visitas
     numero_visitas++;
 
-    printf("Agendando visita para o cliente %d com o agente %d na data %s.\n", id_cliente, id_agente, ctime(&data_hora));
+    printf("Foi agendado uma visita na data %i/%i 'as %ih.\n", dia, mes, data_hora);
 }
 
-void listar_visitas_por_dia(time_t dia) {
-    printf("Listando visitas para o dia %s:\n", ctime(&dia));
+void listar_visitas_por_dia(int dia, int mes) {
+    printf("Listando visitas para o dia %i:\n", dia);
 
     // Percorre o array de visitas
     for (int i = 0; i < numero_visitas; i++) {
         // Verifica se a visita ocorreu no dia especificado
-        if (visitas[i].data_hora >= dia && visitas[i].data_hora < dia + 86400) {  // 86400 segundos em um dia
-            printf("Cliente: %d, Agente: %d, Data e Hora: %s, Estado: %d\n",
-                   visitas[i].id_cliente, visitas[i].id_agente, ctime(&visitas[i].data_hora), visitas[i].estado);
+        if (visitas[i].mes == mes && visitas[i].dia == dia) {
+            printf("Cliente: %s, Propriedade: %u Hora: %i\n",
+                   visitas[i].username_cliente, visitas[i].tipo_Propriedade, visitas[i].data_hora);
         }
     }
 }
 
-void listar_visitas_por_agente(int id_agente, time_t dia) {
-    printf("Listando visitas para o agente %d no dia %s:\n", id_agente, ctime(&dia));
+void listar_visitas_por_agente(char username_agente[50], int dia) {
+    printf("Listando visitas para o agente %s no dia %i:\n", username_agente, dia);
 
     // Percorre o array de visitas
     for (int i = 0; i < numero_visitas; i++) {
         // Verifica se a visita ocorreu no dia especificado e foi atendida pelo agente especificado
-        if (visitas[i].id_agente == id_agente && visitas[i].data_hora >= dia && visitas[i].data_hora < dia + 86400) {  // 86400 segundos em um dia
-            printf("Cliente: %d, Data e Hora: %s, Estado: %d\n",
-                   visitas[i].id_cliente, ctime(&visitas[i].data_hora), visitas[i].estado);
+        if (visitas[i].username_agente == username_agente && visitas[i].data_hora >= dia && visitas[i].data_hora < dia + 86400) {  // 86400 segundos em um dia
+            printf("Cliente: %s, Hora: %i\n",
+                   visitas[i].username_agente, visitas[i].data_hora);
         }
     }
 }
 
-void listar_visitas_por_tipo_propriedade(const char* tipo_propriedade, time_t dia) {
-    printf("Listando visitas para o tipo de propriedade %s no dia %s:\n", tipo_propriedade, ctime(&dia));
+void listar_visitas_por_tipo_propriedade(int id_propriedade, int dia) {
+    printf("Listando visitas para o tipo de propriedade %d no dia %i:\n", id_propriedade, dia);
 
     // Percorre o array de visitas
     for (int i = 0; i < numero_visitas; i++) {
         // Verifica se a visita ocorreu no dia especificado e é do tipo de propriedade especificado
-        if (strcmp(visitas[i].tipo_propriedade, tipo_propriedade) == 0 && visitas[i].data_hora >= dia && visitas[i].data_hora < dia + 86400) {  // 86400 segundos em um dia
-            printf("Cliente: %d, Agente: %d, Data e Hora: %s, Estado: %d\n",
-                   visitas[i].id_cliente, visitas[i].id_agente, ctime(&visitas[i].data_hora), visitas[i].estado);
+        if (visitas[i].id_propriedade == id_propriedade && visitas[i].data_hora >= dia && visitas[i].data_hora < dia + 86400) {  // 86400 segundos em um dia
+            printf("Cliente: %s, Propriedade: %u Hora: %i\n",
+                   visitas[i].username_cliente, visitas[i].tipo_Propriedade, visitas[i].data_hora);
         }
     }
 }
 
-void historico_visitas_propriedade(const char* tipo_propriedade) {
-    printf("Obtendo histórico de visitas para a propriedade do tipo %s:\n", tipo_propriedade);
+void historico_visitas_propriedade(char* id_propriedade) {
+    printf("Obtendo histórico de visitas para a propriedade do tipo %s:\n", id_propriedade);
 
     // Percorre o array de visitas
     for (int i = 0; i < numero_visitas; i++) {
         // Verifica se a visita é do tipo de propriedade especificado
-        if (strcmp(visitas[i].tipo_propriedade, tipo_propriedade) == 0) {
+        if (strcmp(visitas[i].id_propriedade, id_propriedade) == 0) {
             printf("Cliente: %d, Agente: %d, Data e Hora: %s, Estado: %d\n",
-                   visitas[i].id_cliente, visitas[i].id_agente, ctime(&visitas[i].data_hora), visitas[i].estado);
+                   visitas[i].username_cliente, visitas[i].username_agente, ctime(&visitas[i].data_hora), visitas[i].estado);
         }
     }
 }
 
-void realizar_visita(int id_agente, time_t data_hora) {
-    printf("Realizando visita para o agente %d na data %s:\n", id_agente, ctime(&data_hora));
+void realizar_visita(char username_agente[50], int data_hora) {
+    printf("Realizando visita para o agente %d na data %s:\n", username_agente, ctime(&data_hora));
 
     // Percorre o array de visitas
     for (int i = 0; i < numero_visitas; i++) {
         // Verifica se a visita corresponde ao agente e data e hora especificados
-        if (visitas[i].id_agente == id_agente && visitas[i].data_hora == data_hora) {
+        if (visitas[i].username_agente == username_agente && visitas[i].data_hora == data_hora) {
             // Atualiza o estado da visita para "Realizada"
             visitas[i].estado = ESTADO_REALIZADA;
             printf("Visita realizada com sucesso.\n");
@@ -123,10 +124,10 @@ void realizar_visita(int id_agente, time_t data_hora) {
     }
 
     // Se nenhum agendamento corresponder, exibimos uma mensagem de erro
-    printf("Erro: Não foi possível encontrar a visita agendada para o agente %d na data %s.\n", id_agente, ctime(&data_hora));
+    printf("Erro: Não foi possível encontrar a visita agendada para o agente %d na data %s.\n", username_agente, ctime(&data_hora));
 }
 
-void listar_visitas_nao_compareceu(time_t dia) {
+void listar_visitas_nao_compareceu(int dia) {
     printf("Listando visitas não comparecidas para o dia %s:\n", ctime(&dia));
 
     // Percorre o array de visitas
@@ -134,12 +135,12 @@ void listar_visitas_nao_compareceu(time_t dia) {
         // Verifica se a visita ocorreu no dia especificado e o estado é "Não Compareceu"
         if (visitas[i].estado == ESTADO_NAO_COMPARECEU && visitas[i].data_hora >= dia && visitas[i].data_hora < dia + 86400) {  // 86400 segundos em um dia
             printf("Cliente: %d, Agente: %d, Data e Hora: %s\n",
-                   visitas[i].id_cliente, visitas[i].id_agente, ctime(&visitas[i].data_hora));
+                   visitas[i].username_cliente[50], visitas[i].username_agente, ctime(&visitas[i].data_hora));
         }
     }
 }
 
-void faturamento_por_tipo_propriedade(time_t dia) {
+void faturamento_por_tipo_propriedade(int dia) {
     printf("Calculando faturamento por tipo de propriedade para o dia %s:\n", ctime(&dia));
 
     // Array para armazenar o faturamento por tipo de propriedade
@@ -152,11 +153,11 @@ void faturamento_por_tipo_propriedade(time_t dia) {
         // Verifica se a visita ocorreu no dia especificado
         if (visitas[i].data_hora >= dia && visitas[i].data_hora < dia + 86400) {  // 86400 segundos em um dia
             // Atualiza o faturamento de acordo com o tipo de propriedade da visita
-            if (strcmp(visitas[i].tipo_propriedade, "Apartamento") == 0) {
+            if (strcmp(visitas[i].id_propriedade, "Apartamento") == 0) {
                 faturamento_apartamento += visitas[i].preco;
-            } else if (strcmp(visitas[i].tipo_propriedade, "Casa") == 0) {
+            } else if (strcmp(visitas[i].id_propriedade, "Casa") == 0) {
                 faturamento_casa += visitas[i].preco;
-            } else if (strcmp(visitas[i].tipo_propriedade, "Terreno") == 0) {
+            } else if (strcmp(visitas[i].id_propriedade, "Terreno") == 0) {
                 faturamento_terreno += visitas[i].preco;
             }
         }
@@ -168,8 +169,8 @@ void faturamento_por_tipo_propriedade(time_t dia) {
     printf("Faturamento para Terreno: %.2f\n", faturamento_terreno);
 }
 
-void visitas_realizadas_por_agente(int id_agente, time_t mes) {
-    printf("Calculando visitas realizadas pelo agente %d no mês %s:\n", id_agente, ctime(&mes));
+void visitas_realizadas_por_agente(char username_agente[50], int mes) {
+    printf("Calculando visitas realizadas pelo agente %d no mês %s:\n", username_agente, ctime(&mes));
 
     // Contador de visitas realizadas pelo agente
     int visitas_realizadas = 0;
@@ -177,7 +178,7 @@ void visitas_realizadas_por_agente(int id_agente, time_t mes) {
     // Percorre o array de visitas
     for (int i = 0; i < numero_visitas; i++) {
         // Verifica se a visita foi realizada pelo agente especificado e ocorreu no mês especificado
-        if (visitas[i].id_agente == id_agente &&
+        if (visitas[i].username_agente == username_agente &&
             localtime(&visitas[i].data_hora)->tm_mon == localtime(&mes)->tm_mon &&
             localtime(&visitas[i].data_hora)->tm_year == localtime(&mes)->tm_year) {
             visitas_realizadas++;
@@ -188,7 +189,7 @@ void visitas_realizadas_por_agente(int id_agente, time_t mes) {
     printf("Número de visitas realizadas: %d\n", visitas_realizadas);
 }
 
-void gerar_relatorio(time_t dia, time_t mes) {
+void gerar_relatorio(int dia, int mes) {
     printf("Gerando relatório para o dia %s e mês %s:\n", ctime(&dia), ctime(&mes));
 
     // Arrays para armazenar o faturamento por tipo de propriedade para o dia e o mês
@@ -205,11 +206,11 @@ void gerar_relatorio(time_t dia, time_t mes) {
         // Verifica se a visita ocorreu no dia especificado
         if (visitas[i].data_hora >= dia && visitas[i].data_hora < dia + 86400) {  // 86400 segundos em um dia
             // Atualiza o faturamento por tipo de propriedade para o dia
-            if (strcmp(visitas[i].tipo_propriedade, "Apartamento") == 0) {
+            if (strcmp(visitas[i].id_propriedade, "Apartamento") == 0) {
                 faturamento_apartamento_dia += visitas[i].preco;
-            } else if (strcmp(visitas[i].tipo_propriedade, "Casa") == 0) {
+            } else if (strcmp(visitas[i].id_propriedade, "Casa") == 0) {
                 faturamento_casa_dia += visitas[i].preco;
-            } else if (strcmp(visitas[i].tipo_propriedade, "Terreno") == 0) {
+            } else if (strcmp(visitas[i].id_propriedade, "Terreno") == 0) {
                 faturamento_terreno_dia += visitas[i].preco;
             }
         }
@@ -218,11 +219,11 @@ void gerar_relatorio(time_t dia, time_t mes) {
         if (localtime(&visitas[i].data_hora)->tm_mon == localtime(&mes)->tm_mon &&
             localtime(&visitas[i].data_hora)->tm_year == localtime(&mes)->tm_year) {
             // Atualiza o faturamento por tipo de propriedade para o mês
-            if (strcmp(visitas[i].tipo_propriedade, "Apartamento") == 0) {
+            if (strcmp(visitas[i].id_propriedade, "Apartamento") == 0) {
                 faturamento_apartamento_mes += visitas[i].preco;
-            } else if (strcmp(visitas[i].tipo_propriedade, "Casa") == 0) {
+            } else if (strcmp(visitas[i].id_propriedade, "Casa") == 0) {
                 faturamento_casa_mes += visitas[i].preco;
-            } else if (strcmp(visitas[i].tipo_propriedade, "Terreno") == 0) {
+            } else if (strcmp(visitas[i].id_propriedade, "Terreno") == 0) {
                 faturamento_terreno_mes += visitas[i].preco;
             }
         }
@@ -241,14 +242,14 @@ void gerar_relatorio(time_t dia, time_t mes) {
     printf("Faturamento para Terreno: %.2f\n", faturamento_terreno_mes);
 }
 
-void adicionar_cliente_fila_espera(int id_cliente, time_t duracao_estimada) {
+void adicionar_cliente_fila_espera(char username_cliente[50], int duracao_estimada) {
     // Verifica se a fila de espera não está cheia
     if (num_clientes_fila_espera < MAX_CLIENTES_FILA_ESPERA) {
         // Adiciona o cliente à fila de espera
-        fila_espera[num_clientes_fila_espera].id_cliente = id_cliente;
+        fila_espera[num_clientes_fila_espera].username_cliente[50] = username_cliente[50];
         fila_espera[num_clientes_fila_espera].duracao_estimada = duracao_estimada;
         num_clientes_fila_espera++;
-        printf("Cliente %d adicionado à fila de espera com duração estimada de visita %ld segundos.\n", id_cliente, duracao_estimada);
+        printf("Cliente %d adicionado à fila de espera com duração estimada de visita %ld segundos.\n", username_cliente[50], duracao_estimada);
     } else {
         printf("Erro: A fila de espera está cheia. Não é possível adicionar mais clientes.\n");
     }
@@ -275,7 +276,7 @@ void listar_clientes_fila_espera() {
         printf("Listando clientes na fila de espera:\n");
         // Percorre a fila de espera e imprime as informações de cada cliente
         for (int i = 0; i < num_clientes_fila_espera; i++) {
-            printf("Cliente %d - Duração estimada da visita: %ld segundos\n", fila_espera[i].id_cliente, fila_espera[i].duracao_estimada);
+            printf("Cliente %d - Duração estimada da visita: %ld segundos\n", fila_espera[i].username_cliente[50], fila_espera[i].duracao_estimada);
         }
     } else {
         printf("Não há clientes na fila de espera.\n");
@@ -286,14 +287,14 @@ void apresentar_proximo_cliente() {
     // Verifica se há clientes na fila de espera
     if (num_clientes_fila_espera > 0) {
         // Imprime as informações do próximo cliente a ser atendido (primeiro cliente na fila de espera)
-        printf("Próximo cliente a ser atendido: Cliente %d - Duração estimada da visita: %ld segundos\n", fila_espera[0].id_cliente, fila_espera[0].duracao_estimada);
+        printf("Próximo cliente a ser atendido: Cliente %d - Duração estimada da visita: %ld segundos\n", fila_espera[0].username_cliente[50], fila_espera[0].duracao_estimada);
     } else {
         printf("Não há clientes na fila de espera.\n");
     }
 }
 
 void calcular_tempo_espera_estimado() {
-    time_t tempo_espera_total = 0;
+    int tempo_espera_total = 0;
 
     // Verifica se há clientes na fila de espera
     if (num_clientes_fila_espera > 0) {

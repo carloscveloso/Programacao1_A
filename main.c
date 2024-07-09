@@ -7,7 +7,7 @@
 #include "Agendamentos/agendamentos.h"
 
 // Variaveis Globais
-char usernameRegistado[20] = "";    // Guarda o username da conta registada no sistema
+char username_cliente[50] = "";    // Guarda o username da conta registada no sistema
 TipoUtilizador *tipoRegistado;       // Guarda o tipo de utilizador registado no sistema
 char proprietarioIndisponivel[20][15];
 
@@ -83,10 +83,25 @@ void MenuClientePropriedades(){
                     printf("Insira o ID : ");
                     scanf("%d", idPropriedadeEscolhida);
                 } while (VerificarIDPropriedade(idPropriedadeEscolhida, proprietarioIndisponivel));
-                
+
+                int data_dia, data_mes, data_hora;
+
+
+                printf("-----------------\n\n");
+                printf("A que dia é a visita agendada? :");
+                scanf("%d", &data_dia);
+
+                printf("-----------------\n\n");
+                printf("A que mes é a visita agendada? :");
+                scanf("%d", &data_mes);
+
+                printf("-----------------\n\n");
+                printf("A que horas será a visita agendada?(Ex: 13) :");
+                scanf("%d", &data_hora);
+
+                Propriedade propriedade = ReturnPropriedade(idPropriedadeEscolhida);
                 // DOING - Adicionar Agendamento
-                agendar_visita(usernameRegistado, idPropriedadeEscolhida)
-                // int id_cliente, int id_agente, time_t data_hora, const char* tipo_propriedade, float preco
+                agendar_visita(username_cliente, propriedade.username_proprietario, data_dia, data_mes, data_hora, idPropriedadeEscolhida, propriedade.tipo);
 
                 break;
             case 0:
@@ -111,7 +126,7 @@ void MenuEditarPropriedade(){
         scanf("%d", idPropriedadeEscolhida);
 
         if(Permissao(AGENTE)){
-            if(VerificarIDPropriedadeDeProprietario(idPropriedadeEscolhida, usernameRegistado)){sucesso = true;}
+            if(VerificarIDPropriedadeDeProprietario(idPropriedadeEscolhida, username_cliente)){sucesso = true;}
         } else {
             if(VerificarIDPropriedade(idPropriedadeEscolhida, proprietarioIndisponivel)){sucesso = true;}
         }
@@ -195,7 +210,7 @@ void MenuRemoverPropriedade(){
         scanf("%d", idPropriedadeEscolhida);
 
         if(Permissao(AGENTE)){
-            if(VerificarIDPropriedadeDeProprietario(idPropriedadeEscolhida, usernameRegistado)){sucesso = true;}
+            if(VerificarIDPropriedadeDeProprietario(idPropriedadeEscolhida, username_cliente)){sucesso = true;}
         } else {
             if(VerificarIDPropriedade(idPropriedadeEscolhida, proprietarioIndisponivel)){sucesso = true;}
         }
@@ -232,7 +247,7 @@ void MenuAdicionarPropriedade(){
     char username[20];
     bool success = false;
 
-    strcpy(novaPropriedade.username_proprietario, usernameRegistado);
+    strcpy(novaPropriedade.username_proprietario, username_cliente);
 
     // Menu
     printf("-----------------\n");
@@ -276,7 +291,7 @@ void MenuAdicionarPropriedade(){
     }while(!sucesso);
     
     if(Permissao(AGENTE)){
-        strcpy(novaPropriedade.username_proprietario, usernameRegistado);
+        strcpy(novaPropriedade.username_proprietario, username_cliente);
     } else {
         ListarUtilizador(*tipoRegistado, 2);
 
@@ -394,7 +409,7 @@ void GerirPropriedades(){
                 break;
             case 2:
                 if(Permissao(AGENTE)){
-                    ListarPropriedadeDeProprietario(usernameRegistado);
+                    ListarPropriedadeDeProprietario(username_cliente);
                 } else {
                     ListarTipoPropriedades();
                 }
@@ -593,7 +608,7 @@ void MenuRemoverConta(bool propriaConta){
                 return;
                 break;
             case 1:
-                RemoverUtilizador(usernameRegistado);
+                RemoverUtilizador(username_cliente);
                 exit(0);
                 break;
             default:
@@ -828,7 +843,7 @@ void MenuListarContas(){
         // Lista das opções
         switch (escolha) {
             case 1:
-                ListarConta(usernameRegistado);
+                ListarConta(username_cliente);
                 MenuEditarRemoverContas(true);
                 break;
             case 2:
@@ -946,7 +961,7 @@ void MenuPrincipal(){
             case 2:
                 // Contas
                 if(Permissao(CLIENTE)){
-                    ListarConta(usernameRegistado);
+                    ListarConta(username_cliente);
                     MenuEditarRemoverContas(true);
                     break;
                 } else {
@@ -1016,7 +1031,7 @@ int main() {
                     printf("Login bem-sucedido!\n");
 
                     //Guardar o usuario registado
-                    strcpy(usernameRegistado , usuario);
+                    strcpy(username_cliente , usuario);
                     tipoRegistado = tipoRegisto(usuario);
                     loginSucesso = true;
 
