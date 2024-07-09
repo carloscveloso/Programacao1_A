@@ -1,9 +1,4 @@
  0    0 admin admin 0
-Carlos 632901762 Viana 976002514 2003-01-23 1 Cal 123456 2
+Carlos 3 Viana 956785098 0012-09-20 1 Carlos 123456 2
  0    0 admin admin 0
-Nihhiu 437609174 Famalicao 906182547 2003-03-01 1 Nihhiu 123456 2
- 0    0 admin admin 0
-Carlos 658294031 Famalicao 902548239 2013-06-11 1 Carlos 654321 1
- 0    0 admin admin 0
-Carlos 658294031 Famalicao 902548239 2013-06-11 1 Carlos 654321 1
- 0    0 admin admin 0
+Sofia 98 Barcelos 986046238 0015-04-19 1 Sofia 123456 2
