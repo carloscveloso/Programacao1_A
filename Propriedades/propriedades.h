@@ -1,6 +1,8 @@
 #ifndef PROPRIEDADES_H
 #define PROPRIEDADES_H
 
+#include <stdbool.h>
+
 typedef enum {
     CASA, 
     APARTAMENTO, 

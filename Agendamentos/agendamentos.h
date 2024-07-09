@@ -32,9 +32,6 @@ typedef struct {
     int duracao_estimada;
 } ClienteFilaEspera;
 
-ClienteFilaEspera fila_espera[MAX_CLIENTES_FILA_ESPERA];
-int num_clientes_fila_espera = 0;
-
 // Função para agendar uma visita
 void agendar_visita(char username_cliente[50], char username_agente[50], int mes, int dia, int data_hora, int id_propriedade, TipoPropriedade tipo_propriedade);
 
