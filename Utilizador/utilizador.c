@@ -59,14 +59,14 @@ TipoUtilizador* tipoRegisto(char *username) {
 void ListarConta(char* username) {
     for (int i = 0; i < numUtilizadores; i++) {
         if (strcmp(utilizadores[i].username, username) == 0) {
-            printf("--------- %d -------", utilizadores[i].nome);
-            printf("\nUsername: ", utilizadores[i].username);
-            printf("\nContacto: ", utilizadores[i].contactoTelefonico);
-            printf("\nMorada: ", utilizadores[i].morada);
-            printf("\nNIF: ", utilizadores[i].NIF);
-            printf("\nData de Nascimento: ", utilizadores[i].dataNascimento);
-            printf("\nDisponibilidade: ", utilizadores[i].disponivel);
-            printf("\nPassword: ", utilizadores[i].password);
+            printf("--------- %s -------\n", utilizadores[i].nome);
+            printf("\nUsername: %s\n ", utilizadores[i].username);
+            printf("\nContacto: %s\n ", utilizadores[i].contactoTelefonico);
+            printf("\nMorada: %s\n", utilizadores[i].morada);
+            printf("\nNIF: %d\n", utilizadores[i].NIF);
+            printf("\nData de Nascimento: %s\n", utilizadores[i].dataNascimento);
+            printf("\nDisponibilidade: %d\n", utilizadores[i].disponivel);
+            printf("\nPassword: %s\n", utilizadores[i].password);
             return;
         }
     }
@@ -87,21 +87,25 @@ bool verificarTipo(TipoUtilizador pretendido, char *username) {
 void lerFicheiroUtilizadores() {
     FILE *file = fopen("utilizadores.txt", "r");
     if (file != NULL) {
-        while (!feof(file)) {
-            if(fscanf(file, "%s %d %s %s %s %d %s %s %d", 
+        char line[1024];
+        while (fgets(line, sizeof(line), file) != NULL) {
+            if(scanf(line, "%s %d %s %s %s %d %s %s %d",
                       utilizadores[numUtilizadores].nome, &utilizadores[numUtilizadores].NIF,
                       utilizadores[numUtilizadores].morada, utilizadores[numUtilizadores].contactoTelefonico,
                       utilizadores[numUtilizadores].dataNascimento, &utilizadores[numUtilizadores].disponivel,
                       utilizadores[numUtilizadores].username, utilizadores[numUtilizadores].password,
-                      (int *)&utilizadores[numUtilizadores].tipo)){
-                (numUtilizadores)++;
+                      (int *)&utilizadores[numUtilizadores].tipo) == 9){
+                numUtilizadores++;
                 if (utilizadores[numUtilizadores - 1].tipo == AGENTE) {
-                    (numAgentes)++;
+                    numAgentes++;
                 }
+            } else{
+                fprintf(stderr, "Erro ao ler a linha: %s\n", line);
             }
-            
         }
         fclose(file);
+    } else{
+        perror("Erro ao abrir o ficheiro");
     }
 }
 
@@ -177,8 +181,8 @@ void RemoverUtilizador(char* username) {
 
 void ListarUtilizador(TipoUtilizador tipoUtilizador, int tipoNum) {
     TipoUtilizador tipoPretendido = CLIENTE;
-    switch (tipoNum)
-    {
+
+    switch (tipoNum){
     case 1:
         tipoPretendido = CLIENTE;
         break;
@@ -199,7 +203,7 @@ void ListarUtilizador(TipoUtilizador tipoUtilizador, int tipoNum) {
             printf("\nContacto: %s", utilizadores[i].contactoTelefonico);
             printf("\nMorada: %s", utilizadores[i].morada);
             if(tipoUtilizador == ADMINISTRADOR){
-                printf("\nNIF: %s", utilizadores[i].NIF);
+                printf("\nNIF: %d", utilizadores[i].NIF);
                 printf("\nData de Nascimento: %s", utilizadores[i].dataNascimento);
                 printf("\nDisponibilidade: %d", utilizadores[i].disponivel);
                 printf("\nPassword: %s", utilizadores[i].password);
@@ -222,6 +226,10 @@ Utilizador* ReturnUtilizador(char* username) {
 
 char** AgentesIndisponiveis(){
     char** usernames = (char**)malloc(numUtilizadores * sizeof(char*));
+    if(usernames == NULL){
+        return NULL;
+    }
+
     int j = 0;
     for (int i = 0; i < numUtilizadores; i++) {
         if (utilizadores[i].disponivel == 0 && utilizadores[i].tipo == AGENTE) {
@@ -231,6 +239,10 @@ char** AgentesIndisponiveis(){
         }
     }
     usernames = (char**)realloc(usernames, j * sizeof(char*));
+    if(usernames == NULL){
+        free(usernames);
+        return NULL;
+    }
     return usernames;
 }
 
@@ -244,22 +256,23 @@ void trocar(Utilizador *a, Utilizador *b) {
 }
 
 void ListarOrdenacao(TipoUtilizador tipoUtilizador, Utilizador *utilizadorOrdenado, int numOrdenados) {
-    
-    for (int i = 0; i < numOrdenados; i++) {
-        printf("--------- %s -------", utilizadorOrdenado[i].nome);
-        printf("\nUsername: %s", utilizadorOrdenado[i].username);
-        printf("\nContacto: %s", utilizadorOrdenado[i].contactoTelefonico);
-        printf("\nMorada: %s", utilizadorOrdenado[i].morada);
-        if(tipoUtilizador == ADMINISTRADOR){
-            printf("\nNIF: %s", utilizadorOrdenado[i].NIF);
-            printf("\nData de Nascimento: %s", utilizadorOrdenado[i].dataNascimento);
-            printf("\nDisponibilidade: %d", utilizadorOrdenado[i].disponivel);
-            printf("\nPassword: %s", utilizadorOrdenado[i].password);
+    if(numOrdenados != 0){
+        for (int i = 0; i < numOrdenados; i++) {
+            printf("--------- %s -------\n", utilizadorOrdenado[i].nome);
+            printf("\nUsername: %s\n", utilizadorOrdenado[i].username);
+            printf("\nContacto: %s\n", utilizadorOrdenado[i].contactoTelefonico);
+            printf("\nMorada: %s\n", utilizadorOrdenado[i].morada);
+            if(tipoUtilizador == ADMINISTRADOR){
+                printf("\nNIF: %d\n", utilizadorOrdenado[i].NIF);
+                printf("\nData de Nascimento: %s\n", utilizadorOrdenado[i].dataNascimento);
+                printf("\nDisponibilidade: %d\n", utilizadorOrdenado[i].disponivel);
+                printf("\nPassword: %s\n", utilizadorOrdenado[i].password);
+            }
+            printf("\n");
         }
-        printf("\n");
-        return;
+    } else {
+        printf("Utilizador não encontrado ou tipo de utilizador não corresponde ao tipo pretendido.\n");
     }
-    printf("Utilizador não encontrado ou tipo de utilizador não corresponde ao tipo pretendido.\n");
 }
 
 void ordenarPorNome(TipoUtilizador tipoUtilizador, int tipoOrdenar) {
@@ -298,7 +311,7 @@ void ordenarPorNome(TipoUtilizador tipoUtilizador, int tipoOrdenar) {
 
 int calcularIdade(const char *dataNascimento) {
     int anoNascimento, mesNascimento, diaNascimento;
-    sscanf(dataNascimento, "%d-%d-%d", &anoNascimento, &mesNascimento, &diaNascimento);
+    scanf(dataNascimento, "%d-%d-%d", &anoNascimento, &mesNascimento, &diaNascimento);
 
     // Supondo que a data atual é 2024-05-30
     int anoAtual = 2024;

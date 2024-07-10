@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
 #include "propriedades.h"
@@ -38,14 +37,17 @@ void lerFicheiroPropriedades() {
     FILE *file = fopen("propriedades.txt", "r");
     if (file != NULL) {
         while (!feof(file)) {
-            if (fscanf(file, "%d %s %d %d %s", 
+            if (fscanf(file, "%d %s %lf %d %s",
                         &propriedades[num_propriedades].id,
                         propriedades[num_propriedades].morada,
                         &propriedades[num_propriedades].preco,
                         &propriedades[num_propriedades].tipo,
-                        propriedades[num_propriedades].username_proprietario)) {
+                        propriedades[num_propriedades].username_proprietario) == 5) {
                 (num_propriedades)++;
-                ultimo_id = propriedades[num_propriedades].id;
+                ultimo_id = propriedades[num_propriedades - 1].id;
+            } else{
+                printf("Erro ao ler dados da propriedade.\n");
+                break;
             }
         }
         fclose(file);
@@ -56,7 +58,7 @@ void gravarFicheiroPropriedades() {
     FILE *file = fopen("propriedades.txt", "w");
     if (file != NULL) {
         for (int i = 0; i < num_propriedades; i++) {
-            fprintf(file, "%d %s %d %d %s\n", 
+            fprintf(file, "%d %s %f %d %s\n",
                     propriedades[i].id, propriedades[i].morada,
                     propriedades[i].preco, propriedades[i].tipo,
                     propriedades[i].username_proprietario);
@@ -111,10 +113,9 @@ bool VerificarIDPropriedade(int ID, char proprietariosIndisponiveis[20][15]) {
             for(int j = 0; j < 15; j++){
                 if(strcmp(proprietariosIndisponiveis[j], propriedades[i].username_proprietario) == 0){
                     return false;
-                } else {
-                    return true;
                 }
             }
+            return true;
         }
     }
     return false;
@@ -183,7 +184,7 @@ void ListarPropriedadePorPreco(int numPropriedadeEscolhida, char proprietariosIn
         printf("ID: %d\n", temp[i].id);
         printf("Morada: %s\n", temp[i].morada);
         printf("Proprietário: %s\n", temp[i].username_proprietario);
-        printf("Preço: %d\n", temp[i].preco);
+        printf("Preço: %f\n", temp[i].preco);
     }
 }
 
@@ -199,7 +200,7 @@ void ListarPropriedade(int numPropriedadeEscolhida, char proprietariosIndisponiv
                         printf("Morada: %s\n", propriedades[i].morada);
                         printf("Tipo: ");
                         PrintTipo(propriedades[i].tipo);
-                        printf("\nPreço: %d\n", propriedades[i].preco);
+                        printf("\nPreço: %f\n", propriedades[i].preco);
                     }
                 }
         }
@@ -214,7 +215,7 @@ void ListarPropriedadeDeProprietario(char *username) {
             printf("Morada: %s\n", propriedades[i].morada);
             printf("Tipo: ");
             PrintTipo(propriedades[i].tipo);
-            printf("\nPreço: %d\n", propriedades[i].preco);
+            printf("\nPreço: %f\n", propriedades[i].preco);
         }
     }
 }
