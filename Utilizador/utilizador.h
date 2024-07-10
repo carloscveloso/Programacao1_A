@@ -18,7 +18,7 @@ typedef struct {
     int NIF;
     char morada[100];
     char contactoTelefonico[15];
-    char dataNascimento[11]; // Formato: YYYY-MM-DD
+    char dataNascimento[20]; // Formato: YYYY-MM-DD
     bool disponivel;
     char username[20]; // Identificador
     char password[20];

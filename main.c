@@ -438,7 +438,7 @@ void GerirPropriedades(){
     } while (verificar == false);
 }
 
-
+/*
 void MenuAgendamentoListas(){
     int escolha = 0;
     int verificar = false;
@@ -460,19 +460,33 @@ void MenuAgendamentoListas(){
 
         switch (escolha) {
             case 1:
-                listar_visitas_por_dia();
+                printf("Digite o dia: ");
+                scanf("%d", &dia);
+                printf("Digite o mes: ");
+                scanf("%d", &mes);
+                listar_visitas_por_dia(dia, mes);
                 verificar = true;
                 break;
             case 2:
-                listar_visitas_por_agente();
+                printf("Digite o username do agente: ");
+                scanf("%s", username_agente);
+                printf("Digite o dia: ");
+                scanf("%d", &dia);
+                listar_visitas_por_agente(username_agente, dia);
                 verificar = true;
                 break;
             case 3:
-                listar_visitas_por_tipo_propriedade();
+                printf("Qual é o id da propriedade: ");
+                scanf("%d", &id_propriedade);
+                printf("Digite o dia: ");
+                scanf("%d", &dia);
+                listar_visitas_por_tipo_propriedade(id_propriedade, dia);
                 verificar = true;
                 break;
             case 4:
-                listar_visitas_nao_compareceu();
+                printf("Digite o dia: ");
+                scanf("%d", &dia);
+                listar_visitas_nao_compareceu(dia);
                 verificar = true;
                 break;
             case 5:
@@ -486,7 +500,7 @@ void MenuAgendamentoListas(){
         }
     } while (verificar == false);
 }
-
+*/
 // Agendamentos
 
 // TODO - Gerir Agendamentos
@@ -512,7 +526,7 @@ void GerirAgendamentos(){
         // Lista das opções
         switch (escolha) {
             case 1:
-                MenuAgendamentoListas();
+                //MenuAgendamentoListas();
                 verificar = true;
                 break;
             case 0:

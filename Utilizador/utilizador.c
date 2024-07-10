@@ -87,30 +87,48 @@ bool verificarTipo(TipoUtilizador pretendido, char *username) {
 void lerFicheiroUtilizadores() {
     FILE *file = fopen("utilizadores.txt", "r");
     if (file != NULL) {
-        char line[1024];
-        while (fgets(line, sizeof(line), file) != NULL) {
-            if(scanf(line, "%s %d %s %s %s %d %s %s %d",
-                      utilizadores[numUtilizadores].nome, &utilizadores[numUtilizadores].NIF,
-                      utilizadores[numUtilizadores].morada, utilizadores[numUtilizadores].contactoTelefonico,
-                      utilizadores[numUtilizadores].dataNascimento, &utilizadores[numUtilizadores].disponivel,
-                      utilizadores[numUtilizadores].username, utilizadores[numUtilizadores].password,
-                      (int *)&utilizadores[numUtilizadores].tipo) == 9){
-                numUtilizadores++;
-                if (utilizadores[numUtilizadores - 1].tipo == AGENTE) {
-                    numAgentes++;
+        char linha[300]; // Tamanho suficiente para armazenar uma linha do ficheiro
+        while (fgets(linha, sizeof(linha), file)) {
+            int tipo;
+            if (sscanf(linha, "%s %d %s %s %s %d %s %s %d",
+                       utilizadores[numUtilizadores].nome,
+                       &utilizadores[numUtilizadores].NIF,
+                       utilizadores[numUtilizadores].morada,
+                       utilizadores[numUtilizadores].contactoTelefonico,
+                       utilizadores[numUtilizadores].dataNascimento,
+                       (int*)&utilizadores[numUtilizadores].disponivel,
+                       utilizadores[numUtilizadores].username,
+                       utilizadores[numUtilizadores].password,
+                       &tipo) == 9) {
+
+                switch (tipo) {
+                    case 0:
+                        utilizadores[numUtilizadores].tipo = ADMINISTRADOR;
+                        break;
+                    case 1:
+                        utilizadores[numUtilizadores].tipo = AGENTE;
+                        numAgentes++;
+                        break;
+                    case 2:
+                        utilizadores[numUtilizadores].tipo = CLIENTE;
+                        break;
+                    default:
+                        printf("Tipo de utilizador desconhecido: %d\n", tipo);
+                        continue; // Skip this entry
                 }
-            } else{
-                fprintf(stderr, "Erro ao ler a linha: %s\n", line);
+                numUtilizadores++;
+            } else {
+                printf("Erro ao ler dados do utilizador.\n");
             }
         }
         fclose(file);
-    } else{
-        perror("Erro ao abrir o ficheiro");
+    } else {
+        printf("Erro ao abrir o ficheiro de utilizadores.\n");
     }
 }
 
 void gravarFicheiroUtilizadores() {
-    FILE *file = fopen("../utilizadores.txt", "a+");
+    FILE *file = fopen("utilizadores.txt", "w");
     if (file != NULL) {
         for (int i = 0; i < numUtilizadores; i++) {
             fprintf(file, "%s %d %s %s %s %d %s %s %d\n", 
@@ -224,27 +242,18 @@ Utilizador* ReturnUtilizador(char* username) {
     return NULL;
 }
 
-char** AgentesIndisponiveis(){
-    char** usernames = (char**)malloc(numUtilizadores * sizeof(char*));
-    if(usernames == NULL){
-        return NULL;
-    }
-
+char** AgentesIndisponiveis() {
+    char username[20][25];
     int j = 0;
-    for (int i = 0; i < numUtilizadores; i++) {
-        if (utilizadores[i].disponivel == 0 && utilizadores[i].tipo == AGENTE) {
-            usernames[j] = (char*)malloc(15 * sizeof(char));
-            strcpy(usernames[j], utilizadores[i].username);
+    for(int i=0; i<numUtilizadores; i++){
+        if(utilizadores[i].disponivel == 0 && utilizadores[i].tipo == AGENTE) {
+            strcpy(username[j], utilizadores[i].username);
             j++;
         }
     }
-    usernames = (char**)realloc(usernames, j * sizeof(char*));
-    if(usernames == NULL){
-        free(usernames);
-        return NULL;
-    }
-    return usernames;
+    return username;
 }
+
 
 
 // ORDENAÇÕES

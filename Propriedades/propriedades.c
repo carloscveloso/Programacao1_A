@@ -3,6 +3,7 @@
 #include <stdbool.h>
 #include "propriedades.h"
 
+
 #define MAX_PROPRIEDADES 100
 
 // Variaveis Globais
@@ -36,21 +37,39 @@ void PrintTipo(int tipo) {
 void lerFicheiroPropriedades() {
     FILE *file = fopen("propriedades.txt", "r");
     if (file != NULL) {
-        while (!feof(file)) {
-            if (fscanf(file, "%d %s %lf %d %s",
+        char linha[300];
+        while (fgets(linha, sizeof(linha), file)) {
+            int tipo;
+            if (sscanf(file, "%d %s %lf %d %s",
                         &propriedades[num_propriedades].id,
                         propriedades[num_propriedades].morada,
                         &propriedades[num_propriedades].preco,
-                        &propriedades[num_propriedades].tipo,
+                        &tipo,
                         propriedades[num_propriedades].username_proprietario) == 5) {
+                switch (tipo) {
+                    case 0:
+                        propriedades[num_propriedades].tipo = CASA;
+                        break;
+                    case 1:
+                        propriedades[num_propriedades].tipo = APARTAMENTO;
+                        num_propriedades++;
+                        break;
+                    case 2:
+                        propriedades[num_propriedades].tipo = ESCRITORIO;
+                        break;
+                    default:
+                        printf("Tipo de utilizador desconhecido: %d\n", tipo);
+                        continue; // Skip this entry
+                }
                 (num_propriedades)++;
                 ultimo_id = propriedades[num_propriedades - 1].id;
             } else{
                 printf("Erro ao ler dados da propriedade.\n");
-                break;
             }
         }
         fclose(file);
+    } else {
+        printf("Erro ao abrir o ficheiro de utilizadores.\n");
     }
 }
 
