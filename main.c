@@ -200,7 +200,7 @@ void MenuEditarPropriedade(){
             default:
                 printf("Opção inválida. Por favor, escolha uma opção válida.\n");
         }
-    } while (verificar = false);
+    } while (verificar == false);
 }
 
 // #TOTEST - Menu para Remover Propriedade
