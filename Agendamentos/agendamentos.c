@@ -2,17 +2,19 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
+#include "../Propriedades/propriedades.h"
 
-// Tamanho inicial para o array dinâmico de visitas
-#define TAMANHO_INICIAL 10
+#define MAX_AGENDAMENTOS 100
 
 // Array dinâmico para armazenar as visitas
-static Visita* visitas = NULL;
-static int numero_visitas = 0;
-static int capacidade_visitas = 0;
+Visita visitas[MAX_AGENDAMENTOS];
+int numero_visitas = 0;
+int capacidade_visitas = 0;
 ClienteFilaEspera filaEspera[MAX_CLIENTES_FILA_ESPERA];
 int numClientesFilaEspera = 0;
 
+/*
 void inicializar_agendamentos() {
     // Inicializa o array dinâmico de visitas
     capacidade_visitas = TAMANHO_INICIAL;
@@ -31,36 +33,102 @@ void libertar_agendamentos() {
     numero_visitas = 0;
     capacidade_visitas = 0;
 }
+*/
 
-void agendar_visita(char username_cliente[50], char username_agente[50], int mes, int dia, int data_hora, int id_propriedade, TipoPropriedade tipo_propriedade) {
-    // Verifica se há espaço suficiente no array dinâmico, se não, dobra o tamanho do array
-    if (numero_visitas >= capacidade_visitas) {
-        capacidade_visitas *= 2;
-        visitas = (Visita*)realloc(visitas, capacidade_visitas * sizeof(Visita));
-        if (visitas == NULL) {
-            fprintf(stderr, "Erro ao realocar memória para agendamentos.\n");
-            exit(EXIT_FAILURE);
+void lerFicheiroAgendamento(){
+    FILE *file = fopen("agendamentos.txt", "r");
+    if(file != NULL){
+        char linha[300];
+        while(fgets(linha, sizeof (linha), file)) {
+            int tipoAgendamento;
+            int estadoAgendamento;
+            if(sscanf(linha, "%s %s %d %d %d %d %d %d %s %f",
+                      visitas[numero_visitas].username_agente,
+                      visitas[numero_visitas].username_cliente,
+                      &visitas[numero_visitas].id_propriedade,
+                      &tipoAgendamento,
+                      &visitas[numero_visitas].mes,
+                      &visitas[numero_visitas].dia,
+                      &visitas[numero_visitas].data_hora,
+                      &estadoAgendamento,
+                      visitas[numero_visitas].relatorio,
+                      &visitas[numero_visitas].preco) == 10) {
+                switch (tipoAgendamento) {
+                    case 0:
+                        visitas[numero_visitas].tipo_Propriedade = CASA;
+                        break;
+                    case 1:
+                        visitas[numero_visitas].tipo_Propriedade = APARTAMENTO;
+                        break;
+                    case 2:
+                        visitas[numero_visitas].tipo_Propriedade = ESCRITORIO;
+                        break;
+                    default:
+                        printf("Tipo de utilizador desconhecido: %d\n", tipoAgendamento);
+                        continue; // Skip this entry
+                }
+                switch (estadoAgendamento) {
+                    case 0:
+                        visitas[numero_visitas].estado = ESTADO_AGENDADA;
+                        break;
+                    case 1:
+                        visitas[numero_visitas].estado = ESTADO_REALIZADA;
+                        break;
+                    case 2:
+                        visitas[numero_visitas].estado = ESTADO_NAO_COMPARECEU;
+                        break;
+                    default:
+                        printf("Tipo de utilizador desconhecido: %d\n", estadoAgendamento);
+                        continue; // Skip this entry
+                }
+                numero_visitas++;
+            } else {
+                printf("Erro ao ler os dados do agendamento.\n");
+            }
         }
+        fclose(file);
+    } else{
+        printf("Erro ao abrir o ficheiro de utilizador.\n");
     }
-
-    // Preenche os dados da nova visita
-    strcpy(visitas[numero_visitas].username_cliente, username_cliente);
-    strcpy(visitas[numero_visitas].username_agente, username_agente);
-    visitas[numero_visitas].mes = mes;
-    visitas[numero_visitas].dia = dia;
-    visitas[numero_visitas].data_hora = data_hora;
-    visitas[numero_visitas].estado = ESTADO_AGENDADA;
-    visitas[numero_visitas].id_propriedade = id_propriedade;
-    visitas[numero_visitas].tipo_Propriedade = tipo_propriedade;
-
-    // Incrementa o contador de visitas
-    numero_visitas++;
-
-    printf("Foi agendado uma visita na data %i/%i 'as %ih.\n", dia, mes, data_hora);
 }
 
+void gravarFicheiroAgendamento(){
+    FILE *file = fopen("agendamentos.txt", "w");
+    if(file != NULL){
+        for(int i=0; i<numero_visitas; i++){
+            fprintf(file, "%s %s %d %d %d %d %d %d %s %f\n",
+                    visitas[i].username_agente, visitas[i].username_cliente,
+                    visitas[i].id_propriedade, visitas[i].tipo_Propriedade,
+                    visitas[i].mes, visitas[i].dia, visitas[i].data_hora,
+                    visitas[i].estado, visitas[i].relatorio, visitas[i].preco);
+        }
+        fclose(file);
+    }
+}
+
+void agendar_visita(char username_cliente[50], char username_agente[50], int mes, int dia, int data_hora, int id_propriedade, TipoPropriedade tipo_propriedade) {
+    visitas[numero_visitas].id_propriedade = numero_visitas + 1;
+    if(numero_visitas < MAX_AGENDAMENTOS) {
+        strcpy(visitas[numero_visitas].username_cliente, username_cliente);
+        strcpy(visitas[numero_visitas].username_agente, username_agente);
+        visitas[numero_visitas].mes = mes;
+        visitas[numero_visitas].dia = dia;
+        visitas[numero_visitas].data_hora = data_hora;
+        visitas[numero_visitas].id_propriedade = id_propriedade;
+        visitas[numero_visitas].tipo_Propriedade = tipo_propriedade;
+        numero_visitas++;
+        printf("Agendamento criado com sucesso.\n");
+        gravarFicheiroAgendamento();
+        return;
+    } else {
+        printf("Erro: Limite de agendamentos atingido.\n");
+    }
+}
+
+
+/*
 void listar_visitas_por_dia(int dia, int mes) {
-    printf("Listando visitas para o dia %i:\n", dia);
+  ;  printf("Listando visitas para o dia %i:\n", dia);
 
     // Percorre o array de visitas
     for (int i = 0; i < numero_visitas; i++) {
@@ -324,6 +392,7 @@ void calcular_tempo_espera_estimado() {
         printf("Não há clientes na fila de espera.\n");
     }
 }
+ */
 
 // TODO criar escrever ficheiro
 // TODO ler ficheiro

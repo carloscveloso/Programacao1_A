@@ -105,8 +105,8 @@ void MenuClientePropriedades(){
                 scanf("%d", &data_hora);
 
                 Propriedade propriedade = ReturnPropriedade(idPropriedadeEscolhida);
-                // DOING - Adicionar Agendamento
                 agendar_visita(username_cliente, propriedade.username_proprietario, data_dia, data_mes, data_hora, idPropriedadeEscolhida, propriedade.tipo);
+                gravarFicheiroAgendamento();
                 verificar = true;
                 break;
             case 0:
@@ -763,7 +763,6 @@ void MenuEditarRemoverContas(bool propriaConta){
                 MenuRemoverConta(propriaConta);
                 verificar = true;
                 exit(0);
-                break;
             case 2:
                 if(propriaConta == true || Permissao(ADMINISTRADOR)){
                     MenuEditarConta(propriaConta);
@@ -1094,6 +1093,7 @@ int main() {
     //Reaver dados no ficheiro
     lerFicheiroUtilizadores();
     lerFicheiroPropriedades();
+    lerFicheiroAgendamento();
     adicionarAdministrador();
 
     // Variaveis

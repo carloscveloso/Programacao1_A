@@ -32,9 +32,14 @@ typedef struct {
     int duracao_estimada;
 } ClienteFilaEspera;
 
+//CRUD Ficheiro
+void lerFicheiroAgendamento();
+void gravarFicheiroAgendamento();
+
 // Função para agendar uma visita
 void agendar_visita(char username_cliente[50], char username_agente[50], int mes, int dia, int data_hora, int id_propriedade, TipoPropriedade tipo_propriedade);
 
+/*
 // Inicializa o sistema de agendamentos
 void inicializar_agendamentos();
 
@@ -74,5 +79,5 @@ void remover_proximo_cliente_fila_espera();
 void listar_clientes_fila_espera();
 void apresentar_proximo_cliente();
 void calcular_tempo_espera_estimado();
-
+*/
 #endif
