@@ -125,18 +125,81 @@ void agendar_visita(char username_cliente[50], char username_agente[50], int mes
     }
 }
 
+void listar_visitas_por_dia(int dia, int mes, char* username, TipoUtilizador tipoResgistado) {
+    printf("Listar visitas para o dia %i:\n", dia);
 
-/*
-void listar_visitas_por_dia(int dia, int mes) {
-  ;  printf("Listando visitas para o dia %i:\n", dia);
+    switch (tipoResgistado) {
+        case CLIENTE:
+            // Percorre o array de visitas
+            for (int i = 0; i < numero_visitas; i++) {
+                // Verifica se a visita ocorreu no dia especificado
+                if (visitas[i].mes == mes &&
+                    visitas[i].dia == dia &&
+                    (strcmp(username, visitas[i].username_cliente) == 0)) {
 
-    // Percorre o array de visitas
-    for (int i = 0; i < numero_visitas; i++) {
-        // Verifica se a visita ocorreu no dia especificado
-        if (visitas[i].mes == mes && visitas[i].dia == dia) {
-            printf("Cliente: %s, Propriedade: %u Hora: %i\n",
-                   visitas[i].username_cliente, visitas[i].tipo_Propriedade, visitas[i].data_hora);
-        }
+                    printf("Agente: %s, Propriedade: %u Hora: %i\n",
+                           visitas[i].username_agente, visitas[i].tipo_Propriedade, visitas[i].data_hora);
+                }
+            }
+            break;
+        case AGENTE:
+            // Percorre o array de visitas
+            for (int i = 0; i < numero_visitas; i++) {
+                // Verifica se a visita ocorreu no dia especificado
+                if (visitas[i].mes == mes &&
+                    visitas[i].dia == dia &&
+                    (strcmp(username, visitas[i].username_agente) == 0)) {
+
+                    printf("Cliente: %s, Propriedade: %u Hora: %i\n",
+                           visitas[i].username_cliente, visitas[i].tipo_Propriedade, visitas[i].data_hora);
+                }
+            }
+            break;
+        case ADMINISTRADOR:
+            break;
+        default:
+            printf("Ocorreu um erro ao obter o tipo Registado");
+            return;
+
+    }
+}
+
+void listar_todas_visitas(char* username, TipoUtilizador tipoRegistado) {
+
+    switch (tipoRegistado) {
+        case CLIENTE:
+            // Percorre o array de visitas
+            for (int i = 0; i < numero_visitas; i++) {
+                // Verifica se a visita ocorreu no dia especificado
+                if ((strcmp(username, visitas[i].username_cliente) == 0)) {
+
+                    printf("-----------------\n");
+                    printf("Data Agendada: %d/%d %dh | \n",
+                           visitas[i].dia, visitas[i].mes, visitas[i].data_hora);
+                    printf("Agente: %s Propriedade: %u | \n",
+                           visitas[i].username_agente, visitas[i].tipo_Propriedade);
+                }
+            }
+            break;
+        case AGENTE:
+            // Percorre o array de visitas
+            for (int i = 0; i < numero_visitas; i++) {
+                // Verifica se a visita ocorreu no dia especificado
+                if ((strcmp(username, visitas[i].username_agente) == 0)) {
+
+                    printf("-----------------\n");
+                    printf("Data Agendada: %d/%d %dh | \n",
+                           visitas[i].dia, visitas[i].mes, visitas[i].data_hora);
+                    printf("Cliente: %s Propriedade: %u | \n",
+                           visitas[i].username_cliente, visitas[i].tipo_Propriedade);
+                }
+            }
+            break;
+        case ADMINISTRADOR:
+            break;
+        default:
+            printf("Ocorreu um erro ao obter o tipo Registado");
+            return;
     }
 }
 
@@ -392,7 +455,7 @@ void calcular_tempo_espera_estimado() {
         printf("Não há clientes na fila de espera.\n");
     }
 }
- */
+ 
 
 // TODO criar escrever ficheiro
 // TODO ler ficheiro

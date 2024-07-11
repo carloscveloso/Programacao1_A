@@ -443,10 +443,11 @@ void GerirPropriedades(){
     } while (verificar == false);
 }
 
-/*
+
 void MenuAgendamentoListas(){
     int escolha = 0;
     int verificar = false;
+    int dia, mes;
 
     do{
         printf("-----------------\n");
@@ -456,7 +457,7 @@ void MenuAgendamentoListas(){
         printf("2. Listar Visitas por agente\n");
         printf("3. Listar Visitas do Tipo de Propriedade\n");
         printf("4. Listar Visitas Não Comparecidas\n");
-        printf("5. Listar Cliente Fila de Espera\n");
+        printf("5. Todos\n");
         printf("\n-----------------\n");
         printf("0. Sair\n");
         printf("-----------------\n\n");
@@ -469,33 +470,40 @@ void MenuAgendamentoListas(){
                 scanf("%d", &dia);
                 printf("Digite o mes: ");
                 scanf("%d", &mes);
-                listar_visitas_por_dia(dia, mes);
+
+                listar_visitas_por_dia(dia, mes, username_cliente, *tipoRegistado);
                 verificar = true;
                 break;
             case 2:
+                printf("#TODO - ainda não foi implomentado");
+                /*
                 printf("Digite o username do agente: ");
                 scanf("%s", username_agente);
                 printf("Digite o dia: ");
                 scanf("%d", &dia);
-                listar_visitas_por_agente(username_agente, dia);
+                listar_visitas_por_agente(username_agente, dia);*/
                 verificar = true;
                 break;
             case 3:
+                printf("#TODO - ainda não foi implomentado");
+                /*
                 printf("Qual é o id da propriedade: ");
                 scanf("%d", &id_propriedade);
                 printf("Digite o dia: ");
                 scanf("%d", &dia);
-                listar_visitas_por_tipo_propriedade(id_propriedade, dia);
+                listar_visitas_por_tipo_propriedade(id_propriedade, dia);*/
                 verificar = true;
                 break;
             case 4:
+                printf("#TODO - ainda não foi implomentado");
+                /*
                 printf("Digite o dia: ");
                 scanf("%d", &dia);
-                listar_visitas_nao_compareceu(dia);
+                listar_visitas_nao_compareceu(dia);*/
                 verificar = true;
                 break;
             case 5:
-                listar_clientes_fila_espera();
+                listar_todas_visitas(username_cliente, *tipoRegistado);
                 verificar = true;
                 break;
             case 0:
@@ -505,7 +513,7 @@ void MenuAgendamentoListas(){
         }
     } while (verificar == false);
 }
-*/
+
 // Agendamentos
 
 // TODO - Gerir Agendamentos
@@ -521,7 +529,6 @@ void GerirAgendamentos(){
         printf("-----------------\n\n");
         printf("1. Listar Agendamentos\n");
         printf("2. Histórico de visitas\n");
-        printf("3. Gerar Relatório\n");
         printf("\n-----------------\n");
         printf("0. Sair\n");
         printf("-----------------\n\n");
@@ -531,7 +538,11 @@ void GerirAgendamentos(){
         // Lista das opções
         switch (escolha) {
             case 1:
-                //MenuAgendamentoListas();
+                MenuAgendamentoListas();
+                verificar = true;
+                break;
+            case 2:
+                printf("#TODO - ainda não foi implomentado");
                 verificar = true;
                 break;
             case 0:
@@ -1076,158 +1087,162 @@ void MenuPrincipal(){
                 break;
             case 3:
                 // Agendamentos
-                GerirAgendamentos();
+                if (Permissao(CLIENTE)){
+                    MenuAgendamentoListas();
+                } else {
+                    GerirAgendamentos();
+                }
                 verificar = true;
                 break;
-            case 0:
-                printf("Encerrando o programa...\n");
-                return;
-            default:
-                printf("Opção inválida. Por favor, escolha uma opção válida.\n");
-        }
-    } while (verificar == false);
+        case 0:
+            printf("Encerrando o programa...\n");
+            return;
+        default:
+            printf("Opção inválida. Por favor, escolha uma opção válida.\n");
+    }
+} while (verificar == false);
 }
 
 // Função Principal
 int main() {
-    //Reaver dados no ficheiro
-    lerFicheiroUtilizadores();
-    lerFicheiroPropriedades();
-    lerFicheiroAgendamento();
-    adicionarAdministrador();
+//Reaver dados no ficheiro
+lerFicheiroUtilizadores();
+lerFicheiroPropriedades();
+lerFicheiroAgendamento();
+adicionarAdministrador();
 
-    // Variaveis
-    int escolha;
-    bool loginSucesso = false;
+// Variaveis
+int escolha;
+bool loginSucesso = false;
 
-    // #TOTEST Menu de Registro
-    do {
-        
-        printf("-----------------\n");
-        printf("Bem-vindo!\n");
-        printf("-----------------\n\n");
-        printf("1. Login\n");
-        printf("2. Registrar\n");
-        printf("\n-----------------\n");
-        printf("0. Sair\n");
-        printf("-----------------\n\n");
-        printf("Escolha uma opção: ");
-        scanf("%d", &escolha);
+// #TOTEST Menu de Registro
+do {
 
-        // Lista das opções
-        switch (escolha) {
-            case 1: {
-                // #TOTEST Login
+    printf("-----------------\n");
+    printf("Bem-vindo!\n");
+    printf("-----------------\n\n");
+    printf("1. Login\n");
+    printf("2. Registrar\n");
+    printf("\n-----------------\n");
+    printf("0. Sair\n");
+    printf("-----------------\n\n");
+    printf("Escolha uma opção: ");
+    scanf("%d", &escolha);
 
-                // Variaveis
-                char usuario[20], password[20];
-                getchar();
+    // Lista das opções
+    switch (escolha) {
+        case 1: {
+            // #TOTEST Login
 
-                // Menu
-                printf("-----------------\n");
-                printf("Login\n");
-                printf("-----------------\n");
+            // Variaveis
+            char usuario[20], password[20];
+            getchar();
 
-                printf("\nUsuário: ");
-                scanf(" %s", usuario);
-                printf("\nSenha: ");
-                scanf(" %s", password);
+            // Menu
+            printf("-----------------\n");
+            printf("Login\n");
+            printf("-----------------\n");
 
-                // Validações
-                if (efetuarLogin(usuario, password)) {
-                    printf("Login bem-sucedido!\n");
+            printf("\nUsuário: ");
+            scanf(" %s", usuario);
+            printf("\nSenha: ");
+            scanf(" %s", password);
 
-                    //Guardar o usuario registado
-                    strcpy(username_cliente , usuario);
-                    tipoRegistado = tipoRegisto(usuario);
-                    loginSucesso = true;
+            // Validações
+            if (efetuarLogin(usuario, password)) {
+                printf("Login bem-sucedido!\n");
 
-                    
-                    // Se o login for bem-sucedido, sair do menu de login e ir para o menu principal
-                    MenuPrincipal();
-                    break;
-                } else {
-                    printf("Credenciais inválidas. Tente novamente.\n");
-                    break;
-                }
-            }
-            case 2: {
-                // #TOTEST Registrar
-                
-                // Variaveis
-                Utilizador novoUtilizador;
-                bool dataValida = false;
-
-                // Menu
-                printf("-----------------\n");
-                printf("Registrar\n");
-                printf("-----------------\n");
-
-                // Username
-                do {
-                    printf("\nUsername: ");
-                    scanf("%s", novoUtilizador.username);
-                } while (verificarUsername(novoUtilizador.username));
-
-                // Password
-                do {
-                    printf("\nPassword: ");
-                    scanf("%s", novoUtilizador.password);
-                } while (strlen(novoUtilizador.password) < 6);
-
-                // Nome
-                printf("\nNome: ");
-                scanf("%s", novoUtilizador.nome);
-
-                // Número de Telefone
-                printf("\nNúmero de Telefone: ");
-                scanf("%s", novoUtilizador.contactoTelefonico);
-
-                // Data de Nascimento
-                do{
-                    int ano, mes, dia;
-
-                    printf("\nData de Nascimento (Formato: YYYY-MM-DD): ");
-                    if (scanf("%4d-%2d-%2d", &ano, &mes, &dia) != 3) {
-                        printf("Formato inválido. Certifique-se de usar o formato YYYY-MM-DD.\n\n");
-                        continue;
-                    }
-                    // Formatar em string
-                    sprintf(novoUtilizador.dataNascimento, "%04d-%02d-%02d", ano, mes, dia);
-
-                    // Validações
-                    if (ano >= 0 && ano <= 9999 && mes >= 1 && mes <= 12 && dia >= 1 && dia <= 31){
-                        dataValida = true;
-                    }           
-                } while (dataValida == false);
-                
-                // NIF
-                printf("\nNIF: ");
-                scanf("%d", &novoUtilizador.NIF);
-
-                // Morada
-                printf("\nMorada: ");
-                scanf("%s", novoUtilizador.morada);
-
-                // Tipo de utilizador
-                novoUtilizador.tipo = CLIENTE;
-                novoUtilizador.disponivel = true;
-
-                // Registar
-                CriarUtilizador(novoUtilizador);
+                //Guardar o usuario registado
+                strcpy(username_cliente , usuario);
+                tipoRegistado = tipoRegisto(usuario);
+                loginSucesso = true;
 
 
-                // Após o registro, retornar ao menu de login e registro
+                // Se o login for bem-sucedido, sair do menu de login e ir para o menu principal
+                MenuPrincipal();
+                break;
+            } else {
+                printf("Credenciais inválidas. Tente novamente.\n");
                 break;
             }
-            case 0:
-                printf("Encerrando o programa...\n");
-                gravarFicheiroUtilizadores();
-                return 0;
-            default:
-                printf("Opção inválida. Por favor, escolha uma opção válida.\n");
         }
-    } while (!loginSucesso); // Repetir o menu até que o usuário faça login
+        case 2: {
+            // #TOTEST Registrar
 
-    return 0;
+            // Variaveis
+            Utilizador novoUtilizador;
+            bool dataValida = false;
+
+            // Menu
+            printf("-----------------\n");
+            printf("Registrar\n");
+            printf("-----------------\n");
+
+            // Username
+            do {
+                printf("\nUsername: ");
+                scanf("%s", novoUtilizador.username);
+            } while (verificarUsername(novoUtilizador.username));
+
+            // Password
+            do {
+                printf("\nPassword: ");
+                scanf("%s", novoUtilizador.password);
+            } while (strlen(novoUtilizador.password) < 6);
+
+            // Nome
+            printf("\nNome: ");
+            scanf("%s", novoUtilizador.nome);
+
+            // Número de Telefone
+            printf("\nNúmero de Telefone: ");
+            scanf("%s", novoUtilizador.contactoTelefonico);
+
+            // Data de Nascimento
+            do{
+                int ano, mes, dia;
+
+                printf("\nData de Nascimento (Formato: YYYY-MM-DD): ");
+                if (scanf("%4d-%2d-%2d", &ano, &mes, &dia) != 3) {
+                    printf("Formato inválido. Certifique-se de usar o formato YYYY-MM-DD.\n\n");
+                    continue;
+                }
+                // Formatar em string
+                sprintf(novoUtilizador.dataNascimento, "%04d-%02d-%02d", ano, mes, dia);
+
+                // Validações
+                if (ano >= 0 && ano <= 9999 && mes >= 1 && mes <= 12 && dia >= 1 && dia <= 31){
+                    dataValida = true;
+                }
+            } while (dataValida == false);
+
+            // NIF
+            printf("\nNIF: ");
+            scanf("%d", &novoUtilizador.NIF);
+
+            // Morada
+            printf("\nMorada: ");
+            scanf("%s", novoUtilizador.morada);
+
+            // Tipo de utilizador
+            novoUtilizador.tipo = CLIENTE;
+            novoUtilizador.disponivel = true;
+
+            // Registar
+            CriarUtilizador(novoUtilizador);
+
+
+            // Após o registro, retornar ao menu de login e registro
+            break;
+        }
+        case 0:
+            printf("Encerrando o programa...\n");
+            gravarFicheiroUtilizadores();
+            return 0;
+        default:
+            printf("Opção inválida. Por favor, escolha uma opção válida.\n");
+    }
+} while (!loginSucesso); // Repetir o menu até que o usuário faça login
+
+return 0;
 }

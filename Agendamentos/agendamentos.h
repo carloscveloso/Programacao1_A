@@ -39,15 +39,16 @@ void gravarFicheiroAgendamento();
 // Função para agendar uma visita
 void agendar_visita(char username_cliente[50], char username_agente[50], int mes, int dia, int data_hora, int id_propriedade, TipoPropriedade tipo_propriedade);
 
+// Função para listar todas as visitas de hoje e de um determinado dia ordenadas por hora ascendente
+void listar_visitas_por_dia(int dia, int mes, char* username, TipoUtilizador tipoRegistado);
+void listar_todas_visitas(char* username, TipoUtilizador tipoRegistado);
+
 /*
 // Inicializa o sistema de agendamentos
 void inicializar_agendamentos();
 
 // Libera a memória alocada para os agendamentos
 void libertar_agendamentos();
-
-// Função para listar todas as visitas de hoje e de um determinado dia ordenadas por hora ascendente
-void listar_visitas_por_dia(int dia, int mes);
 
 // Função para listar todas as visitas de hoje e de um determinado dia para um determinado agente
 void listar_visitas_por_agente(char username_agente[50], int dia);
