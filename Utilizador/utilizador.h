@@ -3,7 +3,7 @@
 
 #include <stdbool.h>
 
-#define MAX_AGENTES 15
+#define MAX_AGENTES 20
 
 // Definição dos tipos de utilizadores
 typedef enum {
@@ -25,9 +25,9 @@ typedef struct {
     TipoUtilizador tipo;
 } Utilizador;
 
-typedef struct AgentesIndisponiveis{
+typedef struct {
     char username_agente_indisponivel[20];
-}Indisponivel;
+}AgentesIndisponiveis;
 
 // ADD ADMIN
 void adicionarAdministrador();
@@ -54,6 +54,6 @@ Utilizador* ReturnUtilizador(char* username);
 void ordenarPorNome(TipoUtilizador tipoUtilizador, int tipoOrdenar);
 void ordenarPorIdade(TipoUtilizador tipoUtilizador, int tipoOrdenar);
 
-struct AgentesIndisponiveis* retornarIndisponiveis();
+AgentesIndisponiveis* retornarIndisponiveis();
 
 #endif 

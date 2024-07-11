@@ -7,7 +7,7 @@
 #define MAX_UTILIZADORES 100
 
 Utilizador utilizadores[MAX_UTILIZADORES];
-struct AgentesIndisponiveis indisponivel[MAX_AGENTES];
+AgentesIndisponiveis indisponivel[MAX_AGENTES];
 
 int numAgentes = 0;
 int numUtilizadores = 0;
@@ -138,10 +138,14 @@ void gravarFicheiroUtilizadores() {
     if (file != NULL) {
         for (int i = 0; i < numUtilizadores; i++) {
             fprintf(file, "%s %d %s %s %s %d %s %s %d\n", 
-                    utilizadores[i].nome, utilizadores[i].NIF,
-                    utilizadores[i].morada, utilizadores[i].contactoTelefonico,
-                    utilizadores[i].dataNascimento, utilizadores[i].disponivel,
-                    utilizadores[i].username, utilizadores[i].password,
+                    utilizadores[i].nome,
+                    utilizadores[i].NIF,
+                    utilizadores[i].morada,
+                    utilizadores[i].contactoTelefonico,
+                    utilizadores[i].dataNascimento,
+                    utilizadores[i].disponivel,
+                    utilizadores[i].username,
+                    utilizadores[i].password,
                     utilizadores[i].tipo);
         }
         fclose(file);
@@ -367,7 +371,7 @@ void ordenarPorIdade(TipoUtilizador tipoUtilizador, int tipoOrdenar) {
 
 }
 
-struct AgentesIndisponiveis* retornarIndisponiveis(){
+AgentesIndisponiveis* retornarIndisponiveis(){
     return indisponivel;
 }
 

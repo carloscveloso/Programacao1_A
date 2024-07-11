@@ -29,9 +29,9 @@ void gravarFicheiroPropriedades();
 void CriarPropriedade(Propriedade novaPropriedade);
 void EditarPropriedade(Propriedade propriedadeEditada);
 void RemoverPropriedade(int propriedadeRemovida);
-void ListarPropriedade(int numPropriedadeEscolhida, struct AgentesIndisponiveis* indisponiveis[20]);
+void ListarPropriedade(int numPropriedadeEscolhida, AgentesIndisponiveis* indisponiveis[MAX_AGENTES]);
 void ListarPropriedadeDeProprietario(char username[50]);
-bool VerificarIDPropriedade(int ID, char proprietariosIndisponiveis[20][15]);
+bool VerificarIDPropriedade(int ID, AgentesIndisponiveis* indisponiveis[MAX_AGENTES]);
 bool VerificarIDPropriedadeDeProprietario(int ID, char *username);
 Propriedade ReturnPropriedade(int ID);
 

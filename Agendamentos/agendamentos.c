@@ -324,3 +324,6 @@ void calcular_tempo_espera_estimado() {
         printf("Não há clientes na fila de espera.\n");
     }
 }
+
+// TODO criar escrever ficheiro
+// TODO ler ficheiro

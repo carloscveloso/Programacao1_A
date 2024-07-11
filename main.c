@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
+#include <stdlib.h>
 #include "Utilizador/utilizador.h"
 #include "Propriedades/propriedades.h"
 #include "Agendamentos/agendamentos.h"
@@ -8,7 +9,6 @@
 // Variaveis Globais
 char username_cliente[50] = "";    // Guarda o username da conta registada no sistema
 TipoUtilizador *tipoRegistado;       // Guarda o tipo de utilizador registado no sistema
-char proprietarioIndisponivel[20][15];
 
 // Funções auxiliares
 
@@ -39,14 +39,16 @@ void EscolherOrdenacaoPropriedades(int numTipoPropriedadeEscolhida){
         printf("Escolha uma opção: ");
         scanf("%d", &escolha);
 
+        AgentesIndisponiveis* indisponiveis = retornarIndisponiveis();
+
         // Lista das opções
         switch (escolha) {
             case 1:
-                ListarPropriedade(numTipoPropriedadeEscolhida, retornarIndisponiveis());
+                ListarPropriedade(numTipoPropriedadeEscolhida, indisponiveis);
                 verificar = true;
                 break;
             case 2:
-                ListarPropriedadePorPreco(numTipoPropriedadeEscolhida, retornarIndisponiveis());
+                ListarPropriedadePorPreco(numTipoPropriedadeEscolhida, indisponiveis);
                 verificar = true;
                 break;
             case 0:
@@ -63,6 +65,7 @@ void MenuClientePropriedades(){
     int escolha = 0;
     int idPropriedadeEscolhida;
     bool verificar = false;
+    AgentesIndisponiveis* indisponiveis = retornarIndisponiveis();
 
     // Menu Gerir Propriedades
     do {
@@ -84,7 +87,7 @@ void MenuClientePropriedades(){
                     printf("-----------------\n\n");
                     printf("Insira o ID : ");
                     scanf("%d", &idPropriedadeEscolhida);
-                } while (VerificarIDPropriedade(idPropriedadeEscolhida, proprietarioIndisponivel));
+                } while (!VerificarIDPropriedade(idPropriedadeEscolhida, indisponiveis));
 
                 int data_dia, data_mes, data_hora;
 
@@ -121,6 +124,7 @@ void MenuEditarPropriedade(){
     int idPropriedadeEscolhida;
     bool sucesso = false;
     bool verificar = false;
+    AgentesIndisponiveis* indisponiveis = retornarIndisponiveis();
 
     do {
         printf("-----------------\n\n");
@@ -130,9 +134,9 @@ void MenuEditarPropriedade(){
         if(Permissao(AGENTE)){
             if(VerificarIDPropriedadeDeProprietario(idPropriedadeEscolhida, username_cliente)){sucesso = true;}
         } else {
-            if(VerificarIDPropriedade(idPropriedadeEscolhida, proprietarioIndisponivel)){sucesso = true;}
+            if(VerificarIDPropriedade(idPropriedadeEscolhida, indisponiveis)){sucesso = true;}
         }
-    } while (!sucesso);
+    } while (sucesso == false);
     
     Propriedade PropriedadeAEditar = ReturnPropriedade(idPropriedadeEscolhida);
     int tipo = 0;
@@ -155,14 +159,12 @@ void MenuEditarPropriedade(){
             case 1:
                 // Morada
                 printf("\nMorada: ");
-                scanf(" %s", PropriedadeAEditar.morada);
-                verificar = true;
+                scanf("%s", PropriedadeAEditar.morada);
                 break;
             case 2:
                 // Preço
                 printf("\nPreço: ");
                 scanf("%lf", &PropriedadeAEditar.preco);
-                verificar = true;
                 break;
             case 3:
                 // Tipo de Propriedade
@@ -188,17 +190,17 @@ void MenuEditarPropriedade(){
                         printf("Tipo de Propriedade inválido. Por favor, escolha uma opção válida.\n");
                         break;
                     }
-                }while(tipo == 1 || tipo == 2 || tipo == 3);
-                verificar = true;
+                }while(tipo != 1 && tipo != 2 && tipo != 3);
                 break;
             case 0:
-                printf("Encerrando o programa...\n");
                 EditarPropriedade(PropriedadeAEditar);
+                verificar = true;
+                printf("Encerrando o programa...\n");
                 return;
             default:
                 printf("Opção inválida. Por favor, escolha uma opção válida.\n");
         }
-    } while (verificar == false);
+    } while (verificar = false);
 }
 
 // #TOTEST - Menu para Remover Propriedade
@@ -207,6 +209,7 @@ void MenuRemoverPropriedade(){
     int idPropriedadeEscolhida;
     bool sucesso = false;
     bool verificar = false;
+    AgentesIndisponiveis* indisponiveis = retornarIndisponiveis();
     do
     {
         printf("-----------------\n\n");
@@ -214,11 +217,11 @@ void MenuRemoverPropriedade(){
         scanf("%d", &idPropriedadeEscolhida);
 
         if(Permissao(AGENTE)){
-            if(VerificarIDPropriedadeDeProprietario(idPropriedadeEscolhida, username_cliente)){sucesso = true;}
+            if(VerificarIDPropriedadeDeProprietario(idPropriedadeEscolhida, username_cliente) == true){sucesso = true;}
         } else {
-            if(VerificarIDPropriedade(idPropriedadeEscolhida, proprietarioIndisponivel)){sucesso = true;}
+            if(VerificarIDPropriedade(idPropriedadeEscolhida, indisponiveis) == true){sucesso = true;}
         }
-    } while (!sucesso);
+    } while (sucesso == false);
 
     printf("-----------------\n");
     printf("Tem a Certeza que deseja Remover esta Propriedade?\n");
@@ -259,7 +262,7 @@ void MenuAdicionarPropriedade(){
     printf("-----------------\n");
 
     printf("Morada: ");
-    scanf(" %s", novaPropriedade.morada);
+    scanf("%s", novaPropriedade.morada);
 
     printf("Preço: ");
     scanf("%lf", &novaPropriedade.preco);
@@ -427,8 +430,8 @@ void GerirPropriedades(){
                 } else {
                     ListarTipoPropriedades();
                 }
-                
-                MenuRemoverPropriedade();
+
+                MenuEditarRemoverPropriedades();
                 verificar = true;
                 break;
             case 0:
@@ -546,19 +549,27 @@ void GerirAgendamentos(){
 void MenuEditarConta(bool propriaConta){
     int escolha = 0;
     bool sucesso = false;
-    char usernameEscolhido[50];
-    
-    do{
-        printf("-----------------\n");
-        printf("Qual utilizador pretende editar: ");
-        scanf(" %s", usernameEscolhido);
-
-        if(verificarUsername(usernameEscolhido)){sucesso=true;}
-    } while(sucesso == false);
-    
-    Utilizador* utilizadorAEditar = ReturnUtilizador(usernameEscolhido);
-    bool dataValida = false;
     bool verificar = false;
+    bool dataValida = false;
+    char usernameEscolhido[50];
+    Utilizador* utilizadorAEditar;
+
+    if (!propriaConta){
+        do{
+            printf("-----------------\n");
+            printf("Qual utilizador pretende editar: ");
+            scanf(" %s", usernameEscolhido);
+
+            if(verificarUsername(usernameEscolhido)){sucesso=true;}
+        } while(sucesso == false);
+
+        utilizadorAEditar = ReturnUtilizador(usernameEscolhido);
+        bool dataValida = false;
+        bool verificar = false;
+    } else {
+        utilizadorAEditar = ReturnUtilizador(username_cliente);
+    }
+
 
     do {
         printf("-----------------\n");
@@ -749,15 +760,17 @@ void MenuEditarRemoverContas(bool propriaConta){
         // Lista das opções
         switch (escolha) {
             case 1:
+                MenuRemoverConta(propriaConta);
                 verificar = true;
+                exit(0);
                 break;
             case 2:
-                if(!Permissao(ADMINISTRADOR)){
+                if(propriaConta == true || Permissao(ADMINISTRADOR)){
+                    MenuEditarConta(propriaConta);
+                    verificar = true;
+                } else {
                     printf("Opção inválida. Por favor, escolha uma opção válida.\n");
-                    break;
                 }
-                MenuEditarConta(propriaConta);
-                verificar = true;
                 break;
             case 0:
                 printf("Encerrando o programa...\n");
@@ -1153,22 +1166,22 @@ int main() {
                 // Username
                 do {
                     printf("\nUsername: ");
-                    scanf(" %s", novoUtilizador.username);
+                    scanf("%s", novoUtilizador.username);
                 } while (verificarUsername(novoUtilizador.username));
 
                 // Password
                 do {
                     printf("\nPassword: ");
-                    scanf(" %s", novoUtilizador.password);
+                    scanf("%s", novoUtilizador.password);
                 } while (strlen(novoUtilizador.password) < 6);
 
                 // Nome
                 printf("\nNome: ");
-                scanf(" %s", novoUtilizador.nome);
+                scanf("%s", novoUtilizador.nome);
 
                 // Número de Telefone
                 printf("\nNúmero de Telefone: ");
-                scanf(" %s", novoUtilizador.contactoTelefonico);
+                scanf("%s", novoUtilizador.contactoTelefonico);
 
                 // Data de Nascimento
                 do{
@@ -1194,7 +1207,7 @@ int main() {
 
                 // Morada
                 printf("\nMorada: ");
-                scanf(" %s", &novoUtilizador.morada[100]);
+                scanf("%s", novoUtilizador.morada);
 
                 // Tipo de utilizador
                 novoUtilizador.tipo = CLIENTE;
