@@ -2,6 +2,7 @@
 #define PROPRIEDADES_H
 
 #include <stdbool.h>
+#include "../Utilizador/utilizador.h"
 
 typedef enum {
     CASA, 
@@ -28,8 +29,8 @@ void gravarFicheiroPropriedades();
 void CriarPropriedade(Propriedade novaPropriedade);
 void EditarPropriedade(Propriedade propriedadeEditada);
 void RemoverPropriedade(int propriedadeRemovida);
-void ListarPropriedade(int numPropriedadeEscolhida, char proprietariosIndisponiveis[20][15]);
-void ListarPropriedadeDeProprietario(char *username);
+void ListarPropriedade(int numPropriedadeEscolhida, struct AgentesIndisponiveis* indisponiveis[20]);
+void ListarPropriedadeDeProprietario(char username[50]);
 bool VerificarIDPropriedade(int ID, char proprietariosIndisponiveis[20][15]);
 bool VerificarIDPropriedadeDeProprietario(int ID, char *username);
 Propriedade ReturnPropriedade(int ID);
@@ -37,6 +38,5 @@ Propriedade ReturnPropriedade(int ID);
 // ORDENAÇÕES
 
 void ListarPropriedadePorPreco(int numPropriedadeEscolhida, char proprietariosIndisponiveis[20][15]);
-
 
 #endif

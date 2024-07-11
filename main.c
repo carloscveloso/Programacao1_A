@@ -42,11 +42,11 @@ void EscolherOrdenacaoPropriedades(int numTipoPropriedadeEscolhida){
         // Lista das opções
         switch (escolha) {
             case 1:
-                ListarPropriedade(numTipoPropriedadeEscolhida, proprietarioIndisponivel);
+                ListarPropriedade(numTipoPropriedadeEscolhida, retornarIndisponiveis());
                 verificar = true;
                 break;
             case 2:
-                ListarPropriedadePorPreco(numTipoPropriedadeEscolhida, proprietarioIndisponivel);
+                ListarPropriedadePorPreco(numTipoPropriedadeEscolhida, retornarIndisponiveis());
                 verificar = true;
                 break;
             case 0:
@@ -304,10 +304,12 @@ void MenuAdicionarPropriedade(){
             scanf(" %s", username);
 
             if(verificarTipo(AGENTE, username)){success=true;}
+            strcpy(novaPropriedade.username_proprietario, username);
         } while (success == false);
     }
     
     CriarPropriedade(novaPropriedade);
+    gravarFicheiroPropriedades();
 }
 
 // #TOTEST - Menu para escolher que tipo de Propriedade Listar (TODOS)
@@ -1018,6 +1020,7 @@ void MenuPrincipal(){
     int escolha = 0;
     bool verificar = false;
 
+
     // Menu Principal
     do {
         
@@ -1038,12 +1041,6 @@ void MenuPrincipal(){
             case 1:
                 // Propriedades
                 // Não irá guardar para posteriormente ser possivel listar todas as propriedades, mesmo as de agentes indisponiveis
-                if(!Permissao(ADMINISTRADOR)){
-                    char** agentesIndisponiveis = AgentesIndisponiveis();
-                    for (int i = 0; i < 15; i++) {
-                        strcpy(proprietarioIndisponivel[i], agentesIndisponiveis[i]);
-                    }
-                }
 
                 // O Cliente irá diretamente ver as propriedades
                 if(Permissao(CLIENTE)){

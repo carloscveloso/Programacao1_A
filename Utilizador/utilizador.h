@@ -25,6 +25,10 @@ typedef struct {
     TipoUtilizador tipo;
 } Utilizador;
 
+typedef struct AgentesIndisponiveis{
+    char username_agente_indisponivel[20];
+}Indisponivel;
+
 // ADD ADMIN
 void adicionarAdministrador();
 
@@ -45,10 +49,11 @@ void EditarUtilizador(Utilizador utilizadorEditado);
 void RemoverUtilizador(char* username);
 void ListarUtilizador(TipoUtilizador tipoUtilizador, int tipoNum);
 Utilizador* ReturnUtilizador(char* username);
-char** AgentesIndisponiveis();
 
 // ORDENAÇÕES
 void ordenarPorNome(TipoUtilizador tipoUtilizador, int tipoOrdenar);
 void ordenarPorIdade(TipoUtilizador tipoUtilizador, int tipoOrdenar);
+
+struct AgentesIndisponiveis* retornarIndisponiveis();
 
 #endif 

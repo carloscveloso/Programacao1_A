@@ -7,6 +7,7 @@
 #define MAX_UTILIZADORES 100
 
 Utilizador utilizadores[MAX_UTILIZADORES];
+struct AgentesIndisponiveis indisponivel[MAX_AGENTES];
 
 int numAgentes = 0;
 int numUtilizadores = 0;
@@ -85,6 +86,7 @@ bool verificarTipo(TipoUtilizador pretendido, char *username) {
 // CRUD FICHEIRO
 
 void lerFicheiroUtilizadores() {
+    int i;
     FILE *file = fopen("utilizadores.txt", "r");
     if (file != NULL) {
         char linha[300]; // Tamanho suficiente para armazenar uma linha do ficheiro
@@ -115,6 +117,10 @@ void lerFicheiroUtilizadores() {
                     default:
                         printf("Tipo de utilizador desconhecido: %d\n", tipo);
                         continue; // Skip this entry
+                }
+                if(utilizadores[numUtilizadores].disponivel == false && utilizadores[numUtilizadores].tipo == AGENTE){
+                    strcpy(indisponivel[i].username_agente_indisponivel, utilizadores[numUtilizadores].username);
+                    i++;
                 }
                 numUtilizadores++;
             } else {
@@ -242,17 +248,7 @@ Utilizador* ReturnUtilizador(char* username) {
     return NULL;
 }
 
-char** AgentesIndisponiveis() {
-    char username[20][25];
-    int j = 0;
-    for(int i=0; i<numUtilizadores; i++){
-        if(utilizadores[i].disponivel == 0 && utilizadores[i].tipo == AGENTE) {
-            strcpy(username[j], utilizadores[i].username);
-            j++;
-        }
-    }
-    return username;
-}
+
 
 
 
@@ -368,6 +364,11 @@ void ordenarPorIdade(TipoUtilizador tipoUtilizador, int tipoOrdenar) {
 
     // Imprimir os agentes ordenados
     ListarOrdenacao(tipoUtilizador, utilizadorOrdenado, numOrdenados);
+
+}
+
+struct AgentesIndisponiveis* retornarIndisponiveis(){
+    return indisponivel;
 }
 
 

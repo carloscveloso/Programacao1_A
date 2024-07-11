@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdbool.h>
 #include "propriedades.h"
+#include "../Utilizador/utilizador.h"
 
 
 #define MAX_PROPRIEDADES 100
@@ -40,7 +41,7 @@ void lerFicheiroPropriedades() {
         char linha[300];
         while (fgets(linha, sizeof(linha), file)) {
             int tipo;
-            if (sscanf(file, "%d %s %lf %d %s",
+            if (sscanf(linha, "%d %s %lf %d %s",
                         &propriedades[num_propriedades].id,
                         propriedades[num_propriedades].morada,
                         &propriedades[num_propriedades].preco,
@@ -62,7 +63,7 @@ void lerFicheiroPropriedades() {
                         continue; // Skip this entry
                 }
                 (num_propriedades)++;
-                ultimo_id = propriedades[num_propriedades - 1].id;
+                ultimo_id = propriedades[num_propriedades].id;
             } else{
                 printf("Erro ao ler dados da propriedade.\n");
             }
@@ -189,8 +190,9 @@ void ListarPropriedadePorPreco(int numPropriedadeEscolhida, char proprietariosIn
                 for(int j = 0; j < 15; j++){
                     if(strcmp(proprietariosIndisponiveis[j], propriedades[i].username_proprietario) == 0){
                         temp[temp_count++] = propriedades[i];
+                        break;
                     }
-            }
+                }
         }
     }
 
@@ -207,26 +209,34 @@ void ListarPropriedadePorPreco(int numPropriedadeEscolhida, char proprietariosIn
     }
 }
 
-void ListarPropriedade(int numPropriedadeEscolhida, char proprietariosIndisponiveis[20][15]) {
+void ListarPropriedade(int numPropriedadeEscolhida, struct AgentesIndisponiveis* indisponiveis[20]) {
     for (int i = 0; i < num_propriedades; i++) {
-        if ((numPropriedadeEscolhida == 3 && propriedades[i].tipo == CASA) ||
-            (numPropriedadeEscolhida == 2 && propriedades[i].tipo == APARTAMENTO) ||
-            (numPropriedadeEscolhida == 1 && propriedades[i].tipo == ESCRITORIO) ||
-            (numPropriedadeEscolhida == 0)) {
-                for(int j = 0; j < 15; j++){
-                    if(strcmp(proprietariosIndisponiveis[j], propriedades[i].username_proprietario) == 0){
-                        printf("------------\n");
-                        printf("Morada: %s\n", propriedades[i].morada);
-                        printf("Tipo: ");
-                        PrintTipo(propriedades[i].tipo);
-                        printf("\nPreço: %f\n", propriedades[i].preco);
-                    }
+        if ((numPropriedadeEscolhida == 3 && propriedades[i].tipo == CASA) || // Casa
+            (numPropriedadeEscolhida == 2 && propriedades[i].tipo == APARTAMENTO) || // Apartamento
+            (numPropriedadeEscolhida == 1 && propriedades[i].tipo == ESCRITORIO) || // Escritório
+            (numPropriedadeEscolhida == 0)) { // Qualquer tipo
+            bool encontrado = false;
+            for (int j = 0; j < 20; j++) {
+                if (strcmp(indisponiveis[j]->username_agente_indisponivel, propriedades[i].username_proprietario) ==
+                    0) {
+                    encontrado = true;
+                    break;
                 }
+            }
+            if(encontrado){
+                printf("------------\n");
+                printf("ID: %d\n", propriedades[i].id);
+                printf("Morada: %s\n", propriedades[i].morada);
+                printf("Tipo: ");
+                PrintTipo(propriedades[i].tipo);
+                printf("\nPreço: %.2f\n", propriedades[i].preco);
+                break; // Encontrado, sair do loop
+            }
         }
     }
 }
 
-void ListarPropriedadeDeProprietario(char *username) {
+void ListarPropriedadeDeProprietario(char username[50]) {
     for (int i = 0; i < num_propriedades; i++) {
         if (strcmp(propriedades[i].username_proprietario, username) == 0) {
             printf("------------\n");
